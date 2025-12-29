@@ -14,10 +14,27 @@
             background-color: var(--bg); color: white; margin: 0; 
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             display: flex; flex-direction: column; align-items: center;
-            padding: 40px 15px; overflow-x: hidden;
+            padding: 0 0 40px 0; overflow-x: hidden;
         }
 
-        /* Efecto de fondo sutil */
+        /* BANNER PRINCIPAL TCODM */
+        .header-banner {
+            width: 100%;
+            background: #000;
+            border-bottom: 4px solid var(--y);
+            display: flex;
+            justify-content: center;
+            padding: 0;
+            margin-bottom: 30px;
+        }
+
+        .header-banner img {
+            width: 100%;
+            max-width: 1000px;
+            height: auto;
+            display: block;
+        }
+
         body::before {
             content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: radial-gradient(circle at 50% 20%, #1a1a00 0%, transparent 50%);
@@ -25,7 +42,7 @@
         }
 
         .container { 
-            width: 100%; max-width: 450px; background: var(--card); padding: 30px; 
+            width: 95%; max-width: 450px; background: var(--card); padding: 30px; 
             border-top: 4px solid var(--y); border-radius: 8px; box-sizing: border-box;
             box-shadow: 0 20px 50px rgba(0,0,0,0.5); margin-bottom: 40px;
         }
@@ -34,7 +51,6 @@
         .yellow-text { color: var(--y); }
         .web-tag { text-align: center; display: block; color: #555; margin-bottom: 30px; font-weight: bold; font-size: 12px; letter-spacing: 3px; }
 
-        /* Contador de Cupos Pro */
         .counter-box {
             display: flex; justify-content: space-between; align-items: center;
             background: #1a1a1a; padding: 15px; border-radius: 5px; margin-bottom: 25px;
@@ -61,11 +77,9 @@
             box-shadow: 0 10px 20px rgba(243, 202, 51, 0.2);
         }
         .btn-pay:hover { transform: translateY(-2px); box-shadow: 0 15px 25px rgba(243, 202, 51, 0.3); }
-        .btn-pay:active { transform: translateY(0); }
-        .btn-pay:disabled { background: #222; color: #555; cursor: not-allowed; transform: none; box-shadow: none; }
+        .btn-pay:disabled { background: #222; color: #555; cursor: not-allowed; }
 
-        /* Lista de Jugadores Mejorada */
-        .list-container { width: 100%; max-width: 450px; }
+        .list-container { width: 95%; max-width: 450px; }
         .squad-card { 
             background: linear-gradient(90deg, #111 0%, #0a0a0a 100%); 
             border-left: 3px solid var(--y); padding: 18px; margin-bottom: 12px; 
@@ -77,34 +91,31 @@
         .squad-card p { margin: 8px 0 0; color: #666; font-size: 12px; font-family: monospace; }
         
         .waiting-list { opacity: 0.6; filter: grayscale(1); }
-        .waiting-list h3::after { content: " (EN ESPERA)"; font-size: 10px; color: #ff5555; margin-left: 10px; }
-
-        .footer-img { 
-            width: 100%; max-width: 900px; height: auto; 
-            border-radius: 10px; margin-top: 60px; filter: grayscale(0.5) brightness(0.7);
-            transition: 0.5s;
-        }
-        .footer-img:hover { filter: grayscale(0) brightness(1); }
+        .waiting-list h3::after { content: " (RESERVA)"; font-size: 10px; color: #ff5555; margin-left: 10px; }
     </style>
 </head>
 <body>
 
+    <header class="header-banner">
+        <img src="banner-pro.png.jpg" alt="TCODM Torneos 2025">
+    </header>
+
     <div class="container">
         <h1>TC<span class="yellow-text">ODM</span></h1>
-        <span class="web-tag">DOMINA EL CAMPO</span>
+        <span class="web-tag">BATTLE ROYALE ELITE</span>
 
         <div class="counter-box">
             <div>
-                <div class="counter-label">Estado de Cupos</div>
+                <div class="counter-label">Inscripciones Abiertas</div>
                 <div id="cuposTxt" class="counter-num">-- / 16</div>
             </div>
             <div id="statusDot" style="width: 12px; height: 12px; border-radius: 50%; background: #555;"></div>
         </div>
 
-        <div class="section-title">Identificación del Equipo</div>
-        <input type="text" id="squadName" placeholder="NOMBRE DE LA SQUAD" oninput="validar()">
+        <div class="section-title">Nombre de la Squad</div>
+        <input type="text" id="squadName" placeholder="EJ: TEAM GHOST" oninput="validar()">
 
-        <div class="section-title">Operadores (ID Exacto)</div>
+        <div class="section-title">ID de los Jugadores</div>
         <div class="grid">
             <input type="text" id="p1" placeholder="ID Jugador 1" oninput="validar()">
             <input type="text" id="p2" placeholder="ID Jugador 2" oninput="validar()">
@@ -114,31 +125,25 @@
 
         <button id="btnStripe" class="btn-pay" disabled onclick="registrar()">INSCRIBIR SQUAD ($5.46)</button>
         <p style="font-size: 10px; color: #444; text-align: center; margin-top: 15px;">
-            Al registrarte aceptas las reglas del torneo. <br> Procesado de forma segura por Stripe.
+            Al registrarte aceptas las reglas del torneo. <br> Pagos procesados por Stripe.
         </p>
     </div>
 
     <div class="list-container">
-        <div class="section-title" style="text-align: center; margin-bottom: 20px;">SQUADS CONFIRMADAS</div>
+        <div class="section-title" style="text-align: center; margin-bottom: 20px;">EQUIPOS EN LISTA</div>
         <div id="listaSquads"></div>
-        <div id="listaEspera" style="margin-top: 30px;">
-            <div class="section-title" style="text-align: center;">LISTA DE RESERVA</div>
-        </div>
+        <div id="listaEspera" style="margin-top: 30px;"></div>
     </div>
 
-    <img src="https://www.callofduty.com/content/dam/atvi/callofduty/cod-touchui/mobile/home/hero/CODM_Home_Hero-BG_Desktop-LG-11.webp" class="footer-img">
-
     <script>
-        // CONFIGURACIÓN FIREBASE (Usa tus datos aquí)
         const firebaseConfig = {
             databaseURL: "https://tcodm-e4147-default-rtdb.firebaseio.com/",
             projectId: "tcodm-e4147",
-            // Agrega apiKey y appId aquí para conectar
         };
 
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
-        const MAX_TITULARES = 16; // Número de equipos que entran al torneo principal
+        const MAX_TITULARES = 16;
 
         database.ref('inscritos').on('value', (snapshot) => {
             const titularesDiv = document.getElementById('listaSquads');
@@ -190,53 +195,5 @@
             });
         }
     </script>
-    <style>
-    /* Estilos CSS para la nueva sección */
-    .download-section-tcodm {
-        background-color: #000; /* Fondo negro como en el ejemplo */
-        padding: 20px 0;
-        text-align: center;
-        margin-top: 50px; /* Espacio arriba para que no pegue con lo de antes */
-    }
-
-    .download-section-tcodm .banner-image-container {
-        max-width: 1000px; /* Ancho máximo similar al banner original */
-        margin: 0 auto; /* Centrar el banner */
-        background-color: #000; /* Asegura el fondo negro alrededor del banner */
-        padding-bottom: 20px; /* Pequeño padding debajo del banner */
-    }
-
-    .download-section-tcodm .banner-image-container img {
-        max-width: 100%; /* La imagen se ajusta al contenedor */
-        height: auto;
-        display: block; /* Elimina espacio extra debajo de la imagen */
-    }
-
-    .tcodm-text {
-        color: #FFDA24; /* Color amarillo similar al del banner */
-        font-family: 'Arial Black', sans-serif; /* Fuente impactante */
-        font-size: 2.5em; /* Tamaño grande para el texto */
-        font-weight: bold;
-        margin-top: 20px; /* Espacio entre el banner y el texto */
-        text-transform: uppercase; /* Todo en mayúsculas */
-        letter-spacing: 2px; /* Espaciado entre letras */
-    }
-
-    /* Media Queries para ajustar en móviles si es necesario */
-    @media (max-width: 768px) {
-        .tcodm-text {
-            font-size: 1.8em; /* Tamaño más pequeño en móviles */
-        }
-    }
-</style>
-
-<section class="download-section-tcodm">
-    <div class="banner-image-container">
-        <img src="https://www.callofduty.com/content/dam/atvi/callofduty/cod-touchui/mobile/home/downloadbanner/CODM_Download-Now_Banner_LG.webp" alt="Call of Duty Mobile Descargar Ahora">
-    </div>
-    <div class="tcodm-text">
-        Tcodm
-    </div>
-</section>
 </body>
 </html>
