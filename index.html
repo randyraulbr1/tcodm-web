@@ -190,5 +190,53 @@
             });
         }
     </script>
+    <style>
+    /* Estilos CSS para la nueva sección */
+    .download-section-tcodm {
+        background-color: #000; /* Fondo negro como en el ejemplo */
+        padding: 20px 0;
+        text-align: center;
+        margin-top: 50px; /* Espacio arriba para que no pegue con lo de antes */
+    }
+
+    .download-section-tcodm .banner-image-container {
+        max-width: 1000px; /* Ancho máximo similar al banner original */
+        margin: 0 auto; /* Centrar el banner */
+        background-color: #000; /* Asegura el fondo negro alrededor del banner */
+        padding-bottom: 20px; /* Pequeño padding debajo del banner */
+    }
+
+    .download-section-tcodm .banner-image-container img {
+        max-width: 100%; /* La imagen se ajusta al contenedor */
+        height: auto;
+        display: block; /* Elimina espacio extra debajo de la imagen */
+    }
+
+    .tcodm-text {
+        color: #FFDA24; /* Color amarillo similar al del banner */
+        font-family: 'Arial Black', sans-serif; /* Fuente impactante */
+        font-size: 2.5em; /* Tamaño grande para el texto */
+        font-weight: bold;
+        margin-top: 20px; /* Espacio entre el banner y el texto */
+        text-transform: uppercase; /* Todo en mayúsculas */
+        letter-spacing: 2px; /* Espaciado entre letras */
+    }
+
+    /* Media Queries para ajustar en móviles si es necesario */
+    @media (max-width: 768px) {
+        .tcodm-text {
+            font-size: 1.8em; /* Tamaño más pequeño en móviles */
+        }
+    }
+</style>
+
+<section class="download-section-tcodm">
+    <div class="banner-image-container">
+        <img src="https://www.callofduty.com/content/dam/atvi/callofduty/cod-touchui/mobile/home/downloadbanner/CODM_Download-Now_Banner_LG.webp" alt="Call of Duty Mobile Descargar Ahora">
+    </div>
+    <div class="tcodm-text">
+        Tcodm
+    </div>
+</section>
 </body>
 </html>
