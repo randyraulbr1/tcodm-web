@@ -2,242 +2,93 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>TCODM | Torneo Elite</title>
-    
-    <link rel="icon" type="image/png" href="iconoweb.png">
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TCODM | Torneo Battle Royale</title>
     <style>
-        :root { --y: #f3ca33; --bg: #050505; --card: #111; --gray: #888; --green: #00ff88; }
+        :root { --y: #f3ca33; --bg: #050505; }
         
         body { 
             background-color: var(--bg); color: white; margin: 0; 
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            display: flex; flex-direction: column; align-items: center;
-            padding-bottom: 50px; overflow-x: hidden;
+            font-family: 'Arial Black', Gadget, sans-serif; text-align: center;
         }
 
-        /* ANIMACIÓN DE IMÁGENES: SE ENCOGEN AL HACER SCROLL */
-        .scroll-section {
-            width: 90%; max-width: 900px; margin-bottom: 150px;
-            display: flex; flex-direction: column; align-items: center;
-        }
-
-        .scroll-section img {
-            width: 100%; height: auto; border-radius: 15px; border: 2px solid var(--y);
-            box-shadow: 0 0 30px rgba(243, 202, 51, 0.2);
-            view-timeline-name: --image;
-            view-timeline-axis: block;
-            animation-timeline: --image;
-            animation-name: shrink;
-            animation-fill-mode: both;
-            animation-range: exit 0% exit 100%;
-        }
-
-        @keyframes shrink {
-            to { transform: scale(0.6); opacity: 0.5; }
-        }
-
-        .scroll-text {
-            margin-top: -30px; padding: 30px; background: rgba(17, 17, 17, 0.95);
-            border: 1px solid #333; border-radius: 10px; z-index: 10;
-            animation: revealText both; animation-timeline: view();
-            animation-range: entry 20% cover 40%;
-        }
-
-        @keyframes revealText {
-            from { opacity: 0; transform: translateY(50px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* FORMULARIO */
-        .container { 
-            width: 95%; max-width: 500px; background: var(--card); padding: 40px; 
-            border-top: 4px solid var(--y); border-radius: 12px; box-sizing: border-box;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.9); margin-bottom: 100px;
-        }
-
-        .counter-box {
+        /* HEADER LIMPIO */
+        header {
             display: flex; justify-content: space-between; align-items: center;
-            background: #000; padding: 20px; border-radius: 8px; margin-bottom: 35px; border: 1px solid #222;
+            padding: 15px 5%; background: #000; border-bottom: 2px solid var(--y);
         }
-        .counter-num { font-size: 28px; font-weight: 900; color: var(--y); font-family: 'Arial Black', sans-serif; }
+        .logo { font-size: 24px; letter-spacing: 2px; }
+        .logo span { color: var(--y); }
 
-        input { 
-            width: 100%; padding: 15px; background: #000; border: 1px solid #333; 
-            color: white; margin-bottom: 15px; box-sizing: border-box; border-radius: 4px; font-size: 15px;
+        /* BOTÓN AMARILLO */
+        .btn-torneo {
+            background: var(--y); color: black; border: none; padding: 12px 25px;
+            font-weight: 900; text-transform: uppercase; cursor: pointer;
+            border-radius: 4px; transition: 0.3s;
         }
+        .btn-torneo:hover { transform: scale(1.05); box-shadow: 0 0 15px var(--y); }
 
-        /* CHECKBOX PERSONALIZADO */
-        .terms-container { display: flex; align-items: flex-start; gap: 10px; margin: 20px 0; cursor: pointer; }
-        .terms-container input { width: auto; margin: 5px 0 0; cursor: pointer; }
-        .terms-text { font-size: 11px; color: #aaa; line-height: 1.4; }
-
-        .btn-pay { 
-            width: 100%; padding: 18px; background: #222; color: #555; 
-            border: none; font-weight: 900; font-size: 16px; cursor: pointer; 
-            text-transform: uppercase; border-radius: 6px; transition: 0.4s;
+        /* SECCIÓN ESCUDO */
+        .hero { padding: 60px 20px; background: radial-gradient(circle, #151515 0%, #050505 100%); }
+        
+        /* Escudo diseñado con CSS */
+        .escudo-t {
+            width: 120px; height: 150px; background: var(--y); margin: 0 auto;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 0 30px rgba(243, 202, 51, 0.3);
         }
-        .btn-pay.ready { background: var(--y); color: black; box-shadow: 0 0 25px rgba(243, 202, 51, 0.5); }
+        .escudo-t span { color: black; font-size: 80px; font-weight: 900; }
 
-        /* LISTA DE EQUIPOS - DISEÑO MEJORADO */
-        .list-container { width: 95%; max-width: 700px; }
-        .squad-card { 
-            background: #111; padding: 25px; margin-bottom: 20px; 
-            border-radius: 8px; border: 1px solid #222;
-            display: flex; flex-direction: column; gap: 10px;
-            position: relative; overflow: hidden;
-        }
-        .squad-card::before { content: ""; position: absolute; left: 0; top: 0; height: 100%; width: 5px; background: var(--green); }
-        .squad-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #222; padding-bottom: 10px; }
-        .squad-name { color: var(--y); font-size: 22px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; }
-        .verified-badge { color: var(--green); font-size: 11px; font-weight: bold; border: 1px solid var(--green); padding: 3px 8px; border-radius: 4px; }
-        .players-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; color: #777; font-size: 12px; }
+        .battle-title { font-size: 45px; margin: 20px 0 0; letter-spacing: 4px; }
+        .battle-title span { color: white; }
+        .year-display { font-size: 25px; color: #777; margin-top: 5px; }
 
-        .legal-footer { 
-            width: 100%; max-width: 900px; padding: 60px 20px; margin-top: 80px;
-            border-top: 1px solid #222; text-align: center; font-size: 12px; color: #555;
+        /* PRESENTACIÓN */
+        .presentacion {
+            max-width: 800px; margin: 50px auto; padding: 0 20px;
+            text-align: left; line-height: 1.6; font-family: 'Segoe UI', sans-serif;
         }
-        .store-btns { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 20px 0; }
-        .btn-store { padding: 10px 15px; background: #000; color: #777; text-decoration: none; border: 1px solid #222; border-radius: 4px; }
+        .presentacion h2 { color: var(--y); border-left: 4px solid var(--y); padding-left: 15px; }
+        .presentacion p { color: #ccc; font-size: 17px; margin-bottom: 30px; }
     </style>
 </head>
 <body>
 
-    <header class="header-banner">
-        <img src="banner-pro.png.jpg" alt="TCODM">
+    <header>
+        <div class="logo">TC<span>ODM</span></div>
+        <button class="btn-torneo">UNIRME AL TORNEO</button>
     </header>
 
-    <div class="scroll-section">
-        <img src="https://imgs.callofduty.com/content/dam/atvi/callofduty/cod-touchui/blog/body/codm/CODM-S11_ANNOUNCE-005.webp" alt="Collab">
-        <div class="scroll-text">
-            <h3 style="color:var(--y); margin-top:0;">MODO STREET ROYALE</h3>
-            <p>Busca objetos especiales en Aislado durante la colaboración con Street Fighter. Interactúa con hologramas de Ryu y Akuma para activar el <b>Hadoken</b> y <b>Shoryuken</b> contra tus enemigos. ¡Poderes que duran toda la partida!</p>
+    <section class="hero">
+        <div class="escudo-t">
+            <span>T</span>
         </div>
-    </div>
+        <h1 class="battle-title">BATTLE <span>ROYALE</span></h1>
+        <div class="year-display">TORNEO <span id="year"></span></div>
+    </section>
 
-    <div class="container">
-        <h2 style="text-align:center; color:var(--y); margin-top:0;">SEASON <span id="currentYear"></span></h2>
-        
-        <div class="counter-box">
-            <div style="font-size: 11px; color: var(--gray);">CUADRANTE DE SQUADS</div>
-            <div id="cuposTxt" class="counter-num">-- / 25</div>
-        </div>
+    <section class="presentacion">
+        <h2>¿QUÉ ES TCODM?</h2>
+        <p>
+            TCODM es la plataforma definitiva para la organización de torneos competitivos de Call of Duty Mobile. 
+            Nacimos con el objetivo de brindar a los jugadores un espacio serio y bien estructurado donde puedan 
+            poner a prueba sus habilidades y competir por grandes premios.
+        </p>
 
-        <input type="text" id="squadName" placeholder="NOMBRE DE LA SQUAD" oninput="validar()">
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-            <input type="text" id="p1" placeholder="Jugador 1" oninput="validar()">
-            <input type="text" id="p2" placeholder="Jugador 2" oninput="validar()">
-            <input type="text" id="p3" placeholder="Jugador 3" oninput="validar()">
-            <input type="text" id="p4" placeholder="Jugador 4" oninput="validar()">
-        </div>
-        <input type="text" id="pExtra" placeholder="Jugador 5 (Reserva Opcional)" oninput="validar()">
-
-        <label class="terms-container">
-            <input type="checkbox" id="checkTerms" onchange="validar()">
-            <div class="terms-text">
-                Acepto los términos del torneo: El 80% de la recaudación va al pozo de premios de los jugadores. El 20% se destina a mantenimiento web, taxes y gestión. <b>No existen reembolsos bajo ninguna circunstancia</b> tras realizar el pago.
-            </div>
-        </label>
-
-        <button id="btnStripe" class="btn-pay" disabled onclick="registrar()">INSCRIBIR EQUIPO</button>
-    </div>
-
-    <div class="scroll-section">
-        <img src="https://imgs.callofduty.com/content/dam/atvi/callofduty/cod-touchui/blog/body/codm/CODM-S11_ANNOUNCE-007.webp" alt="Chun-Li">
-        <div class="scroll-text">
-            <h3 style="color:var(--y); margin-top:0;">HABILIDADES ESPECIALES</h3>
-            <p>Adquiere la Patada de Pájaro Giratoria de Chun-Li y la Flecha Espiral de Cammy. Estas habilidades transformarán tu estrategia de combate en el Battle Royale.</p>
-        </div>
-    </div>
-
-    <div class="list-container">
-        <div style="text-align:center; color:var(--y); letter-spacing:4px; font-size:14px; margin-bottom:40px; font-weight: bold;">SQUADS VERIFICADAS</div>
-        <div id="listaSquads"></div>
-    </div>
-
-    <div class="legal-footer">
-        <p><b>⚠️ DESCARGO DE RESPONSABILIDAD:</b> TCODM no es una página oficial de Call of Duty® ni de Activision. Este sitio es operado por terceros para fines de entretenimiento comunitario. Todos los derechos pertenecen a Activision Publishing, Inc.</p>
-        
-        <div class="store-btns">
-            <a href="https://store.callofdutymobile.com/es-mx/codm" target="_blank" class="btn-store">México (MX)</a>
-            <a href="https://store.callofdutymobile.com/en-us/codm" target="_blank" class="btn-store">USA (US)</a>
-            <a href="https://store.callofdutymobile.com/en-in/codm" target="_blank" class="btn-store">India (IN)</a>
-        </div>
-        <p style="opacity:0.4;">© <span id="yearCopy"></span> TCODM. Todos los derechos reservados.</p>
-    </div>
-
-    <img src="https://www.callofduty.com/content/dam/atvi/callofduty/cod-touchui/mobile/home/downloadbanner/CODM_Download-Now_Banner_LG.webp" style="width:100%; max-width:1000px; border-top: 3px solid var(--y);">
+        <h2>¿PARA QUÉ FUNCIONA?</h2>
+        <p>
+            Esta página funciona como el centro logístico de la liga. Aquí los líderes de squad pueden realizar 
+            inscripciones seguras, verificar el estado de sus equipos y mantenerse al tanto de las reglas oficiales. 
+            Nuestro sistema garantiza que la mayor parte de la recaudación se destine directamente al pozo de premios, 
+            asegurando transparencia y recompensas reales para los ganadores.
+        </p>
+    </section>
 
     <script>
-        document.getElementById('currentYear').innerText = new Date().getFullYear();
-        document.getElementById('yearCopy').innerText = new Date().getFullYear();
-
-        const firebaseConfig = { databaseURL: "https://tcodm-e4147-default-rtdb.firebaseio.com/", projectId: "tcodm-e4147" };
-        firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
-
-        database.ref('inscritos').on('value', (snapshot) => {
-            const listDiv = document.getElementById('listaSquads');
-            listDiv.innerHTML = "";
-            let count = 0;
-            snapshot.forEach((child) => {
-                count++;
-                const s = child.val();
-                const card = document.createElement('div');
-                card.className = 'squad-card revealText';
-                card.innerHTML = `
-                    <div class="squad-header">
-                        <div class="squad-name">${s.nombre}</div>
-                        <div class="verified-badge">DENTRO</div>
-                    </div>
-                    <div class="players-list">
-                        ${s.jugadores.map((p, i) => `<span>${i+1}. ${p}</span>`).join('')}
-                    </div>
-                `;
-                listDiv.appendChild(card);
-            });
-            document.getElementById('cuposTxt').innerText = `${count} / 25`;
-        });
-
-        function validar() {
-            const inputs = [
-                document.getElementById('squadName').value,
-                document.getElementById('p1').value,
-                document.getElementById('p2').value,
-                document.getElementById('p3').value,
-                document.getElementById('p4').value
-            ];
-            const check = document.getElementById('checkTerms').checked;
-            const btn = document.getElementById('btnStripe');
-            
-            if(inputs.every(i => i.trim().length > 2) && check) {
-                btn.disabled = false;
-                btn.classList.add('ready');
-            } else {
-                btn.disabled = true;
-                btn.classList.remove('ready');
-            }
-        }
-
-        function registrar() {
-            const data = {
-                nombre: document.getElementById('squadName').value.toUpperCase(),
-                jugadores: [
-                    document.getElementById('p1').value,
-                    document.getElementById('p2').value,
-                    document.getElementById('p3').value,
-                    document.getElementById('p4').value,
-                    document.getElementById('pExtra').value || "No"
-                ],
-                timestamp: Date.now()
-            };
-            database.ref('inscritos').push(data).then(() => {
-                window.location.href = "https://buy.stripe.com/4gM8wHey05kI44CfbN4ow00";
-            });
-        }
+        // Actualización automática del año
+        document.getElementById('year').innerText = new Date().getFullYear();
     </script>
+
 </body>
 </html>
