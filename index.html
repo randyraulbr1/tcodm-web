@@ -10,7 +10,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
     
     <style>
-        :root { --y: #f3ca33; --bg: #050505; --card: #111; --gray: #888; }
+        :root { --y: #f3ca33; --bg: #050505; --card: #111; --gray: #888; --green: #00ff88; }
         
         body { 
             background-color: var(--bg); color: white; margin: 0; 
@@ -19,96 +19,107 @@
             padding-bottom: 50px; overflow-x: hidden;
         }
 
-        /* ANIMACIONES DE REVELACIÓN */
-        @keyframes reveal {
-            from { opacity: 0; transform: scale(1.1) translateY(50px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
+        /* ANIMACIÓN DE IMÁGENES: SE ENCOGEN AL HACER SCROLL */
+        .scroll-section {
+            width: 90%; max-width: 900px; margin-bottom: 150px;
+            display: flex; flex-direction: column; align-items: center;
         }
 
-        .reveal { 
-            animation: reveal both; 
-            animation-timeline: view(); 
-            animation-range: entry 5% cover 35%; 
+        .scroll-section img {
+            width: 100%; height: auto; border-radius: 15px; border: 2px solid var(--y);
+            box-shadow: 0 0 30px rgba(243, 202, 51, 0.2);
+            view-timeline-name: --image;
+            view-timeline-axis: block;
+            animation-timeline: --image;
+            animation-name: shrink;
+            animation-fill-mode: both;
+            animation-range: exit 0% exit 100%;
         }
 
-        /* BANNER PRINCIPAL */
-        .header-banner { width: 100%; background: #000; border-bottom: 4px solid var(--y); margin-bottom: 60px; }
-        .header-banner img { width: 100%; max-width: 1000px; height: auto; display: block; margin: 0 auto; }
-
-        /* SECCIONES DE TIPS (IMÁGENES GRANDES) */
-        .tip-section { width: 90%; max-width: 850px; margin-bottom: 120px; text-align: center; }
-        .tip-section img { 
-            width: 100%; height: auto; border-radius: 15px; 
-            border: 2px solid var(--y); box-shadow: 0 15px 40px rgba(0,0,0,0.9);
-            transition: transform 0.3s ease;
+        @keyframes shrink {
+            to { transform: scale(0.6); opacity: 0.5; }
         }
-        .tip-text { margin-top: 25px; font-size: 16px; line-height: 1.6; color: #eee; background: rgba(255,255,255,0.05); padding: 20px; border-radius: 10px; }
-        .tip-text b { color: var(--y); text-transform: uppercase; display: block; margin-bottom: 10px; font-size: 18px; }
+
+        .scroll-text {
+            margin-top: -30px; padding: 30px; background: rgba(17, 17, 17, 0.95);
+            border: 1px solid #333; border-radius: 10px; z-index: 10;
+            animation: revealText both; animation-timeline: view();
+            animation-range: entry 20% cover 40%;
+        }
+
+        @keyframes revealText {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
         /* FORMULARIO */
         .container { 
             width: 95%; max-width: 500px; background: var(--card); padding: 40px; 
-            border-top: 4px solid var(--y); border-radius: 8px; box-sizing: border-box;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.8); margin-bottom: 100px;
+            border-top: 4px solid var(--y); border-radius: 12px; box-sizing: border-box;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.9); margin-bottom: 100px;
         }
 
         .counter-box {
             display: flex; justify-content: space-between; align-items: center;
-            background: #1a1a1a; padding: 20px; border-radius: 5px; margin-bottom: 35px; border: 1px solid #222;
+            background: #000; padding: 20px; border-radius: 8px; margin-bottom: 35px; border: 1px solid #222;
         }
-        .counter-num { font-size: 26px; font-weight: 900; color: var(--y); }
+        .counter-num { font-size: 28px; font-weight: 900; color: var(--y); font-family: 'Arial Black', sans-serif; }
 
         input { 
-            width: 100%; padding: 14px; background: #000; border: 1px solid #333; 
-            color: white; margin-bottom: 15px; box-sizing: border-box; border-radius: 4px;
+            width: 100%; padding: 15px; background: #000; border: 1px solid #333; 
+            color: white; margin-bottom: 15px; box-sizing: border-box; border-radius: 4px; font-size: 15px;
         }
+
+        /* CHECKBOX PERSONALIZADO */
+        .terms-container { display: flex; align-items: flex-start; gap: 10px; margin: 20px 0; cursor: pointer; }
+        .terms-container input { width: auto; margin: 5px 0 0; cursor: pointer; }
+        .terms-text { font-size: 11px; color: #aaa; line-height: 1.4; }
 
         .btn-pay { 
-            width: 100%; max-width: 280px; padding: 16px; background: #222; color: #555; 
-            border: none; font-weight: 900; font-size: 14px; cursor: pointer; 
-            text-transform: uppercase; border-radius: 4px; display: block; margin: 20px auto 0;
-            transition: 0.3s;
+            width: 100%; padding: 18px; background: #222; color: #555; 
+            border: none; font-weight: 900; font-size: 16px; cursor: pointer; 
+            text-transform: uppercase; border-radius: 6px; transition: 0.4s;
         }
-        .btn-pay.ready { background: var(--y); color: black; box-shadow: 0 0 20px rgba(243, 202, 51, 0.4); }
+        .btn-pay.ready { background: var(--y); color: black; box-shadow: 0 0 25px rgba(243, 202, 51, 0.5); }
 
-        /* LISTA DE SQUADS */
-        .list-container { width: 95%; max-width: 600px; margin-top: 20px; }
+        /* LISTA DE EQUIPOS - DISEÑO MEJORADO */
+        .list-container { width: 95%; max-width: 700px; }
         .squad-card { 
-            background: #111; padding: 20px; margin-bottom: 15px; 
-            border-left: 4px solid var(--y); display: flex; justify-content: space-between; align-items: center;
-            border-radius: 4px; border: 1px solid #222;
+            background: #111; padding: 25px; margin-bottom: 20px; 
+            border-radius: 8px; border: 1px solid #222;
+            display: flex; flex-direction: column; gap: 10px;
+            position: relative; overflow: hidden;
         }
-        .squad-info h3 { margin: 0; color: #fff; font-size: 18px; }
-        .squad-info p { margin: 5px 0 0; color: #666; font-size: 12px; }
+        .squad-card::before { content: ""; position: absolute; left: 0; top: 0; height: 100%; width: 5px; background: var(--green); }
+        .squad-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #222; padding-bottom: 10px; }
+        .squad-name { color: var(--y); font-size: 22px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; }
+        .verified-badge { color: var(--green); font-size: 11px; font-weight: bold; border: 1px solid var(--green); padding: 3px 8px; border-radius: 4px; }
+        .players-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; color: #777; font-size: 12px; }
 
-        /* LEGAL FOOTER */
         .legal-footer { 
             width: 100%; max-width: 900px; padding: 60px 20px; margin-top: 80px;
-            border-top: 1px solid #222; text-align: center; font-size: 12px; color: #555; line-height: 1.8;
+            border-top: 1px solid #222; text-align: center; font-size: 12px; color: #555;
         }
-        .store-btns { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin: 25px 0; }
-        .btn-store { padding: 10px 18px; background: #000; color: #888; text-decoration: none; border: 1px solid #333; border-radius: 4px; font-size: 11px; }
-        .btn-store:hover { border-color: var(--y); color: var(--y); }
-
-        .final-img { width: 100%; max-width: 1000px; margin-top: 50px; border-top: 3px solid var(--y); }
+        .store-btns { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 20px 0; }
+        .btn-store { padding: 10px 15px; background: #000; color: #777; text-decoration: none; border: 1px solid #222; border-radius: 4px; }
     </style>
 </head>
 <body>
 
     <header class="header-banner">
-        <img src="banner-pro.png.jpg" alt="TCODM Banner">
+        <img src="banner-pro.png.jpg" alt="TCODM">
     </header>
 
-    <div class="tip-section reveal">
-        <img src="https://www.callofduty.com/content/dam/atvi/callofduty/cod-touchui/mobile/home/characters/IC_UrbanTracker.webp" alt="Urban Tracker">
-        <div class="tip-text">
-            <b>Modo Battle Royale — Street Royale</b>
-            Busca objetos especiales en Aislado durante la colaboración con Street Fighter. Interactúa con los hologramas de Hidora Kai (Ryu) y Shigenori (Akuma) para adquirir ataques Hadoken y Shoryuken que duran toda la partida.
+    <div class="scroll-section">
+        <img src="https://imgs.callofduty.com/content/dam/atvi/callofduty/cod-touchui/blog/body/codm/CODM-S11_ANNOUNCE-005.webp" alt="Collab">
+        <div class="scroll-text">
+            <h3 style="color:var(--y); margin-top:0;">MODO STREET ROYALE</h3>
+            <p>Busca objetos especiales en Aislado durante la colaboración con Street Fighter. Interactúa con hologramas de Ryu y Akuma para activar el <b>Hadoken</b> y <b>Shoryuken</b> contra tus enemigos. ¡Poderes que duran toda la partida!</p>
         </div>
     </div>
 
     <div class="container">
-        <h2 style="text-align:center; color:var(--y); margin-top:0; letter-spacing: 2px;">TEMPORADA <span id="currentYear"></span></h2>
+        <h2 style="text-align:center; color:var(--y); margin-top:0;">SEASON <span id="currentYear"></span></h2>
         
         <div class="counter-box">
             <div style="font-size: 11px; color: var(--gray);">CUADRANTE DE SQUADS</div>
@@ -117,50 +128,48 @@
 
         <input type="text" id="squadName" placeholder="NOMBRE DE LA SQUAD" oninput="validar()">
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-            <input type="text" id="p1" placeholder="ID Jugador 1" oninput="validar()">
-            <input type="text" id="p2" placeholder="ID Jugador 2" oninput="validar()">
-            <input type="text" id="p3" placeholder="ID Jugador 3" oninput="validar()">
-            <input type="text" id="p4" placeholder="ID Jugador 4" oninput="validar()">
+            <input type="text" id="p1" placeholder="Jugador 1" oninput="validar()">
+            <input type="text" id="p2" placeholder="Jugador 2" oninput="validar()">
+            <input type="text" id="p3" placeholder="Jugador 3" oninput="validar()">
+            <input type="text" id="p4" placeholder="Jugador 4" oninput="validar()">
         </div>
-        <input type="text" id="pExtra" placeholder="ID Reserva (Opcional)" oninput="validar()">
+        <input type="text" id="pExtra" placeholder="Jugador 5 (Reserva Opcional)" oninput="validar()">
 
-        <div style="font-size: 10px; color: #555; background: #000; padding: 15px; margin: 20px 0; border-left: 2px solid var(--y);">
-            80% fondo para premios | 20% mantenimiento y taxes. No reembolsos.
-        </div>
+        <label class="terms-container">
+            <input type="checkbox" id="checkTerms" onchange="validar()">
+            <div class="terms-text">
+                Acepto los términos del torneo: El 80% de la recaudación va al pozo de premios de los jugadores. El 20% se destina a mantenimiento web, taxes y gestión. <b>No existen reembolsos bajo ninguna circunstancia</b> tras realizar el pago.
+            </div>
+        </label>
 
         <button id="btnStripe" class="btn-pay" disabled onclick="registrar()">INSCRIBIR EQUIPO</button>
     </div>
 
-    <div class="tip-section reveal">
-        <img src="https://imgs.callofduty.com/content/dam/atvi/callofduty/cod-touchui/blog/body/codm/CODM-S11_ANNOUNCE-007.webp" alt="Street Fighter Collab">
-        <div class="tip-text">
-            <b>Habilidades de Street Fighter</b>
-            Domina el campo interactuando con Shadowfall (Chun-Li) y Fiona St. George (Cammy). Podrás adquirir la Patada de Pájaro Giratoria y la Flecha Espiral para activar ataques especiales contra tus enemigos en BR.
+    <div class="scroll-section">
+        <img src="https://imgs.callofduty.com/content/dam/atvi/callofduty/cod-touchui/blog/body/codm/CODM-S11_ANNOUNCE-007.webp" alt="Chun-Li">
+        <div class="scroll-text">
+            <h3 style="color:var(--y); margin-top:0;">HABILIDADES ESPECIALES</h3>
+            <p>Adquiere la Patada de Pájaro Giratoria de Chun-Li y la Flecha Espiral de Cammy. Estas habilidades transformarán tu estrategia de combate en el Battle Royale.</p>
         </div>
     </div>
 
     <div class="list-container">
-        <div style="text-align:center; color:var(--y); letter-spacing:4px; font-size:12px; margin-bottom:30px; font-weight: bold;">SQUADS CONFIRMADAS</div>
+        <div style="text-align:center; color:var(--y); letter-spacing:4px; font-size:14px; margin-bottom:40px; font-weight: bold;">SQUADS VERIFICADAS</div>
         <div id="listaSquads"></div>
     </div>
 
     <div class="legal-footer">
-        <div style="color:#ff4444; font-weight:bold; margin-bottom:15px;">⚠️ DESCARGO DE RESPONSABILIDAD</div>
-        <p>TCODM NO ES UNA PÁGINA OFICIAL DE CALL OF DUTY® NI DE ACTIVISION. <br>
-        Este sitio es operado por terceros para fines de ayuda y entretenimiento de la comunidad. No formamos parte de la liga oficial. <br>
-        Todos los derechos de Call of Duty® y sus personajes pertenecen a <b>Activision Publishing, Inc.</b></p>
+        <p><b>⚠️ DESCARGO DE RESPONSABILIDAD:</b> TCODM no es una página oficial de Call of Duty® ni de Activision. Este sitio es operado por terceros para fines de entretenimiento comunitario. Todos los derechos pertenecen a Activision Publishing, Inc.</p>
         
         <div class="store-btns">
             <a href="https://store.callofdutymobile.com/es-mx/codm" target="_blank" class="btn-store">México (MX)</a>
             <a href="https://store.callofdutymobile.com/en-us/codm" target="_blank" class="btn-store">USA (US)</a>
             <a href="https://store.callofdutymobile.com/en-in/codm" target="_blank" class="btn-store">India (IN)</a>
         </div>
-
-        <p style="margin-top:40px; opacity:0.4;">© <span id="yearCopy"></span> TCODM. Todos los derechos reservados. <br> 
-        Los IDs de jugador se procesan únicamente para la organización del torneo.</p>
+        <p style="opacity:0.4;">© <span id="yearCopy"></span> TCODM. Todos los derechos reservados.</p>
     </div>
 
-    <img src="https://www.callofduty.com/content/dam/atvi/callofduty/cod-touchui/mobile/home/downloadbanner/CODM_Download-Now_Banner_LG.webp" class="final-img">
+    <img src="https://www.callofduty.com/content/dam/atvi/callofduty/cod-touchui/mobile/home/downloadbanner/CODM_Download-Now_Banner_LG.webp" style="width:100%; max-width:1000px; border-top: 3px solid var(--y);">
 
     <script>
         document.getElementById('currentYear').innerText = new Date().getFullYear();
@@ -178,27 +187,51 @@
                 count++;
                 const s = child.val();
                 const card = document.createElement('div');
-                card.className = 'squad-card reveal';
-                card.innerHTML = `<div class="squad-info"><h3>${s.nombre}</h3><p>${s.jugadores.slice(0,4).join(' | ')}</p></div><div style="color:var(--y); font-size:10px; font-weight:bold;">LISTO</div>`;
+                card.className = 'squad-card revealText';
+                card.innerHTML = `
+                    <div class="squad-header">
+                        <div class="squad-name">${s.nombre}</div>
+                        <div class="verified-badge">DENTRO</div>
+                    </div>
+                    <div class="players-list">
+                        ${s.jugadores.map((p, i) => `<span>${i+1}. ${p}</span>`).join('')}
+                    </div>
+                `;
                 listDiv.appendChild(card);
             });
             document.getElementById('cuposTxt').innerText = `${count} / 25`;
         });
 
         function validar() {
-            const inputs = [document.getElementById('squadName').value, document.getElementById('p1').value, document.getElementById('p2').value, document.getElementById('p3').value, document.getElementById('p4').value];
+            const inputs = [
+                document.getElementById('squadName').value,
+                document.getElementById('p1').value,
+                document.getElementById('p2').value,
+                document.getElementById('p3').value,
+                document.getElementById('p4').value
+            ];
+            const check = document.getElementById('checkTerms').checked;
             const btn = document.getElementById('btnStripe');
-            if(inputs.every(i => i.trim().length > 2)) {
-                btn.disabled = false; btn.classList.add('ready');
+            
+            if(inputs.every(i => i.trim().length > 2) && check) {
+                btn.disabled = false;
+                btn.classList.add('ready');
             } else {
-                btn.disabled = true; btn.classList.remove('ready');
+                btn.disabled = true;
+                btn.classList.remove('ready');
             }
         }
 
         function registrar() {
             const data = {
                 nombre: document.getElementById('squadName').value.toUpperCase(),
-                jugadores: [document.getElementById('p1').value, document.getElementById('p2').value, document.getElementById('p3').value, document.getElementById('p4').value, document.getElementById('pExtra').value || "N/A"],
+                jugadores: [
+                    document.getElementById('p1').value,
+                    document.getElementById('p2').value,
+                    document.getElementById('p3').value,
+                    document.getElementById('p4').value,
+                    document.getElementById('pExtra').value || "No"
+                ],
                 timestamp: Date.now()
             };
             database.ref('inscritos').push(data).then(() => {
