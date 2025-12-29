@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>TCODM | Torneo Elite</title>
+    
+    <link rel="icon" type="image/png" href="iconoweb.png">
+    
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
     
@@ -14,66 +17,69 @@
             background-color: var(--bg); color: white; margin: 0; 
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             display: flex; flex-direction: column; align-items: center;
-            padding-bottom: 80px; overflow-x: hidden;
+            padding-bottom: 100px; overflow-x: hidden;
         }
 
         /* BANNER */
-        .header-banner { width: 100%; background: #000; border-bottom: 4px solid var(--y); margin-bottom: 40px; }
+        .header-banner { width: 100%; background: #000; border-bottom: 4px solid var(--y); margin-bottom: 60px; }
         .header-banner img { width: 100%; max-width: 1000px; height: auto; display: block; margin: 0 auto; }
 
         /* TIPS CON IMÁGENES */
-        .tip-section { display: flex; align-items: center; width: 95%; max-width: 800px; margin-bottom: 50px; gap: 20px; }
-        .tip-section img { width: 150px; height: 100px; border-radius: 8px; object-fit: cover; border: 1px solid var(--y); }
-        .tip-text { flex: 1; font-size: 14px; line-height: 1.5; }
+        .tip-section { display: flex; align-items: center; width: 95%; max-width: 800px; margin-bottom: 60px; gap: 25px; }
+        .tip-section img { width: 160px; height: 110px; border-radius: 8px; object-fit: cover; border: 1px solid var(--y); box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
+        .tip-text { flex: 1; font-size: 14px; line-height: 1.6; }
         .reverse { flex-direction: row-reverse; }
 
-        /* CONTENEDOR PRINCIPAL */
+        /* CONTENEDOR FORMULARIO */
         .container { 
-            width: 95%; max-width: 500px; background: var(--card); padding: 30px; 
+            width: 95%; max-width: 500px; background: var(--card); padding: 40px; 
             border-top: 4px solid var(--y); border-radius: 8px; box-sizing: border-box;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5); margin-bottom: 50px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8); margin-bottom: 60px;
         }
 
         .counter-box {
             display: flex; justify-content: space-between; align-items: center;
-            background: #1a1a1a; padding: 15px; border-radius: 5px; margin-bottom: 30px;
+            background: #1a1a1a; padding: 20px; border-radius: 5px; margin-bottom: 35px;
+            border: 1px solid #222;
         }
-        .counter-num { font-size: 24px; font-weight: 900; color: var(--y); }
+        .counter-num { font-size: 26px; font-weight: 900; color: var(--y); }
 
         input { 
-            width: 100%; padding: 12px; background: #0a0a0a; border: 1px solid #333; 
-            color: white; margin-bottom: 12px; box-sizing: border-box; border-radius: 4px;
+            width: 100%; padding: 14px; background: #0a0a0a; border: 1px solid #333; 
+            color: white; margin-bottom: 15px; box-sizing: border-box; border-radius: 4px;
+            transition: 0.3s;
         }
+        input:focus { border-color: var(--y); outline: none; }
 
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
         /* POLÍTICAS */
         .policy-box { 
-            font-size: 11px; color: #777; background: #000; padding: 15px; 
-            border-radius: 4px; margin: 20px 0; line-height: 1.4; border-left: 2px solid var(--y);
+            font-size: 11px; color: #888; background: #000; padding: 18px; 
+            border-radius: 4px; margin: 25px 0; line-height: 1.5; border-left: 3px solid var(--y);
         }
 
-        /* BOTÓN REGISTRAR PEQUEÑO */
+        /* BOTÓN REGISTRAR */
         .btn-pay { 
-            width: 100%; max-width: 250px; padding: 12px; background: #222; color: #555; 
+            width: 100%; max-width: 280px; padding: 15px; background: #222; color: #555; 
             border: none; font-weight: 900; font-size: 14px; cursor: pointer; 
-            text-transform: uppercase; border-radius: 4px; transition: 0.3s;
-            display: block; margin: 0 auto;
+            text-transform: uppercase; border-radius: 4px; transition: 0.4s;
+            display: block; margin: 10px auto;
         }
-        .btn-pay.ready { background: var(--y); color: black; box-shadow: 0 0 15px rgba(243, 202, 51, 0.4); }
+        .btn-pay.ready { background: var(--y); color: black; box-shadow: 0 5px 20px rgba(243, 202, 51, 0.3); }
 
         /* TIENDAS AL FINAL */
-        .footer-stores { width: 95%; max-width: 600px; margin-top: 60px; text-align: center; }
-        .warning-cp { color: #ff4444; font-size: 12px; font-weight: bold; margin-bottom: 20px; }
-        .store-btns { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+        .footer-stores { width: 95%; max-width: 600px; margin-top: 80px; text-align: center; padding-top: 40px; border-top: 1px solid #222; }
+        .warning-cp { color: #ff4444; font-size: 13px; font-weight: bold; margin-bottom: 25px; letter-spacing: 1px; }
+        .store-btns { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; }
         .btn-store {
-            padding: 10px 20px; background: #1a1a1a; color: white; text-decoration: none;
-            font-size: 11px; border: 1px solid #333; border-radius: 4px;
+            padding: 12px 24px; background: #111; color: white; text-decoration: none;
+            font-size: 11px; border: 1px solid #333; border-radius: 4px; font-weight: bold;
         }
-        .btn-store:hover { border-color: var(--y); color: var(--y); }
+        .btn-store:hover { border-color: var(--y); color: var(--y); background: #000; }
 
-        .list-container { width: 95%; max-width: 500px; margin-top: 20px; }
-        .squad-card { background: #111; padding: 15px; margin-bottom: 10px; border-left: 3px solid var(--y); }
+        .list-container { width: 95%; max-width: 500px; margin-top: 40px; }
+        .squad-card { background: #111; padding: 18px; margin-bottom: 12px; border-left: 3px solid var(--y); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
     </style>
 </head>
 <body>
@@ -85,15 +91,15 @@
     <div class="tip-section">
         <img src="https://www.callofduty.com/content/dam/atvi/callofduty/cod-touchui/blog/hero/codm/CODM-Blackout-TOUT.jpg" alt="Tip 1">
         <div class="tip-text">
-            <b style="color:var(--y)">TIP DE EQUIPO:</b> La comunicación es clave. Designen un líder de salto para caer juntos y aseguren un vehículo antes de que cierre la primera zona.
+            <b style="color:var(--y)">TIP DE EQUIPO:</b> La comunicación constante es vital. No se separen más de 50 metros. Designen a un francotirador y tres asaltos para cubrir todos los rangos de combate.
         </div>
     </div>
 
     <div class="container">
-        <h2 style="text-align:center; color:var(--y); margin-top:0;">TEMPORADA <span id="currentYear"></span></h2>
+        <h2 style="text-align:center; color:var(--y); margin-top:0; letter-spacing: 2px;">TEMPORADA <span id="currentYear"></span></h2>
         
         <div class="counter-box">
-            <div style="font-size: 11px; color: var(--gray);">SQUADS (100 JUGADORES)</div>
+            <div style="font-size: 11px; color: var(--gray); font-weight: bold;">SQUADS (100 JUGADORES)</div>
             <div id="cuposTxt" class="counter-num">-- / 25</div>
         </div>
 
@@ -105,13 +111,13 @@
             <input type="text" id="p3" placeholder="ID Jugador 3" oninput="validar()">
             <input type="text" id="p4" placeholder="ID Jugador 4" oninput="validar()">
         </div>
-        <input type="text" id="pExtra" placeholder="ID Jugador Opcional (Reserva)" oninput="validar()">
+        <input type="text" id="pExtra" placeholder="ID Jugador Reserva (Opcional)" oninput="validar()">
 
         <div class="policy-box">
-            <b>POLÍTICA TCODM:</b><br>
-            - No hay reembolsos bajo ninguna circunstancia.<br>
-            - La mayor parte del fondo va directamente al premio.<br>
-            - Una parte se destina a mantenimiento de servidores, taxes y gestión.
+            <b style="color:white">POLÍTICA TCODM:</b><br>
+            • Inscripción final: No se admiten reembolsos.<br>
+            • El 80% del fondo se acumula para el premio de los ganadores.<br>
+            • El 20% cubre mantenimiento web, impuestos (taxes) y gestión del torneo.
         </div>
 
         <button id="btnStripe" class="btn-pay" disabled onclick="registrar()">INSCRIBIR SQUAD</button>
@@ -120,25 +126,25 @@
     <div class="tip-section reverse">
         <img src="https://blog.activision.com/content/dam/atvi/activision/atvi-touchui/blog/callofduty/body/BR_Tour_Pt_1_Dock.jpg" alt="Tip 2">
         <div class="tip-text">
-            <b style="color:var(--y)">DÓNDE CAER:</b> Lugares como Dock o Sakura ofrecen buen botín pero alto riesgo. Si buscan sobrevivir, opten por zonas periféricas con helipuertos.
+            <b style="color:var(--y)">ESTRATEGIA DE CAÍDA:</b> Si buscan el premio, eviten zonas calientes al inicio. Caer en los bordes del mapa les permite lootear con calma y entrar a la zona con ventaja posicional.
         </div>
     </div>
 
     <div class="list-container">
-        <div style="text-align:center; color:var(--y); letter-spacing:2px; font-size:12px; margin-bottom:20px;">EQUIPOS CONFIRMADOS</div>
+        <div style="text-align:center; color:var(--y); letter-spacing:4px; font-size:12px; margin-bottom:30px; font-weight: bold;">EQUIPOS CONFIRMADOS</div>
         <div id="listaSquads"></div>
     </div>
 
     <div class="footer-stores">
-        <div class="warning-cp">⚠️ ESTA NO ES UNA PÁGINA DE VENTA DE CP</div>
+        <div class="warning-cp">⚠️ AVISO: ESTA NO ES UNA PÁGINA DE VENTA DE CP</div>
         <div class="store-btns">
-            <a href="https://store.callofdutymobile.com/es-mx/codm" target="_blank" class="btn-store">TIENDA MÉXICO (MX)</a>
-            <a href="https://store.callofdutymobile.com/en-us/codm" target="_blank" class="btn-store">TIENDA USA (US)</a>
-            <a href="https://store.callofdutymobile.com/en-in/codm" target="_blank" class="btn-store">TIENDA INDIA (IN)</a>
+            <a href="https://store.callofdutymobile.com/es-mx/codm" target="_blank" class="btn-store">MÉXICO (MX)</a>
+            <a href="https://store.callofdutymobile.com/en-us/codm" target="_blank" class="btn-store">USA (US)</a>
+            <a href="https://store.callofdutymobile.com/en-in/codm" target="_blank" class="btn-store">INDIA (IN)</a>
         </div>
     </div>
 
-    <img src="https://www.callofduty.com/content/dam/atvi/callofduty/cod-touchui/mobile/home/hero/CODM_Home_Hero-BG_Desktop-LG-11.webp" style="width:100%; max-width:800px; margin-top:60px; opacity:0.3;">
+    <img src="https://www.callofduty.com/content/dam/atvi/callofduty/cod-touchui/mobile/home/hero/CODM_Home_Hero-BG_Desktop-LG-11.webp" style="width:100%; max-width:850px; margin-top:80px; opacity:0.2; filter: grayscale(1);">
 
     <script>
         // Año Automático
@@ -160,7 +166,7 @@
                 const s = child.val();
                 const card = document.createElement('div');
                 card.className = 'squad-card';
-                card.innerHTML = `<h3 style="margin:0; font-size:14px;">${s.nombre}</h3><p style="margin:5px 0 0; color:#666; font-size:11px;">${s.jugadores.join(' • ')}</p>`;
+                card.innerHTML = `<h3 style="margin:0; font-size:15px; text-transform:uppercase;">${s.nombre}</h3><p style="margin:8px 0 0; color:#888; font-size:11px; letter-spacing:1px;">${s.jugadores.join(' • ')}</p>`;
                 listDiv.appendChild(card);
             });
             document.getElementById('cuposTxt').innerText = `${count} / 25`;
