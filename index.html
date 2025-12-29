@@ -3,91 +3,204 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TCODM | Torneo Battle Royale</title>
+    <title>TCODM | Noticias y Torneo</title>
     <style>
-        :root { --y: #f3ca33; --bg: #050505; }
-        
-        body { 
-            background-color: var(--bg); color: white; margin: 0; 
-            font-family: 'Arial Black', Gadget, sans-serif; text-align: center;
+        :root {
+            --y: #f3ca33; /* Amarillo Call of Duty */
+            --bg: #050505;
+            --gray-text: #b1b1b1;
+            --border: #2a2a2a;
         }
 
-        /* HEADER LIMPIO */
-        header {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 15px 5%; background: #000; border-bottom: 2px solid var(--y);
+        body {
+            background-color: var(--bg);
+            color: white;
+            margin: 0;
+            font-family: "Arial", sans-serif;
         }
-        .logo { font-size: 24px; letter-spacing: 2px; }
+
+        /* HEADER ESTILO ACTIVISION PERO LIMPIO */
+        header {
+            background-color: #000;
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--y);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 900;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
         .logo span { color: var(--y); }
 
-        /* BOTÓN AMARILLO */
-        .btn-torneo {
-            background: var(--y); color: black; border: none; padding: 12px 25px;
-            font-weight: 900; text-transform: uppercase; cursor: pointer;
-            border-radius: 4px; transition: 0.3s;
+        .btn-unirme {
+            background: var(--y);
+            color: black;
+            border: none;
+            padding: 10px 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            border-radius: 2px;
+            transition: 0.3s;
         }
-        .btn-torneo:hover { transform: scale(1.05); box-shadow: 0 0 15px var(--y); }
 
-        /* SECCIÓN ESCUDO */
-        .hero { padding: 60px 20px; background: radial-gradient(circle, #151515 0%, #050505 100%); }
-        
-        /* Escudo diseñado con CSS */
-        .escudo-t {
-            width: 120px; height: 150px; background: var(--y); margin: 0 auto;
-            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 0 30px rgba(243, 202, 51, 0.3);
+        /* BLOQUE PRINCIPAL (HERO) */
+        .hero-section {
+            padding: 80px 10%;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
         }
-        .escudo-t span { color: black; font-size: 80px; font-weight: 900; }
 
-        .battle-title { font-size: 45px; margin: 20px 0 0; letter-spacing: 4px; }
-        .battle-title span { color: white; }
-        .year-display { font-size: 25px; color: #777; margin-top: 5px; }
-
-        /* PRESENTACIÓN */
-        .presentacion {
-            max-width: 800px; margin: 50px auto; padding: 0 20px;
-            text-align: left; line-height: 1.6; font-family: 'Segoe UI', sans-serif;
+        .hero-section .date {
+            color: var(--y);
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: block;
         }
-        .presentacion h2 { color: var(--y); border-left: 4px solid var(--y); padding-left: 15px; }
-        .presentacion p { color: #ccc; font-size: 17px; margin-bottom: 30px; }
+
+        .hero-section h1 {
+            font-size: 48px;
+            text-transform: uppercase;
+            margin: 0;
+            line-height: 1;
+        }
+
+        /* CUERPO DEL BLOG - BASADO EN ACTIVISION */
+        .content-body {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .section-block {
+            margin-bottom: 60px;
+        }
+
+        .section-block h2 {
+            font-size: 32px;
+            border-bottom: 2px solid var(--y);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .section-block p {
+            color: var(--gray-text);
+            line-height: 1.8;
+            font-size: 18px;
+        }
+
+        /* ESPACIO PARA TUS IMÁGENES (CUADROS VACÍOS) */
+        .image-placeholder {
+            width: 100%;
+            height: 400px;
+            background: #111;
+            border: 1px dashed #333;
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #444;
+            font-style: italic;
+        }
+
+        /* LISTA DE CARACTERÍSTICAS */
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .feature-list li {
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+        }
+
+        .feature-list li::before {
+            content: "■";
+            color: var(--y);
+            margin-right: 15px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px;
+            background: #000;
+            border-top: 1px solid var(--border);
+            color: #555;
+            font-size: 12px;
+        }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo">TC<span>ODM</span></div>
-        <button class="btn-torneo">UNIRME AL TORNEO</button>
+        <div class="logo">TCODM <span>NOTICIAS</span></div>
+        <button class="btn-unirme">UNIRME AL TORNEO</button>
     </header>
 
-    <section class="hero">
-        <div class="escudo-t">
-            <span>T</span>
+    <div class="hero-section">
+        <span class="date">ACTUALIZACIÓN TEMPORADA <span id="year"></span></span>
+        <h1>BATTLE ROYALE: EL SIGUIENTE NIVEL</h1>
+    </div>
+
+    <article class="content-body">
+        
+        <div class="section-block">
+            <h2>Sobre la Temporada</h2>
+            <p>
+                Bienvenidos a la nueva era de competencia en TCODM. Esta plataforma ha sido diseñada para centralizar 
+                la información más importante del torneo y brindar a los jugadores un acceso directo a la inscripción 
+                y verificación de resultados.
+            </p>
+            <div class="image-placeholder">[Espacio para imagen de Temporada]</div>
         </div>
-        <h1 class="battle-title">BATTLE <span>ROYALE</span></h1>
-        <div class="year-display">TORNEO <span id="year"></span></div>
-    </section>
 
-    <section class="presentacion">
-        <h2>¿QUÉ ES TCODM?</h2>
-        <p>
-            TCODM es la plataforma definitiva para la organización de torneos competitivos de Call of Duty Mobile. 
-            Nacimos con el objetivo de brindar a los jugadores un espacio serio y bien estructurado donde puedan 
-            poner a prueba sus habilidades y competir por grandes premios.
-        </p>
+        <div class="section-block">
+            <h2>Habilidades y Estrategia</h2>
+            <p>
+                Al igual que en las actualizaciones oficiales, nuestro torneo integra las mecánicas más recientes de 
+                Call of Duty Mobile. Los jugadores deberán dominar no solo el disparo, sino también el posicionamiento 
+                en el mapa y el uso de habilidades tácticas.
+            </p>
+            <ul class="feature-list">
+                <li>Premios acumulados por inscripción.</li>
+                <li>Verificación de Squads 24/7.</li>
+                <li>Soporte técnico para jugadores.</li>
+            </ul>
+        </div>
 
-        <h2>¿PARA QUÉ FUNCIONA?</h2>
-        <p>
-            Esta página funciona como el centro logístico de la liga. Aquí los líderes de squad pueden realizar 
-            inscripciones seguras, verificar el estado de sus equipos y mantenerse al tanto de las reglas oficiales. 
-            Nuestro sistema garantiza que la mayor parte de la recaudación se destine directamente al pozo de premios, 
-            asegurando transparencia y recompensas reales para los ganadores.
-        </p>
-    </section>
+        <div class="section-block">
+            <h2>Colaboraciones Especiales</h2>
+            <p>
+                Mantente atento a las actualizaciones de la página, donde informaremos sobre eventos temáticos 
+                dentro de nuestros torneos, inspirados en las mejores temporadas de CODM.
+            </p>
+            <div class="image-placeholder">[Espacio para imagen de Colaboración]</div>
+        </div>
+
+    </article>
+
+    <footer>
+        <p>© <span id="year-copy"></span> TCODM. ESTA PÁGINA NO ES OFICIAL DE ACTIVISION NI CALL OF DUTY MOBILE.</p>
+        <p>TODOS LOS DERECHOS RESERVADOS A SUS RESPECTIVOS DUEÑOS.</p>
+    </footer>
 
     <script>
-        // Actualización automática del año
-        document.getElementById('year').innerText = new Date().getFullYear();
+        // Actualizar años automáticamente
+        const currentYear = new Date().getFullYear();
+        document.getElementById('year').innerText = currentYear;
+        document.getElementById('year-copy').innerText = currentYear;
     </script>
 
 </body>
