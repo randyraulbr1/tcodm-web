@@ -19,32 +19,37 @@
             padding-bottom: 50px; overflow-x: hidden;
         }
 
-        /* ANIMACIONES */
+        /* ANIMACIONES DE REVELACIÓN */
         @keyframes reveal {
-            from { opacity: 0; transform: scale(1.2) translateY(30px); }
+            from { opacity: 0; transform: scale(1.1) translateY(50px); }
             to { opacity: 1; transform: scale(1) translateY(0); }
         }
 
-        .reveal { animation: reveal both; animation-timeline: view(); animation-range: entry 10% cover 40%; }
+        .reveal { 
+            animation: reveal both; 
+            animation-timeline: view(); 
+            animation-range: entry 5% cover 35%; 
+        }
 
-        /* BANNER */
+        /* BANNER PRINCIPAL */
         .header-banner { width: 100%; background: #000; border-bottom: 4px solid var(--y); margin-bottom: 60px; }
         .header-banner img { width: 100%; max-width: 1000px; height: auto; display: block; margin: 0 auto; }
 
-        /* TIPS CON IMÁGENES GRANDES QUE SE AJUSTAN */
-        .tip-section { width: 90%; max-width: 900px; margin-bottom: 100px; text-align: center; }
+        /* SECCIONES DE TIPS (IMÁGENES GRANDES) */
+        .tip-section { width: 90%; max-width: 850px; margin-bottom: 120px; text-align: center; }
         .tip-section img { 
-            width: 100%; max-width: 700px; height: auto; border-radius: 12px; 
-            border: 2px solid var(--y); box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-            transition: transform 0.5s;
+            width: 100%; height: auto; border-radius: 15px; 
+            border: 2px solid var(--y); box-shadow: 0 15px 40px rgba(0,0,0,0.9);
+            transition: transform 0.3s ease;
         }
-        .tip-text { margin-top: 20px; font-size: 18px; line-height: 1.6; font-style: italic; color: #ddd; }
+        .tip-text { margin-top: 25px; font-size: 16px; line-height: 1.6; color: #eee; background: rgba(255,255,255,0.05); padding: 20px; border-radius: 10px; }
+        .tip-text b { color: var(--y); text-transform: uppercase; display: block; margin-bottom: 10px; font-size: 18px; }
 
-        /* CONTENEDOR FORMULARIO */
+        /* FORMULARIO */
         .container { 
             width: 95%; max-width: 500px; background: var(--card); padding: 40px; 
             border-top: 4px solid var(--y); border-radius: 8px; box-sizing: border-box;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.8); margin-bottom: 80px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8); margin-bottom: 100px;
         }
 
         .counter-box {
@@ -54,38 +59,38 @@
         .counter-num { font-size: 26px; font-weight: 900; color: var(--y); }
 
         input { 
-            width: 100%; padding: 14px; background: #0a0a0a; border: 1px solid #333; 
+            width: 100%; padding: 14px; background: #000; border: 1px solid #333; 
             color: white; margin-bottom: 15px; box-sizing: border-box; border-radius: 4px;
         }
 
         .btn-pay { 
-            width: 100%; max-width: 280px; padding: 15px; background: #222; color: #555; 
+            width: 100%; max-width: 280px; padding: 16px; background: #222; color: #555; 
             border: none; font-weight: 900; font-size: 14px; cursor: pointer; 
-            text-transform: uppercase; border-radius: 4px; display: block; margin: 10px auto;
+            text-transform: uppercase; border-radius: 4px; display: block; margin: 20px auto 0;
+            transition: 0.3s;
         }
-        .btn-pay.ready { background: var(--y); color: black; box-shadow: 0 5px 20px rgba(243, 202, 51, 0.3); }
+        .btn-pay.ready { background: var(--y); color: black; box-shadow: 0 0 20px rgba(243, 202, 51, 0.4); }
 
-        /* EQUIPOS ESTILO TORNEO */
-        .list-container { width: 95%; max-width: 600px; margin-top: 40px; }
+        /* LISTA DE SQUADS */
+        .list-container { width: 95%; max-width: 600px; margin-top: 20px; }
         .squad-card { 
-            background: linear-gradient(90deg, #1a1a1a 0%, #0a0a0a 100%);
-            padding: 20px; margin-bottom: 15px; border-right: 4px solid var(--y);
-            display: flex; justify-content: space-between; align-items: center;
+            background: #111; padding: 20px; margin-bottom: 15px; 
+            border-left: 4px solid var(--y); display: flex; justify-content: space-between; align-items: center;
             border-radius: 4px; border: 1px solid #222;
         }
-        .squad-info h3 { margin: 0; color: var(--y); text-transform: uppercase; letter-spacing: 2px; font-size: 18px; }
-        .squad-info p { margin: 5px 0 0; color: #777; font-size: 12px; font-family: monospace; }
-        .status-tag { background: #222; color: #00ff88; padding: 5px 10px; font-size: 10px; font-weight: bold; border-radius: 3px; }
+        .squad-info h3 { margin: 0; color: #fff; font-size: 18px; }
+        .squad-info p { margin: 5px 0 0; color: #666; font-size: 12px; }
 
-        /* LEGAL Y FOOTER */
+        /* LEGAL FOOTER */
         .legal-footer { 
-            width: 100%; max-width: 800px; padding: 40px 20px; margin-top: 100px;
+            width: 100%; max-width: 900px; padding: 60px 20px; margin-top: 80px;
             border-top: 1px solid #222; text-align: center; font-size: 12px; color: #555; line-height: 1.8;
         }
-        .store-btns { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin: 20px 0; }
-        .btn-store { padding: 10px 20px; background: #111; color: #aaa; text-decoration: none; border: 1px solid #333; border-radius: 4px; }
+        .store-btns { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin: 25px 0; }
+        .btn-store { padding: 10px 18px; background: #000; color: #888; text-decoration: none; border: 1px solid #333; border-radius: 4px; font-size: 11px; }
+        .btn-store:hover { border-color: var(--y); color: var(--y); }
 
-        .final-img { width: 100%; max-width: 1000px; margin-top: 50px; opacity: 0.8; border-top: 2px solid var(--y); }
+        .final-img { width: 100%; max-width: 1000px; margin-top: 50px; border-top: 3px solid var(--y); }
     </style>
 </head>
 <body>
@@ -95,12 +100,15 @@
     </header>
 
     <div class="tip-section reveal">
-        <img src="https://www.callofduty.com/content/dam/atvi/callofduty/cod-touchui/blog/hero/codm/CODM-Blackout-TOUT.jpg" alt="Tip 1">
-        <div class="tip-text">"La victoria se construye antes de saltar del avión. Comunicación constante y roles definidos."</div>
+        <img src="https://www.callofduty.com/content/dam/atvi/callofduty/cod-touchui/mobile/home/characters/IC_UrbanTracker.webp" alt="Urban Tracker">
+        <div class="tip-text">
+            <b>Modo Battle Royale — Street Royale</b>
+            Busca objetos especiales en Aislado durante la colaboración con Street Fighter. Interactúa con los hologramas de Hidora Kai (Ryu) y Shigenori (Akuma) para adquirir ataques Hadoken y Shoryuken que duran toda la partida.
+        </div>
     </div>
 
     <div class="container">
-        <h2 style="text-align:center; color:var(--y); margin-top:0; letter-spacing: 2px;">SEASON <span id="currentYear"></span></h2>
+        <h2 style="text-align:center; color:var(--y); margin-top:0; letter-spacing: 2px;">TEMPORADA <span id="currentYear"></span></h2>
         
         <div class="counter-box">
             <div style="font-size: 11px; color: var(--gray);">CUADRANTE DE SQUADS</div>
@@ -116,37 +124,40 @@
         </div>
         <input type="text" id="pExtra" placeholder="ID Reserva (Opcional)" oninput="validar()">
 
-        <div style="font-size: 11px; color: #666; background: #000; padding: 15px; margin: 20px 0; border-left: 3px solid var(--y);">
-            Al inscribirte aceptas: No reembolsos. El 80% va al premio, 20% a mantenimiento y taxes.
+        <div style="font-size: 10px; color: #555; background: #000; padding: 15px; margin: 20px 0; border-left: 2px solid var(--y);">
+            80% fondo para premios | 20% mantenimiento y taxes. No reembolsos.
         </div>
 
-        <button id="btnStripe" class="btn-pay" disabled onclick="registrar()">CONFIRMAR INSCRIPCIÓN</button>
+        <button id="btnStripe" class="btn-pay" disabled onclick="registrar()">INSCRIBIR EQUIPO</button>
     </div>
 
     <div class="tip-section reveal">
-        <img src="https://blog.activision.com/content/dam/atvi/activision/atvi-touchui/blog/callofduty/body/BR_Tour_Pt_1_Dock.jpg" alt="Tip 2">
-        <div class="tip-text">"El loot es temporal, la posición en zona es eterna. Domina las alturas."</div>
+        <img src="https://imgs.callofduty.com/content/dam/atvi/callofduty/cod-touchui/blog/body/codm/CODM-S11_ANNOUNCE-007.webp" alt="Street Fighter Collab">
+        <div class="tip-text">
+            <b>Habilidades de Street Fighter</b>
+            Domina el campo interactuando con Shadowfall (Chun-Li) y Fiona St. George (Cammy). Podrás adquirir la Patada de Pájaro Giratoria y la Flecha Espiral para activar ataques especiales contra tus enemigos en BR.
+        </div>
     </div>
 
     <div class="list-container">
-        <div style="text-align:center; color:var(--y); letter-spacing:5px; font-size:14px; margin-bottom:40px; font-weight: bold;">SQUADS CONFIRMADAS</div>
+        <div style="text-align:center; color:var(--y); letter-spacing:4px; font-size:12px; margin-bottom:30px; font-weight: bold;">SQUADS CONFIRMADAS</div>
         <div id="listaSquads"></div>
     </div>
 
     <div class="legal-footer">
-        <div class="warning-cp" style="color:#ff4444; margin-bottom:20px; font-weight:bold;">⚠️ AVISO LEGAL IMPORTANTE</div>
+        <div style="color:#ff4444; font-weight:bold; margin-bottom:15px;">⚠️ DESCARGO DE RESPONSABILIDAD</div>
         <p>TCODM NO ES UNA PÁGINA OFICIAL DE CALL OF DUTY® NI DE ACTIVISION. <br>
-        Esta plataforma es un sitio de terceros creado exclusivamente para la ayuda, organización y entretenimiento de jugadores no oficiales de la liga. <br>
-        Todos los derechos, marcas registradas e imágenes de Call of Duty® y Call of Duty® Mobile pertenecen a <b>Activision Publishing, Inc.</b></p>
+        Este sitio es operado por terceros para fines de ayuda y entretenimiento de la comunidad. No formamos parte de la liga oficial. <br>
+        Todos los derechos de Call of Duty® y sus personajes pertenecen a <b>Activision Publishing, Inc.</b></p>
         
         <div class="store-btns">
-            <a href="https://store.callofdutymobile.com/es-mx/codm" target="_blank" class="btn-store">Tienda MX</a>
-            <a href="https://store.callofdutymobile.com/en-us/codm" target="_blank" class="btn-store">Tienda US</a>
-            <a href="https://store.callofdutymobile.com/en-in/codm" target="_blank" class="btn-store">Tienda IN</a>
+            <a href="https://store.callofdutymobile.com/es-mx/codm" target="_blank" class="btn-store">México (MX)</a>
+            <a href="https://store.callofdutymobile.com/en-us/codm" target="_blank" class="btn-store">USA (US)</a>
+            <a href="https://store.callofdutymobile.com/en-in/codm" target="_blank" class="btn-store">India (IN)</a>
         </div>
 
-        <p style="margin-top:30px; opacity:0.5;">© <span id="yearCopy"></span> TCODM. Todos los derechos reservados. <br> 
-        Políticas de Privacidad: Los datos ingresados (ID de jugador) se utilizan solo para la gestión del torneo.</p>
+        <p style="margin-top:40px; opacity:0.4;">© <span id="yearCopy"></span> TCODM. Todos los derechos reservados. <br> 
+        Los IDs de jugador se procesan únicamente para la organización del torneo.</p>
     </div>
 
     <img src="https://www.callofduty.com/content/dam/atvi/callofduty/cod-touchui/mobile/home/downloadbanner/CODM_Download-Now_Banner_LG.webp" class="final-img">
@@ -168,7 +179,7 @@
                 const s = child.val();
                 const card = document.createElement('div');
                 card.className = 'squad-card reveal';
-                card.innerHTML = `<div class="squad-info"><h3>${s.nombre}</h3><p>${s.jugadores.slice(0,4).join(' | ')}</p></div><div class="status-tag">VERIFICADO</div>`;
+                card.innerHTML = `<div class="squad-info"><h3>${s.nombre}</h3><p>${s.jugadores.slice(0,4).join(' | ')}</p></div><div style="color:var(--y); font-size:10px; font-weight:bold;">LISTO</div>`;
                 listDiv.appendChild(card);
             });
             document.getElementById('cuposTxt').innerText = `${count} / 25`;
