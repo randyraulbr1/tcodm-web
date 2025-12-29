@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TCODM.COM - Torneo Comunitario</title>
+    <title>TCODM.COM - Torneo de Squads</title>
     <style>
         :root {
-            --codm-yellow: #f3ca33; /* El amarillo clásico de CODM */
+            --codm-yellow: #f3ca33;
             --bg-dark: #0a0a0a;
             --card-bg: #151515;
         }
@@ -14,7 +14,7 @@
         body {
             background-color: var(--bg-dark);
             color: white;
-            font-family: 'Arial Black', sans-serif;
+            font-family: 'Arial Black', Gadget, sans-serif;
             margin: 0;
             padding: 20px;
             display: flex;
@@ -27,9 +27,9 @@
             max-width: 500px;
             background: var(--card-bg);
             padding: 25px;
-            border-radius: 5px;
+            border-radius: 4px;
             border: 2px solid var(--codm-yellow);
-            box-shadow: 0 0 15px rgba(243, 202, 51, 0.2);
+            box-shadow: 0 0 20px rgba(243, 202, 51, 0.15);
             margin-bottom: 30px;
         }
 
@@ -37,8 +37,8 @@
             text-align: center;
             color: var(--codm-yellow);
             text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 5px;
+            letter-spacing: 1px;
+            margin: 0;
         }
 
         .web-tag {
@@ -47,15 +47,16 @@
             font-size: 14px;
             color: #888;
             margin-bottom: 25px;
+            font-family: sans-serif;
         }
 
         .section-title {
             color: var(--codm-yellow);
-            font-size: 12px;
+            font-size: 11px;
             text-transform: uppercase;
             margin-bottom: 10px;
-            border-bottom: 1px solid #333;
-            padding-bottom: 5px;
+            border-left: 3px solid var(--codm-yellow);
+            padding-left: 10px;
         }
 
         input {
@@ -64,7 +65,7 @@
             background: #222;
             border: 1px solid #444;
             color: white;
-            border-radius: 3px;
+            border-radius: 2px;
             box-sizing: border-box;
             margin-bottom: 15px;
             font-family: sans-serif;
@@ -73,6 +74,7 @@
         input:focus {
             border-color: var(--codm-yellow);
             outline: none;
+            background: #2a2a2a;
         }
 
         .grid-players {
@@ -87,19 +89,25 @@
             background: var(--codm-yellow);
             color: black;
             border: none;
-            border-radius: 3px;
+            border-radius: 2px;
             font-weight: 900;
             font-size: 18px;
             cursor: pointer;
             text-transform: uppercase;
-            transition: 0.3s;
+            transition: 0.2s;
             margin-top: 10px;
+        }
+
+        .btn-pay:hover {
+            background: #ffdb4d;
+            transform: scale(1.02);
         }
 
         .btn-pay:disabled {
             background: #444;
             color: #777;
             cursor: not-allowed;
+            transform: none;
         }
 
         .notice {
@@ -108,95 +116,85 @@
             text-align: center;
             margin-top: 15px;
             font-family: sans-serif;
+            line-height: 1.4;
         }
 
-        /* Lista de Inscritos */
         .list-container {
             width: 100%;
             max-width: 500px;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
         }
 
-        .squad-item {
+        #listaSquads {
             background: #111;
-            border-left: 5px solid var(--codm-yellow);
             padding: 15px;
-            margin-bottom: 10px;
-            border-radius: 0 5px 5px 0;
+            border: 1px solid #222;
         }
 
-        .squad-item span {
-            color: var(--codm-yellow);
-            font-size: 18px;
-        }
-
-        /* Imagen de fondo inferior */
         .footer-img {
             width: 100%;
-            max-width: 800px;
-            margin-top: 20px;
-            border-radius: 10px;
-            border: 1px solid #333;
+            max-width: 700px;
+            border: 1px solid var(--codm-yellow);
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>Torneo Squads</h1>
+        <h1>REGISTRO TORNEO</h1>
         <span class="web-tag">TCODM.COM</span>
 
-        <div class="section-title">Información del Equipo</div>
-        <input type="text" id="squadName" placeholder="Nombre de la Squad" oninput="validar()">
+        <div class="section-title">NOMBRE DE LA SQUAD</div>
+        <input type="text" id="squadName" placeholder="Ej: ALPHA TEAM" oninput="validar()">
 
-        <div class="section-title">IDs Titulares</div>
+        <div class="section-title">IDS DE JUGADORES (4)</div>
         <div class="grid-players">
-            <input type="text" id="p1" placeholder="Jugador 1" oninput="validar()">
-            <input type="text" id="p2" placeholder="Jugador 2" oninput="validar()">
-            <input type="text" id="p3" placeholder="Jugador 3" oninput="validar()">
-            <input type="text" id="p4" placeholder="Jugador 4" oninput="validar()">
+            <input type="text" id="p1" placeholder="ID Jugador 1" oninput="validar()">
+            <input type="text" id="p2" placeholder="ID Jugador 2" oninput="validar()">
+            <input type="text" id="p3" placeholder="ID Jugador 3" oninput="validar()">
+            <input type="text" id="p4" placeholder="ID Jugador 4" oninput="validar()">
         </div>
 
-        <div class="section-title">Reserva</div>
-        <input type="text" id="suplente" placeholder="ID Suplente (Opcional)" oninput="validar()">
+        <div class="section-title">SUPLENTE (SI TIENEN)</div>
+        <input type="text" id="suplente" placeholder="ID Suplente" oninput="validar()">
 
         <button id="btnStripe" class="btn-pay" disabled onclick="pagar()">
             PAGAR INSCRIPCIÓN ($5.46)
         </button>
 
         <p class="notice">
-            $4.00 Premio | $1.00 Admin | $0.46 Comisión Stripe<br>
-            Al pagar confirmas que los datos son correctos. No hay reembolsos.
+            PREMIO: $4.00 | ADMIN: $1.00 | COMISIÓN: $0.46<br>
+            Al pagar, aceptas que los datos son correctos. No reembolsable.
         </p>
     </div>
 
     <div class="list-container">
-        <div class="section-title" style="text-align: center;">Equipos Confirmados</div>
+        <div class="section-title" style="text-align: center;">EQUIPOS EN LISTA DE ESPERA</div>
         <div id="listaSquads">
-            <p style="text-align: center; color: #444; font-size: 13px; font-family: sans-serif;">Esperando nuevos registros...</p>
+            <p style="text-align: center; color: #444; font-size: 13px; font-family: sans-serif;">
+                Los equipos aparecerán aquí tras verificar el pago.
+            </p>
         </div>
     </div>
 
-    <img src="https://www.callofduty.com/content/dam/atvi/callofduty/cod-touchui/mobile/home/hero/CODM_Home_Hero-BG_Desktop-LG-11.webp" class="footer-img" alt="CODM Hero">
+    <img src="https://www.callofduty.com/content/dam/atvi/callofduty/cod-touchui/mobile/home/hero/CODM_Home_Hero-BG_Desktop-LG-11.webp" class="footer-img">
 
     <script>
         function validar() {
-            const fields = [
-                document.getElementById('squadName').value,
-                document.getElementById('p1').value,
-                document.getElementById('p2').value,
-                document.getElementById('p3').value,
-                document.getElementById('p4').value
-            ];
+            const squad = document.getElementById('squadName').value.trim();
+            const p1 = document.getElementById('p1').value.trim();
+            const p2 = document.getElementById('p2').value.trim();
+            const p3 = document.getElementById('p3').value.trim();
+            const p4 = document.getElementById('p4').value.trim();
+            
             const btn = document.getElementById('btnStripe');
-            // Activar solo si todos los campos obligatorios tienen texto
-            btn.disabled = !fields.every(f => f.trim().length >= 2);
+            btn.disabled = !(squad && p1 && p2 && p3 && p4);
         }
 
         function pagar() {
-            // PEGA AQUÍ TU LINK DE STRIPE
-            const stripeLink = "https://buy.stripe.com/TU_CODIGO_AQUI";
-            window.location.href = stripeLink;
+            // TU LINK DE STRIPE YA CONFIGURADO
+            window.location.href = "https://buy.stripe.com/4gM8wHey05kI44CfbN4ow00";
         }
     </script>
 
