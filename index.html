@@ -1,139 +1,144 @@
-Hahs, [12/29/2025 4:54 PM]
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>TCODM | Torneo Elite</title>
+    <title>TCODM | Torneo Elite 2025</title>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
     
     <style>
-        :root { --y: #FFDA24; --bg: #050505; --card: #111; }
+        :root { --y: #f3ca33; --bg: #050505; --card: #111; }
         
         body { 
             background-color: var(--bg); color: white; margin: 0; 
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             display: flex; flex-direction: column; align-items: center;
-            padding-bottom: 60px; overflow-x: hidden;
+            padding: 0 0 50px 0; overflow-x: hidden;
         }
 
-        /* BANNER SUPERIOR */
+        /* BANNER PRINCIPAL (Tu imagen de GitHub) */
         .header-banner {
             width: 100%; background: #000; border-bottom: 4px solid var(--y);
-            display: flex; justify-content: center; margin-bottom: 60px; /* Más margen abajo */
+            display: flex; justify-content: center; box-shadow: 0 10px 30px rgba(0,0,0,0.8);
         }
         .header-banner img { width: 100%; max-width: 1000px; height: auto; display: block; }
 
+        /* TEXTO INFORMATIVO ESTILO CODM */
+        .promo-text {
+            text-align: center; max-width: 600px; padding: 40px 20px;
+        }
+        .promo-text h2 { 
+            color: var(--y); font-size: 32px; font-family: 'Arial Black', sans-serif; 
+            margin: 0; text-transform: uppercase; letter-spacing: 2px;
+        }
+        .promo-text p { 
+            color: white; font-size: 16px; margin-top: 10px; line-height: 1.6; 
+            font-weight: 300; text-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+        }
+
         .container { 
-            width: 95%; max-width: 480px; background: var(--card); padding: 35px; 
-            border-top: 5px solid var(--y); border-radius: 8px; box-sizing: border-box;
-            box-shadow: 0 25px 60px rgba(0,0,0,0.7); margin-bottom: 50px;
+            width: 95%; max-width: 450px; background: var(--card); padding: 30px; 
+            border-top: 4px solid var(--y); border-radius: 8px; box-sizing: border-box;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5); margin-bottom: 40px;
         }
 
-        .section-title { color: var(--y); font-size: 11px; font-weight: bold; margin: 20px 0 10px; text-transform: uppercase; letter-spacing: 1px; }
-        
+        .counter-box {
+            display: flex; justify-content: space-between; align-items: center;
+            background: #1a1a1a; padding: 15px; border-radius: 5px; margin-bottom: 25px;
+            border: 1px solid #222;
+        }
+        .counter-num { font-size: 22px; font-weight: 900; color: var(--y); }
+
         input { 
-            width: 100%; padding: 16px; background: #000; border: 1px solid #333; 
-            color: white; margin-bottom: 12px; box-sizing: border-box; border-radius: 4px;
-            font-size: 16px; transition: 0.3s;
+            width: 100%; padding: 15px; background: #0a0a0a; border: 1px solid #333; 
+            color: white; margin-bottom: 15px; box-sizing: border-box; border-radius: 5px;
+            font-size: 16px;
         }
-        input:focus { border-color: var(--y); outline: none; box-shadow: 0 0 15px rgba(255, 218, 36, 0.1); }
+        input:focus { border-color: var(--y); outline: none; }
 
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
-        /* BOTÓN DINÁMICO */
         .btn-pay { 
-            width: 100%; padding: 22px; background: #222; color: #555; 
-            border: none; font-weight: 900; font-size: 18px; cursor: not-allowed; 
-            text-transform: uppercase; border-radius: 5px; transition: all 0.4s ease;
+            width: 100%; padding: 22px; background: var(--y); color: black; 
+            border: none; font-weight: 900; font-size: 18px; cursor: pointer; 
+            text-transform: uppercase; border-radius: 5px; transition: 0.3s;
+            margin-top: 10px;
         }
-        /* Color cuando se activa */
-        .btn-pay.active { 
-            background: var(--y); color: black; cursor: pointer;
-            box-shadow: 0 0 25px rgba(255, 218, 36, 0.4);
-        }
-        .btn-pay.active:hover { transform: scale(1.02); background: #fff; }
+        .btn-pay:disabled { background: #333; color: #666; cursor: not-allowed; }
 
-        /* CHECKBOX STYLE */
-        .terms-container {
-            margin: 25px 0; padding: 15px; background: #0a0a0a; border: 1px solid #222; border-radius: 5px;
+        /* SECCIÓN TIENDAS OFICIALES */
+        .cp-notice {
+            width: 95%; max-width: 450px; text-align: center; 
+            padding: 25px; background: #000; border: 2px solid #222; border-radius: 8px;
         }
-        .terms-text { font-size: 11px; color: #888; line-height: 1.5; }
-
-        /* FOOTER LEGAL ESTILO CODM */
-        .legal-footer {
-            width: 100%; max-width: 1000px; padding: 40px 20px; text-align: center;
-            border-top: 1px solid #222; margin-top: 80px;
+        .warning-tag { color: #ff4444; font-weight: 900; font-size: 12px; margin-bottom: 10px; display: block; }
+        .store-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
+        .btn-store {
+            padding: 12px; background: #1a1a1a; color: white; text-decoration: none;
+            font-size: 11px; font-weight: bold; border-radius: 4px; border: 1px solid #444;
         }
-        .legal-links { margin-bottom: 20px; }
-        .legal-links a { color: #888; text-decoration: none; font-size: 12px; margin: 0 10px; text-transform: uppercase; }
-        .legal-links a:hover { color: var(--y); }
-        .disclaimer { font-size: 10px; color: #555; line-height: 1.6; max-width: 800px; margin: 0 auto; }
+        .btn-store:hover { border-color: var(--y); color: var(--y); }
 
-        .list-container { width: 95%; max-width: 480px; }
-        .squad-card { background: #111; border-left: 4px solid var(--y); padding: 15px; margin-bottom: 10px; }
-        .counter-num { color: var(--y); font-weight: bold; font-size: 24px; }
+        /* LISTA DE SQUADS */
+        .list-container { width: 95%; max-width: 450px; margin-top: 50px; }
+        .squad-card { 
+            background: #111; border-left: 4px solid var(--y); 
+            padding: 15px; margin-bottom: 10px; border-radius: 0 4px 4px 0;
+        }
+
+        .footer-img { width: 100%; max-width: 1000px; margin-top: 60px; opacity: 0.5; }
     </style>
 </head>
 <body>
 
     <header class="header-banner">
-        <img src="banner-pro.png.jpg" alt="TCODM BANNER">
+        <img src="banner-pro.png.jpg" alt="TCODM Torneos">
     </header>
 
+    <div class="promo-text">
+        <h2>TCODM BATTLE ROYALE</h2>
+        <p>Demuestra tu nivel en el torneo más competitivo. Reúne a tu escuadra, domina el mapa y reclama la victoria. Inscripciones abiertas para la Temporada 2025.</p>
+    </div>
+
     <div class="container">
-        <h1 style="text-align:center; margin:0;">TC<span style="color:var(--y)">ODM</span></h1>
-        <p style="text-align:center; color:#555; font-size:12px; letter-spacing:4px; margin-bottom:30px;">INSCRIPCIONES</p>
-
-Hahs, [12/29/2025 4:54 PM]
-<div style="display:flex; justify-content:space-between; background:#1a1a1a; padding:15px; border-radius:5px;">
-            <span style="font-size:12px; color:#888;">CUPOS RESTANTES</span>
-            <span id="cuposTxt" class="counter-num">-- / 16</span>
+        <div class="counter-box">
+            <div style="font-size: 11px; color: #888; text-transform: uppercase;">Estado de Inscripción</div>
+            <div id="cuposTxt" class="counter-num">-- / 16</div>
         </div>
 
-        <div class="section-title">Información de la Squad</div>
-        <input type="text" id="squadName" placeholder="NOMBRE DEL EQUIPO" oninput="validar()">
+        <div style="font-size: 10px; color: var(--y); margin-bottom: 5px; font-weight: bold;">EQUIPO</div>
+        <input type="text" id="squadName" placeholder="NOMBRE DE LA SQUAD" oninput="validar()">
 
-        <div class="section-title">Operadores de la Squad</div>
+        <div style="font-size: 10px; color: var(--y); margin-bottom: 5px; font-weight: bold;">ID JUGADORES</div>
         <div class="grid">
-            <input type="text" id="p1" placeholder="JUGADOR 1 (LÍDER)" oninput="validar()">
-            <input type="text" id="p2" placeholder="JUGADOR 2" oninput="validar()">
-            <input type="text" id="p3" placeholder="JUGADOR 3" oninput="validar()">
-            <input type="text" id="p4" placeholder="JUGADOR 4" oninput="validar()">
+            <input type="text" id="p1" placeholder="Líder ID" oninput="validar()">
+            <input type="text" id="p2" placeholder="Jugador 2" oninput="validar()">
+            <input type="text" id="p3" placeholder="Jugador 3" oninput="validar()">
+            <input type="text" id="p4" placeholder="Jugador 4" oninput="validar()">
         </div>
 
-        <div class="terms-container">
-            <label style="display:flex; gap:10px; cursor:pointer;">
-                <input type="checkbox" id="termsCheck" onchange="validar()" style="accent-color:var(--y); width:20px; height:20px;">
-                <span class="terms-text">
-                    Acepto que <b>no hay reembolsos</b> tras el pago. Los fondos se destinan al pozo de premios de los jugadores, mantenimiento y taxes. Entiendo que este es un torneo independiente.
-                </span>
-            </label>
-        </div>
+        <button id="btnStripe" class="btn-pay" disabled onclick="registrar()">REGISTRAR Y PAGAR $5.46</button>
+    </div>
 
-        <button id="btnStripe" class="btn-pay" disabled onclick="registrar()">PAGAR INSCRIPCIÓN ($5.46)</button>
+    <div class="cp-notice">
+        <span class="warning-tag">⚠️ ATENCIÓN: NO VENDEMOS COD POINTS (CP)</span>
+        <p style="font-size: 12px; color: #aaa; margin: 0;">Para compras seguras de créditos, utiliza únicamente las tiendas oficiales de Activision:</p>
+        <div class="store-btns">
+            <a href="https://store.callofdutymobile.com/en-in/codm" target="_blank" class="btn-store">TIENDA INDIA (IN)</a>
+            <a href="https://store.callofdutymobile.com/en-us/codm?utm_campaign=codm-store-button&utm_medium=website&utm_source=activision" target="_blank" class="btn-store">TIENDA USA (US)</a>
+        </div>
     </div>
 
     <div class="list-container">
+        <div style="color:var(--y); font-size:12px; font-weight:bold; text-align:center; margin-bottom:20px; letter-spacing:3px;">EQUIPOS CONFIRMADOS</div>
         <div id="listaSquads"></div>
-        <div id="listaEspera"></div>
     </div>
 
-    <footer class="legal-footer">
-        <div class="legal-links">
-            <a href="#">Política de Privacidad</a> | 
-            <a href="#">Términos de Uso</a> | 
-            <a href="#">Política de Cookies</a> | 
-            <a href="#">Soporte</a>
-        </div>
-        <p class="disclaimer">
-            © 2025 TCODM. ESTE SITIO WEB ES UNA PLATAFORMA INDEPENDIENTE PARA JUGADORES Y NO ESTÁ AFILIADO, ASOCIADO, AUTORIZADO, RESPALDADO NI CONECTADO OFICIALMENTE CON ACTIVISION PUBLISHING, INC., ACTIVISION, NI CALL OF DUTY MOBILE. <br><br>
-            LAS MARCAS REGISTRADAS DE ACTIVISION Y CALL OF DUTY SON PROPIEDAD DE SUS RESPECTIVOS DUEÑOS. TCODM OPERA ÚNICAMENTE CON FINES DE APOYO A LA COMUNIDAD DE JUGADORES NO OFICIALES DE LA LIGA.
-        </p>
-    </footer>
+    <img src="https://www.callofduty.com/content/dam/atvi/callofduty/cod-touchui/mobile/home/hero/CODM_Home_Hero-BG_Desktop-LG-11.webp" class="footer-img">
 
     <script>
+        // FIREBASE CONFIG
         const firebaseConfig = {
             databaseURL: "https://tcodm-e4147-default-rtdb.firebaseio.com/",
             projectId: "tcodm-e4147",
@@ -141,19 +146,20 @@ Hahs, [12/29/2025 4:54 PM]
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
 
+        // Obtener datos en tiempo real
         database.ref('inscritos').on('value', (snapshot) => {
-            const titularesDiv = document.getElementById('listaSquads');
-            titularesDiv.innerHTML = "<p style='color:#444; text-align:center; font-size:12px;'>EQUIPOS CONFIRMADOS</p>";
+            const listDiv = document.getElementById('listaSquads');
+            listDiv.innerHTML = "";
             let count = 0;
             snapshot.forEach((child) => {
                 count++;
                 const s = child.val();
                 const card = document.createElement('div');
                 card.className = 'squad-card';
-                card.innerHTML = <h3 style="margin:0; font-size:14px;">${s.nombre}</h3>;
-                titularesDiv.appendChild(card);
+                card.innerHTML = `<h3 style="margin:0; font-size:15px; color:#fff;">${s.nombre}</h3><p style="margin:5px 0 0; color:#666; font-size:11px; letter-spacing:1px;">${s.jugadores.join(' • ')}</p>`;
+                listDiv.appendChild(card);
             });
-            document.getElementById('cuposTxt').innerText = ${count} / 16;
+            document.getElementById('cuposTxt').innerText = `${count} / 16`;
         });
 
         function validar() {
@@ -164,18 +170,7 @@ Hahs, [12/29/2025 4:54 PM]
                 document.getElementById('p3').value,
                 document.getElementById('p4').value
             ];
-
-Hahs, [12/29/2025 4:54 PM]
-const check = document.getElementById('termsCheck').checked;
-            const btn = document.getElementById('btnStripe');
-            
-            if (inputs.every(i => i.trim().length > 2) && check) {
-                btn.disabled = false;
-                btn.classList.add('active');
-            } else {
-                btn.disabled = true;
-                btn.classList.remove('active');
-            }
+            document.getElementById('btnStripe').disabled = !inputs.every(i => i.trim().length > 2);
         }
 
         function registrar() {
