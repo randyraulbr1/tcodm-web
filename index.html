@@ -1,3 +1,4 @@
+Hahs, [12/29/2025 4:54 PM]
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -8,163 +9,151 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
     
     <style>
-        :root { --y: #f3ca33; --bg: #050505; --card: #111; }
+        :root { --y: #FFDA24; --bg: #050505; --card: #111; }
         
         body { 
             background-color: var(--bg); color: white; margin: 0; 
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             display: flex; flex-direction: column; align-items: center;
-            padding: 0 0 40px 0; overflow-x: hidden;
+            padding-bottom: 60px; overflow-x: hidden;
         }
 
-        /* BANNER PRINCIPAL TCODM */
+        /* BANNER SUPERIOR */
         .header-banner {
-            width: 100%;
-            background: #000;
-            border-bottom: 4px solid var(--y);
-            display: flex;
-            justify-content: center;
-            padding: 0;
-            margin-bottom: 30px;
+            width: 100%; background: #000; border-bottom: 4px solid var(--y);
+            display: flex; justify-content: center; margin-bottom: 60px; /* Más margen abajo */
         }
-
-        .header-banner img {
-            width: 100%;
-            max-width: 1000px;
-            height: auto;
-            display: block;
-        }
-
-        body::before {
-            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 50% 20%, #1a1a00 0%, transparent 50%);
-            z-index: -1;
-        }
+        .header-banner img { width: 100%; max-width: 1000px; height: auto; display: block; }
 
         .container { 
-            width: 95%; max-width: 450px; background: var(--card); padding: 30px; 
-            border-top: 4px solid var(--y); border-radius: 8px; box-sizing: border-box;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5); margin-bottom: 40px;
+            width: 95%; max-width: 480px; background: var(--card); padding: 35px; 
+            border-top: 5px solid var(--y); border-radius: 8px; box-sizing: border-box;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.7); margin-bottom: 50px;
         }
 
-        h1 { font-size: 40px; text-align: center; margin: 0; color: white; letter-spacing: -2px; }
-        .yellow-text { color: var(--y); }
-        .web-tag { text-align: center; display: block; color: #555; margin-bottom: 30px; font-weight: bold; font-size: 12px; letter-spacing: 3px; }
-
-        .counter-box {
-            display: flex; justify-content: space-between; align-items: center;
-            background: #1a1a1a; padding: 15px; border-radius: 5px; margin-bottom: 25px;
-            border: 1px solid #222;
-        }
-        .counter-label { font-size: 12px; color: #888; text-transform: uppercase; }
-        .counter-num { font-size: 20px; font-weight: 900; color: var(--y); }
-
-        .section-title { color: var(--y); font-size: 10px; font-weight: bold; margin-bottom: 8px; text-transform: uppercase; opacity: 0.6; }
+        .section-title { color: var(--y); font-size: 11px; font-weight: bold; margin: 20px 0 10px; text-transform: uppercase; letter-spacing: 1px; }
         
         input { 
-            width: 100%; padding: 15px; background: #0a0a0a; border: 1px solid #333; 
-            color: white; margin-bottom: 15px; box-sizing: border-box; border-radius: 5px;
-            transition: 0.3s; font-size: 16px;
+            width: 100%; padding: 16px; background: #000; border: 1px solid #333; 
+            color: white; margin-bottom: 12px; box-sizing: border-box; border-radius: 4px;
+            font-size: 16px; transition: 0.3s;
         }
-        input:focus { border-color: var(--y); outline: none; background: #111; box-shadow: 0 0 10px rgba(243, 202, 51, 0.1); }
+        input:focus { border-color: var(--y); outline: none; box-shadow: 0 0 15px rgba(255, 218, 36, 0.1); }
 
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
 
+        /* BOTÓN DINÁMICO */
         .btn-pay { 
-            width: 100%; padding: 22px; background: var(--y); color: black; 
-            border: none; font-weight: 900; font-size: 18px; cursor: pointer; 
-            text-transform: uppercase; border-radius: 5px; transition: 0.3s;
-            box-shadow: 0 10px 20px rgba(243, 202, 51, 0.2);
+            width: 100%; padding: 22px; background: #222; color: #555; 
+            border: none; font-weight: 900; font-size: 18px; cursor: not-allowed; 
+            text-transform: uppercase; border-radius: 5px; transition: all 0.4s ease;
         }
-        .btn-pay:hover { transform: translateY(-2px); box-shadow: 0 15px 25px rgba(243, 202, 51, 0.3); }
-        .btn-pay:disabled { background: #222; color: #555; cursor: not-allowed; }
-
-        .list-container { width: 95%; max-width: 450px; }
-        .squad-card { 
-            background: linear-gradient(90deg, #111 0%, #0a0a0a 100%); 
-            border-left: 3px solid var(--y); padding: 18px; margin-bottom: 12px; 
-            border-radius: 4px; animation: slideIn 0.5s ease;
+        /* Color cuando se activa */
+        .btn-pay.active { 
+            background: var(--y); color: black; cursor: pointer;
+            box-shadow: 0 0 25px rgba(255, 218, 36, 0.4);
         }
-        @keyframes slideIn { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
+        .btn-pay.active:hover { transform: scale(1.02); background: #fff; }
 
-        .squad-card h3 { margin: 0; font-size: 16px; text-transform: uppercase; color: #fff; }
-        .squad-card p { margin: 8px 0 0; color: #666; font-size: 12px; font-family: monospace; }
-        
-        .waiting-list { opacity: 0.6; filter: grayscale(1); }
-        .waiting-list h3::after { content: " (RESERVA)"; font-size: 10px; color: #ff5555; margin-left: 10px; }
+        /* CHECKBOX STYLE */
+        .terms-container {
+            margin: 25px 0; padding: 15px; background: #0a0a0a; border: 1px solid #222; border-radius: 5px;
+        }
+        .terms-text { font-size: 11px; color: #888; line-height: 1.5; }
+
+        /* FOOTER LEGAL ESTILO CODM */
+        .legal-footer {
+            width: 100%; max-width: 1000px; padding: 40px 20px; text-align: center;
+            border-top: 1px solid #222; margin-top: 80px;
+        }
+        .legal-links { margin-bottom: 20px; }
+        .legal-links a { color: #888; text-decoration: none; font-size: 12px; margin: 0 10px; text-transform: uppercase; }
+        .legal-links a:hover { color: var(--y); }
+        .disclaimer { font-size: 10px; color: #555; line-height: 1.6; max-width: 800px; margin: 0 auto; }
+
+        .list-container { width: 95%; max-width: 480px; }
+        .squad-card { background: #111; border-left: 4px solid var(--y); padding: 15px; margin-bottom: 10px; }
+        .counter-num { color: var(--y); font-weight: bold; font-size: 24px; }
     </style>
 </head>
 <body>
 
     <header class="header-banner">
-        <img src="banner-pro.png.jpg" alt="TCODM Torneos 2025">
+        <img src="banner-pro.png.jpg" alt="TCODM BANNER">
     </header>
 
     <div class="container">
-        <h1>TC<span class="yellow-text">ODM</span></h1>
-        <span class="web-tag">BATTLE ROYALE ELITE</span>
+        <h1 style="text-align:center; margin:0;">TC<span style="color:var(--y)">ODM</span></h1>
+        <p style="text-align:center; color:#555; font-size:12px; letter-spacing:4px; margin-bottom:30px;">INSCRIPCIONES</p>
 
-        <div class="counter-box">
-            <div>
-                <div class="counter-label">Inscripciones Abiertas</div>
-                <div id="cuposTxt" class="counter-num">-- / 16</div>
-            </div>
-            <div id="statusDot" style="width: 12px; height: 12px; border-radius: 50%; background: #555;"></div>
+Hahs, [12/29/2025 4:54 PM]
+<div style="display:flex; justify-content:space-between; background:#1a1a1a; padding:15px; border-radius:5px;">
+            <span style="font-size:12px; color:#888;">CUPOS RESTANTES</span>
+            <span id="cuposTxt" class="counter-num">-- / 16</span>
         </div>
 
-        <div class="section-title">Nombre de la Squad</div>
-        <input type="text" id="squadName" placeholder="EJ: TEAM GHOST" oninput="validar()">
+        <div class="section-title">Información de la Squad</div>
+        <input type="text" id="squadName" placeholder="NOMBRE DEL EQUIPO" oninput="validar()">
 
-        <div class="section-title">ID de los Jugadores</div>
+        <div class="section-title">Operadores de la Squad</div>
         <div class="grid">
-            <input type="text" id="p1" placeholder="ID Jugador 1" oninput="validar()">
-            <input type="text" id="p2" placeholder="ID Jugador 2" oninput="validar()">
-            <input type="text" id="p3" placeholder="ID Jugador 3" oninput="validar()">
-            <input type="text" id="p4" placeholder="ID Jugador 4" oninput="validar()">
+            <input type="text" id="p1" placeholder="JUGADOR 1 (LÍDER)" oninput="validar()">
+            <input type="text" id="p2" placeholder="JUGADOR 2" oninput="validar()">
+            <input type="text" id="p3" placeholder="JUGADOR 3" oninput="validar()">
+            <input type="text" id="p4" placeholder="JUGADOR 4" oninput="validar()">
         </div>
 
-        <button id="btnStripe" class="btn-pay" disabled onclick="registrar()">INSCRIBIR SQUAD ($5.46)</button>
-        <p style="font-size: 10px; color: #444; text-align: center; margin-top: 15px;">
-            Al registrarte aceptas las reglas del torneo. <br> Pagos procesados por Stripe.
-        </p>
+        <div class="terms-container">
+            <label style="display:flex; gap:10px; cursor:pointer;">
+                <input type="checkbox" id="termsCheck" onchange="validar()" style="accent-color:var(--y); width:20px; height:20px;">
+                <span class="terms-text">
+                    Acepto que <b>no hay reembolsos</b> tras el pago. Los fondos se destinan al pozo de premios de los jugadores, mantenimiento y taxes. Entiendo que este es un torneo independiente.
+                </span>
+            </label>
+        </div>
+
+        <button id="btnStripe" class="btn-pay" disabled onclick="registrar()">PAGAR INSCRIPCIÓN ($5.46)</button>
     </div>
 
     <div class="list-container">
-        <div class="section-title" style="text-align: center; margin-bottom: 20px;">EQUIPOS EN LISTA</div>
         <div id="listaSquads"></div>
-        <div id="listaEspera" style="margin-top: 30px;"></div>
+        <div id="listaEspera"></div>
     </div>
+
+    <footer class="legal-footer">
+        <div class="legal-links">
+            <a href="#">Política de Privacidad</a> | 
+            <a href="#">Términos de Uso</a> | 
+            <a href="#">Política de Cookies</a> | 
+            <a href="#">Soporte</a>
+        </div>
+        <p class="disclaimer">
+            © 2025 TCODM. ESTE SITIO WEB ES UNA PLATAFORMA INDEPENDIENTE PARA JUGADORES Y NO ESTÁ AFILIADO, ASOCIADO, AUTORIZADO, RESPALDADO NI CONECTADO OFICIALMENTE CON ACTIVISION PUBLISHING, INC., ACTIVISION, NI CALL OF DUTY MOBILE. <br><br>
+            LAS MARCAS REGISTRADAS DE ACTIVISION Y CALL OF DUTY SON PROPIEDAD DE SUS RESPECTIVOS DUEÑOS. TCODM OPERA ÚNICAMENTE CON FINES DE APOYO A LA COMUNIDAD DE JUGADORES NO OFICIALES DE LA LIGA.
+        </p>
+    </footer>
 
     <script>
         const firebaseConfig = {
             databaseURL: "https://tcodm-e4147-default-rtdb.firebaseio.com/",
             projectId: "tcodm-e4147",
         };
-
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
-        const MAX_TITULARES = 16;
 
         database.ref('inscritos').on('value', (snapshot) => {
             const titularesDiv = document.getElementById('listaSquads');
-            const esperaDiv = document.getElementById('listaEspera');
-            titularesDiv.innerHTML = "";
-            esperaDiv.innerHTML = `<div class="section-title" style="text-align: center;">LISTA DE RESERVA</div>`;
-            
+            titularesDiv.innerHTML = "<p style='color:#444; text-align:center; font-size:12px;'>EQUIPOS CONFIRMADOS</p>";
             let count = 0;
             snapshot.forEach((child) => {
-                const s = child.val();
                 count++;
+                const s = child.val();
                 const card = document.createElement('div');
-                card.className = count > MAX_TITULARES ? 'squad-card waiting-list' : 'squad-card';
-                card.innerHTML = `<h3>${s.nombre}</h3><p>${s.jugadores.join(' • ')}</p>`;
-                
-                if(count <= MAX_TITULARES) titularesDiv.appendChild(card);
-                else esperaDiv.appendChild(card);
+                card.className = 'squad-card';
+                card.innerHTML = <h3 style="margin:0; font-size:14px;">${s.nombre}</h3>;
+                titularesDiv.appendChild(card);
             });
-
-            document.getElementById('cuposTxt').innerText = `${count} / ${MAX_TITULARES}`;
-            document.getElementById('statusDot').style.background = count >= MAX_TITULARES ? "#ff5555" : "#00ff88";
+            document.getElementById('cuposTxt').innerText = ${count} / 16;
         });
 
         function validar() {
@@ -175,7 +164,18 @@
                 document.getElementById('p3').value,
                 document.getElementById('p4').value
             ];
-            document.getElementById('btnStripe').disabled = !inputs.every(i => i.trim().length > 2);
+
+Hahs, [12/29/2025 4:54 PM]
+const check = document.getElementById('termsCheck').checked;
+            const btn = document.getElementById('btnStripe');
+            
+            if (inputs.every(i => i.trim().length > 2) && check) {
+                btn.disabled = false;
+                btn.classList.add('active');
+            } else {
+                btn.disabled = true;
+                btn.classList.remove('active');
+            }
         }
 
         function registrar() {
@@ -189,7 +189,6 @@
                 ],
                 timestamp: Date.now()
             };
-
             database.ref('inscritos').push(data).then(() => {
                 window.location.href = "https://buy.stripe.com/4gM8wHey05kI44CfbN4ow00";
             });
