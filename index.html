@@ -1,49 +1,47 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VYNCO - Torneos CODM</title>
-    <style>
-        body { background-color: #0f0f0f; color: white; font-family: 'Segoe UI', sans-serif; text-align: center; padding: 20px; }
-        .container { max-width: 600px; margin: auto; border: 2px solid #00ffcc; padding: 20px; border-radius: 15px; background: #1a1a1a; }
-        h1 { color: #00ffcc; text-transform: uppercase; letter-spacing: 2px; }
-        .prize { font-size: 24px; color: #ffcc00; font-weight: bold; margin: 10px 0; }
-        input { width: 90%; padding: 10px; margin: 10px 0; border-radius: 5px; border: none; background: #333; color: white; }
-        .btn-paypal { background: #0070ba; color: white; padding: 15px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; font-size: 18px; margin-top: 15px; }
-        .btn-whatsapp { background: #25d366; color: white; display: block; padding: 10px; text-decoration: none; border-radius: 8px; margin-top: 20px; font-weight: bold; }
-    </style>
-</head>
-<body>
+<div class="container" style="max-width: 500px; margin: auto; background: #1a1a1a; padding: 25px; border-radius: 10px; color: white; font-family: sans-serif;">
+    <h1 style="text-align: center;">TCODM.COM</h1>
+    <p style="text-align: center; color: #888;">Registro de Squad - $5.46 USD</p>
 
-    <div class="container">
-        <h1>VYNCO TORNEOS</h1>
-        <p>Inscripción para el próximo torneo de CODM</p>
-        <div class="prize">PREMIO: $100 USD</div>
-        <hr border="1" color="#333">
-
-        <h3>REGISTRA TU SQUAD</h3>
-        <p>Escribe los nombres exactamente como aparecen en el juego</p>
-        
-        <form id="registroForm">
-            <input type="text" placeholder="Nombre Jugador 1 (Líder)" required>
-            <input type="text" placeholder="Nombre Jugador 2" required>
-            <input type="text" placeholder="Nombre Jugador 3" required>
-            <input type="text" placeholder="Nombre Jugador 4" required>
-            <input type="text" placeholder="Suplente (Opcional)">
-            
-            <button type="button" class="btn-paypal" onclick="irAPagar()">PAGAR INSCRIPCIÓN ($5.00)</button>
-        </form>
-
-        <a href="https://wa.me/TU_NUMERO" class="btn-whatsapp">SOPORTE POR WHATSAPP</a>
+    <input type="text" id="squadName" placeholder="Nombre de la Squad" oninput="validar()" style="width:100%; margin-bottom:10px; padding:10px; background:#222; border:1px solid #444; color:white;">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+        <input type="text" id="p1" placeholder="Jugador 1" oninput="validar()" style="padding:10px; background:#222; border:1px solid #444; color:white;">
+        <input type="text" id="p2" placeholder="Jugador 2" oninput="validar()" style="padding:10px; background:#222; border:1px solid #444; color:white;">
+        <input type="text" id="p3" placeholder="Jugador 3" oninput="validar()" style="padding:10px; background:#222; border:1px solid #444; color:white;">
+        <input type="text" id="p4" placeholder="Jugador 4" oninput="validar()" style="padding:10px; background:#222; border:1px solid #444; color:white;">
     </div>
+    
+    <input type="text" id="suplente" placeholder="Suplente (Opcional)" style="width:100%; margin-top:10px; padding:10px; background:#222; border:1px solid #444; color:white;">
 
-    <script>
-        function irAPagar() {
-            // Aquí pondrás tu link de PayPal.me o el botón que generes
-            window.location.href = "https://www.paypal.me/TU_USUARIO/5";
-        }
-    </script>
+    <button id="btnStripe" disabled onclick="irAPagar()" style="width: 100%; padding: 15px; background: #635bff; color: white; border: none; border-radius: 5px; font-weight: bold; margin-top: 20px; cursor: not-allowed; opacity: 0.5;">
+        PAGAR Y REGISTRAR
+    </button>
+    
+    <p style="font-size: 10px; color: #666; text-align: center; margin-top: 10px;">
+        Pagos seguros procesados por Stripe. No se aceptan reembolsos.
+    </p>
+</div>
 
-</body>
-</html>
+<script>
+function validar() {
+    const s = document.getElementById('squadName').value;
+    const p1 = document.getElementById('p1').value;
+    const p2 = document.getElementById('p2').value;
+    const p3 = document.getElementById('p3').value;
+    const p4 = document.getElementById('p4').value;
+    const btn = document.getElementById('btnStripe');
+    
+    if(s && p1 && p2 && p3 && p4) {
+        btn.disabled = false;
+        btn.style.opacity = "1";
+        btn.style.cursor = "pointer";
+    } else {
+        btn.disabled = true;
+        btn.style.opacity = "0.5";
+    }
+}
+
+function irAPagar() {
+    // REEMPLAZA EL LINK DE ABAJO CON TU LINK DE STRIPE
+    window.location.href = "https://buy.stripe.com/TU_CODIGO_AQUI";
+}
+</script>
