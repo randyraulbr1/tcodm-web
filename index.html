@@ -1,47 +1,204 @@
-<div class="container" style="max-width: 500px; margin: auto; background: #1a1a1a; padding: 25px; border-radius: 10px; color: white; font-family: sans-serif;">
-    <h1 style="text-align: center;">TCODM.COM</h1>
-    <p style="text-align: center; color: #888;">Registro de Squad - $5.46 USD</p>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TCODM.COM - Torneo Comunitario</title>
+    <style>
+        :root {
+            --codm-yellow: #f3ca33; /* El amarillo clásico de CODM */
+            --bg-dark: #0a0a0a;
+            --card-bg: #151515;
+        }
 
-    <input type="text" id="squadName" placeholder="Nombre de la Squad" oninput="validar()" style="width:100%; margin-bottom:10px; padding:10px; background:#222; border:1px solid #444; color:white;">
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-        <input type="text" id="p1" placeholder="Jugador 1" oninput="validar()" style="padding:10px; background:#222; border:1px solid #444; color:white;">
-        <input type="text" id="p2" placeholder="Jugador 2" oninput="validar()" style="padding:10px; background:#222; border:1px solid #444; color:white;">
-        <input type="text" id="p3" placeholder="Jugador 3" oninput="validar()" style="padding:10px; background:#222; border:1px solid #444; color:white;">
-        <input type="text" id="p4" placeholder="Jugador 4" oninput="validar()" style="padding:10px; background:#222; border:1px solid #444; color:white;">
+        body {
+            background-color: var(--bg-dark);
+            color: white;
+            font-family: 'Arial Black', sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 5px;
+            border: 2px solid var(--codm-yellow);
+            box-shadow: 0 0 15px rgba(243, 202, 51, 0.2);
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--codm-yellow);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
+
+        .web-tag {
+            text-align: center;
+            display: block;
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            color: var(--codm-yellow);
+            font-size: 12px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            background: #222;
+            border: 1px solid #444;
+            color: white;
+            border-radius: 3px;
+            box-sizing: border-box;
+            margin-bottom: 15px;
+            font-family: sans-serif;
+        }
+
+        input:focus {
+            border-color: var(--codm-yellow);
+            outline: none;
+        }
+
+        .grid-players {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .btn-pay {
+            width: 100%;
+            padding: 18px;
+            background: var(--codm-yellow);
+            color: black;
+            border: none;
+            border-radius: 3px;
+            font-weight: 900;
+            font-size: 18px;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn-pay:disabled {
+            background: #444;
+            color: #777;
+            cursor: not-allowed;
+        }
+
+        .notice {
+            font-size: 11px;
+            color: #777;
+            text-align: center;
+            margin-top: 15px;
+            font-family: sans-serif;
+        }
+
+        /* Lista de Inscritos */
+        .list-container {
+            width: 100%;
+            max-width: 500px;
+            margin-bottom: 40px;
+        }
+
+        .squad-item {
+            background: #111;
+            border-left: 5px solid var(--codm-yellow);
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .squad-item span {
+            color: var(--codm-yellow);
+            font-size: 18px;
+        }
+
+        /* Imagen de fondo inferior */
+        .footer-img {
+            width: 100%;
+            max-width: 800px;
+            margin-top: 20px;
+            border-radius: 10px;
+            border: 1px solid #333;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Torneo Squads</h1>
+        <span class="web-tag">TCODM.COM</span>
+
+        <div class="section-title">Información del Equipo</div>
+        <input type="text" id="squadName" placeholder="Nombre de la Squad" oninput="validar()">
+
+        <div class="section-title">IDs Titulares</div>
+        <div class="grid-players">
+            <input type="text" id="p1" placeholder="Jugador 1" oninput="validar()">
+            <input type="text" id="p2" placeholder="Jugador 2" oninput="validar()">
+            <input type="text" id="p3" placeholder="Jugador 3" oninput="validar()">
+            <input type="text" id="p4" placeholder="Jugador 4" oninput="validar()">
+        </div>
+
+        <div class="section-title">Reserva</div>
+        <input type="text" id="suplente" placeholder="ID Suplente (Opcional)" oninput="validar()">
+
+        <button id="btnStripe" class="btn-pay" disabled onclick="pagar()">
+            PAGAR INSCRIPCIÓN ($5.46)
+        </button>
+
+        <p class="notice">
+            $4.00 Premio | $1.00 Admin | $0.46 Comisión Stripe<br>
+            Al pagar confirmas que los datos son correctos. No hay reembolsos.
+        </p>
     </div>
-    
-    <input type="text" id="suplente" placeholder="Suplente (Opcional)" style="width:100%; margin-top:10px; padding:10px; background:#222; border:1px solid #444; color:white;">
 
-    <button id="btnStripe" disabled onclick="irAPagar()" style="width: 100%; padding: 15px; background: #635bff; color: white; border: none; border-radius: 5px; font-weight: bold; margin-top: 20px; cursor: not-allowed; opacity: 0.5;">
-        PAGAR Y REGISTRAR
-    </button>
-    
-    <p style="font-size: 10px; color: #666; text-align: center; margin-top: 10px;">
-        Pagos seguros procesados por Stripe. No se aceptan reembolsos.
-    </p>
-</div>
+    <div class="list-container">
+        <div class="section-title" style="text-align: center;">Equipos Confirmados</div>
+        <div id="listaSquads">
+            <p style="text-align: center; color: #444; font-size: 13px; font-family: sans-serif;">Esperando nuevos registros...</p>
+        </div>
+    </div>
 
-<script>
-function validar() {
-    const s = document.getElementById('squadName').value;
-    const p1 = document.getElementById('p1').value;
-    const p2 = document.getElementById('p2').value;
-    const p3 = document.getElementById('p3').value;
-    const p4 = document.getElementById('p4').value;
-    const btn = document.getElementById('btnStripe');
-    
-    if(s && p1 && p2 && p3 && p4) {
-        btn.disabled = false;
-        btn.style.opacity = "1";
-        btn.style.cursor = "pointer";
-    } else {
-        btn.disabled = true;
-        btn.style.opacity = "0.5";
-    }
-}
+    <img src="https://www.callofduty.com/content/dam/atvi/callofduty/cod-touchui/mobile/home/hero/CODM_Home_Hero-BG_Desktop-LG-11.webp" class="footer-img" alt="CODM Hero">
 
-function irAPagar() {
-    // REEMPLAZA EL LINK DE ABAJO CON TU LINK DE STRIPE
-    window.location.href = "https://buy.stripe.com/TU_CODIGO_AQUI";
-}
-</script>
+    <script>
+        function validar() {
+            const fields = [
+                document.getElementById('squadName').value,
+                document.getElementById('p1').value,
+                document.getElementById('p2').value,
+                document.getElementById('p3').value,
+                document.getElementById('p4').value
+            ];
+            const btn = document.getElementById('btnStripe');
+            // Activar solo si todos los campos obligatorios tienen texto
+            btn.disabled = !fields.every(f => f.trim().length >= 2);
+        }
+
+        function pagar() {
+            // PEGA AQUÍ TU LINK DE STRIPE
+            const stripeLink = "https://buy.stripe.com/TU_CODIGO_AQUI";
+            window.location.href = stripeLink;
+        }
+    </script>
+
+</body>
+</html>
