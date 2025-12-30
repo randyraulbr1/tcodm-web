@@ -16,9 +16,21 @@
         
         body { background: var(--bg); color: white; font-family: 'Segoe UI', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
 
-        /* NOTIFICACIÓN AMARILLA */
+        /* NOTIFICACIÓN CON BORDE BLANCO FINO */
         #notification-container { position: fixed; top: 70px; width: 90%; max-width: 350px; z-index: 2000; pointer-events: none; }
-        .notification { background: var(--y); color: black; padding: 12px; border: 2px solid #000; font-weight: bold; text-align: center; text-transform: uppercase; font-size: 11px; margin-bottom: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.8); animation: slideDown 0.4s ease-out; }
+        .notification { 
+            background: var(--y); 
+            color: black; 
+            padding: 12px; 
+            border: 1px solid white; /* Borde fino blanco */
+            font-weight: bold; 
+            text-align: center; 
+            text-transform: uppercase; 
+            font-size: 11px; 
+            margin-bottom: 8px; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.8); 
+            animation: slideDown 0.4s ease-out; 
+        }
         @keyframes slideDown { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
         nav { width: 100%; background: rgba(0,0,0,0.95); padding: 15px 0; display: flex; justify-content: space-around; border-bottom: 2px solid var(--y); position: fixed; top: 0; z-index: 1000; }
@@ -33,13 +45,11 @@
         .puntos-table th { background: var(--y); color: black; padding: 6px; font-size: 10px; }
         .puntos-table td { padding: 8px; border: 1px solid #222; font-size: 14px; font-weight: bold; }
 
-        /* BLOQUE DE POLÍTICAS */
         .policy-box { background: #0a0a0a; border: 1px solid #333; padding: 15px; margin-bottom: 15px; border-radius: 6px; font-size: 10px; text-align: left; color: #bbb; line-height: 1.4; }
         .policy-box h3 { color: var(--y); font-size: 11px; margin-top: 0; text-transform: uppercase; }
 
         .btn-small { background: var(--y); color: black; padding: 10px 20px; border: none; font-weight: 900; cursor: pointer; text-decoration: none; display: inline-flex; border-radius: 4px; font-size: 11px; text-transform: uppercase; margin: 10px auto; }
 
-        /* FORMULARIO AMARILLO CENTRADO */
         #form-registro { display: none; background: #111; padding: 20px; border: 3px solid var(--y); border-radius: 12px; margin: 20px 0; width: 100%; box-sizing: border-box; text-align: center; }
         .input-group { width: 100%; margin-bottom: 12px; text-align: center; }
         .input-group label { display: block; margin-bottom: 5px; color: var(--y); font-weight: bold; font-size: 10px; }
@@ -79,12 +89,12 @@
             </table>
 
             <div class="policy-box">
-                <h3>⚠️ POLÍTICA DE NO REEMBOLSO</h3>
+                <h3>POLÍTICA DE NO REEMBOLSO</h3>
                 <p>Al realizar el pago, confirmas que has leído y aceptado los siguientes puntos:</p>
                 <ul>
                     <li><strong>Compromiso:</strong> Los fondos se destinan inmediatamente a la bolsa de premios y gastos de organización.</li>
-                    <li><strong>Inasistencia:</strong> TCODM no se hace responsable si un clan o jugador no se presenta el día del evento. No habrá devoluciones por falta de asistencia.</li>
-                    <li><strong>Descalificación:</strong> El incumplimiento de las reglas del torneo conlleva la expulsión sin derecho a reembolso.</li>
+                    <li><strong>Inasistencia:</strong> TCODM no se hace responsable si un clan o jugador no se presenta el día del evento. No habrá devoluciones.</li>
+                    <li><strong>Descalificación:</strong> El incumplimiento de las reglas conlleva la expulsión sin derecho a reembolso.</li>
                 </ul>
                 <div style="margin-top: 10px; color: white;">
                     <input type="checkbox" id="check-rembolso"> <b>ACEPTO LAS POLÍTICAS Y RESPONSABILIDADES</b>
@@ -97,7 +107,7 @@
         </div>
 
         <div id="form-registro">
-            <h2 style="color:var(--green); font-size: 16px; margin: 0 0 15px 0;">PAGO CONFIRMADO ✅</h2>
+            <h2 style="color:var(--green); font-size: 16px; margin: 0 0 15px 0;">PAGO CONFIRMADO</h2>
             <div class="input-group"><label>NOMBRE DEL CLAN</label><input type="text" id="reg-squad"></div>
             <div class="input-group"><label>CAPITÁN</label><input type="text" id="reg-p1"></div>
             <div class="input-group"><label>JUGADOR 2</label><input type="text" id="reg-p2"></div>
@@ -139,7 +149,7 @@
 
         function validarPago(e) {
             if(!document.getElementById('check-rembolso').checked) {
-                showNotif("⚠️ DEBES ACEPTAR LAS POLÍTICAS PARA CONTINUAR");
+                showNotif("DEBES ACEPTAR LAS POLÍTICAS PARA CONTINUAR");
                 e.preventDefault();
                 return false;
             }
@@ -151,22 +161,27 @@
             if (params.get('pago') === 'exitoso') {
                 document.getElementById('seccion-principal').style.display = 'none';
                 document.getElementById('form-registro').style.display = 'block';
-                showNotif("✅ PAGO DETECTADO. REGISTRA TU CLAN.");
+                showNotif("PAGO DETECTADO. REGISTRA TU CLAN.");
             }
         };
 
         function finalizarRegistro() {
             const squad = document.getElementById('reg-squad').value;
             const p1 = document.getElementById('reg-p1').value;
-            if(!squad || !p1) return alert("Clan y Capitán obligatorios.");
+            if(!squad || !p1) {
+                showNotif("NOMBRE DE CLAN Y CAPITÁN OBLIGATORIOS");
+                return;
+            }
             database.ref('inscripciones/' + squad).set({
                 p1: p1, p2: document.getElementById('reg-p2').value || "---",
                 p3: document.getElementById('reg-p3').value || "---",
                 p4: document.getElementById('reg-p4').value || "---",
                 estado: "VERIFICANDO"
             }).then(() => {
-                alert("DATOS ENVIADOS");
-                window.location.href = "index.html";
+                showNotif("REGISTRO ENVIADO EXITOSAMENTE");
+                setTimeout(() => {
+                    window.location.href = "index.html";
+                }, 3000);
             });
         }
 
