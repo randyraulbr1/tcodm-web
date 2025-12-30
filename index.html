@@ -5,12 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TCODM | Official Tournament League</title>
     
+    <link rel="icon" type="image/png" href="iconoweb.png">
+    
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
     <style>
         :root {
-            --y: #F4CB33; /* Amarillo intenso CODM */
+            --y: #F4CB33; 
             --bg: #050505;
             --nav-bg: rgba(15, 15, 15, 0.98);
             --gray: #888;
@@ -26,7 +28,6 @@
             align-items: center;
         }
 
-        /* --- NAVEGACIÓN --- */
         nav {
             width: 100%;
             background-color: var(--nav-bg);
@@ -45,19 +46,6 @@
         .logo .t-gray { color: var(--gray); }
         .logo .codm-yellow { color: var(--y); }
 
-        .btn-nav-pay {
-            background: var(--y);
-            color: black;
-            border: none;
-            padding: 8px 18px;
-            font-weight: bold;
-            text-transform: uppercase;
-            cursor: pointer;
-            text-decoration: none;
-            font-size: 13px;
-        }
-
-        /* --- BANNER PRINCIPAL (GIF) --- */
         .hero-banner {
             margin-top: 55px;
             width: 100%;
@@ -68,12 +56,10 @@
             background-color: #000;
         }
 
-        /* --- CONTENIDO --- */
         .content {
             width: 90%;
             max-width: 850px;
             padding: 40px 0;
-            text-align: center;
         }
 
         .description-box {
@@ -85,57 +71,42 @@
             line-height: 1.7;
         }
 
-        /* --- BOTONES CP STORE --- */
-        .cp-container {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin: 25px 0;
-            flex-wrap: wrap;
+        /* --- TABLA DE PUNTOS --- */
+        .puntos-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: #111;
+            font-size: 14px;
         }
+        .puntos-table th { background: var(--y); color: black; padding: 10px; }
+        .puntos-table td { padding: 10px; border: 1px solid #222; text-align: center; }
 
-        .btn-cp {
-            background: #1a1a1a;
-            border: 1px solid #333;
-            color: white;
-            padding: 12px 20px;
-            font-weight: bold;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .cp-icon { width: 18px; height: 18px; background: var(--y); border-radius: 50%; }
-
-        /* --- BLOQUE DE PAGO (PASO 1) --- */
         #pago-requerido {
             background: #1a0f00;
             border: 1px solid #3d2b00;
             padding: 30px;
             border-radius: 4px;
             margin: 20px 0;
+            text-align: center;
         }
 
-        /* --- FORMULARIO (BLOQUEADO POR DEFECTO) --- */
         .registro-box {
             background: #111;
             padding: 35px;
             border: 1px solid #222;
-            text-align: left;
-            display: none; /* Se activa con JS */
+            display: none;
         }
 
         input {
             width: 100%;
             padding: 14px;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             background: #000;
             border: 1px solid #444;
             color: white;
             box-sizing: border-box;
-            outline: none;
         }
-        input:focus { border-color: var(--y); }
 
         .btn-final {
             width: 100%;
@@ -146,67 +117,85 @@
             border: none;
             cursor: pointer;
             text-transform: uppercase;
-            font-size: 16px;
         }
 
-        .legal {
-            font-size: 11px;
-            color: #555;
+        /* --- LISTA DE INSCRITOS --- */
+        .inscritos-section {
             margin-top: 50px;
-            text-align: left;
-            border-top: 1px solid #222;
-            padding-top: 20px;
+            width: 100%;
+            background: #0a0a0a;
+            padding: 20px;
+            border-radius: 8px;
         }
+        .inscritos-table { width: 100%; border-collapse: collapse; }
+        .inscritos-table th { color: var(--y); text-align: left; padding: 10px; border-bottom: 2px solid #222; }
+        .inscritos-table td { padding: 10px; border-bottom: 1px solid #111; font-size: 14px; color: #ccc; }
 
-        footer { padding: 40px; text-align: center; color: #333; font-size: 12px; }
+        footer { padding: 40px; text-align: center; color: #333; font-size: 11px; }
     </style>
 </head>
 <body>
 
     <nav>
         <div class="logo"><span class="t-gray">T</span><span class="codm-yellow">CODM</span></div>
-        <a href="https://buy.stripe.com/4gM8wHey05kI44CfbN4ow00" class="btn-nav-pay">PAGAR SLOT</a>
+        <a href="https://buy.stripe.com/4gM8wHey05kI44CfbN4ow00" style="text-decoration:none; background:var(--y); color:black; padding:8px 15px; font-weight:bold; font-size:12px;">PAGAR SLOT</a>
     </nav>
 
     <section class="hero-banner"></section>
 
     <main class="content">
-        <h2>TORNEO DE TEMPORADA</h2>
+        <h2 style="text-align:center; letter-spacing:2px;">SISTEMA DE COMPETENCIA</h2>
         
         <div class="description-box">
-            <strong>Acerca de TCODM League:</strong><br>
-            Esta plataforma es el centro de operaciones oficial para la gestión de torneos competitivos de Battle Royale en CODM. Nuestra misión es profesionalizar la escena competitiva, asegurando que cada inscripción contribuya directamente al pozo de premios (Prize Pool). Utilizamos <strong>Stripe</strong> para transacciones seguras y <strong>Firebase</strong> para el registro de datos en tiempo real.
-        </div>
-
-        <div class="cp-container">
-            <div class="btn-cp"><span class="cp-icon"></span> 80 CP</div>
-            <div class="btn-cp"><span class="cp-icon"></span> 420 CP</div>
-            <div class="btn-cp"><span class="cp-icon"></span> 880 CP</div>
+            <h3 style="color:var(--y); margin-top:0;">RECOMPENSAS Y REGLAS</h3>
+            <p>Torneo exclusivo para <strong>25 Squads (100 jugadores)</strong>. El pozo acumulado es de <strong>$125 USD</strong>, distribuido tras descontar el 20% de gestión administrativa.</p>
+            
+            <table class="puntos-table">
+                <thead>
+                    <tr><th>POSICIÓN</th><th>PREMIO</th><th>PUNTOS</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>🥇 1er Lugar</td><td>$60.00 USD</td><td>25 pts</td></tr>
+                    <tr><td>🥈 2do Lugar</td><td>$25.00 USD</td><td>18 pts</td></tr>
+                    <tr><td>🥉 3er Lugar</td><td>$15.00 USD</td><td>12 pts</td></tr>
+                </tbody>
+            </table>
+            <p style="text-align: center; background: #222; padding: 10px; border-radius: 4px;">
+                🔥 <strong>BONO POR KILL:</strong> Cada baja confirmada suma <strong>+1 Punto</strong> a la tabla general.
+            </p>
         </div>
 
         <div id="pago-requerido">
-            <h3 style="color: var(--y); margin-top:0;">PAGO REQUERIDO</h3>
-            <p>Para desbloquear el registro de tu Squad en la base de datos, primero debes completar el pago de inscripción.</p>
-            <a href="https://buy.stripe.com/4gM8wHey05kI44CfbN4ow00" class="btn-final" style="display:inline-block; text-decoration:none; width:auto; padding: 15px 40px;">PAGAR AHORA ($0.50)</a>
+            <h3 style="color: var(--y); margin-top:0;">1. PAGA TU INSCRIPCIÓN ($5.00)</h3>
+            <p>Una vez completado el pago en Stripe, serás redirigido para anotar los nombres de tus jugadores.</p>
+            <a href="https://buy.stripe.com/4gM8wHey05kI44CfbN4ow00" class="btn-final" style="text-decoration:none; display:inline-block; width:auto; padding: 15px 40px;">IR A PAGAR</a>
         </div>
 
         <div id="registro-box" class="registro-box">
-            <h3 style="color: #4CAF50; text-align:center; margin-top:0;">✓ PAGO CONFIRMADO</h3>
-            <p style="text-align: center; color: #aaa;">Completa los datos oficiales de tu equipo para Firebase.</p>
-            
+            <h3 style="color: #4CAF50; text-align:center; margin-top:0;">✓ PAGO VERIFICADO</h3>
             <input type="text" id="teamName" placeholder="Nombre de la Squad">
-            <input type="text" id="capitan" placeholder="ID del Capitán (IGL)">
-            <input type="text" id="p2" placeholder="Jugador 2">
-            <input type="text" id="p3" placeholder="Jugador 3">
-            <input type="text" id="p4" placeholder="Jugador 4">
-            
-            <button class="btn-final" onclick="enviarFirebase()">FINALIZAR INSCRIPCIÓN</button>
+            <input type="text" id="capitan" placeholder="ID Capitán (IGL)">
+            <input type="text" id="p2" placeholder="ID Jugador 2">
+            <input type="text" id="p3" placeholder="ID Jugador 3">
+            <input type="text" id="p4" placeholder="ID Jugador 4">
+            <button class="btn-final" onclick="enviarFirebase()">REGISTRAR EQUIPO</button>
         </div>
 
-        <div class="legal">
-            <p><strong>POLÍTICA DE REEMBOLSO:</strong> Debido a la naturaleza competitiva, las inscripciones no son reembolsables una vez que el equipo ha sido registrado en la base de datos.</p>
-            <p><strong>DERECHOS:</strong> Call of Duty® es una marca registrada de Activision Publishing, Inc. TCODM League es un organizador independiente.</p>
+        <div class="inscritos-section">
+            <h3 style="color: var(--y); margin-top:0;">EQUIPOS CONFIRMADOS (CUPOS: 25)</h3>
+            <table class="inscritos-table">
+                <thead>
+                    <tr>
+                        <th>SQUAD</th>
+                        <th>CAPITÁN</th>
+                        <th>ESTADO</th>
+                    </tr>
+                </thead>
+                <tbody id="lista-equipos">
+                    </tbody>
+            </table>
         </div>
+
     </main>
 
     <footer>
@@ -216,44 +205,54 @@
     <script>
         document.getElementById('year').innerText = new Date().getFullYear();
 
-        // --- 1. DETECTAR PAGO EXITOSO ---
+        // CONFIGURACIÓN FIREBASE
+        const firebaseConfig = { databaseURL: "https://tcodm-e4147-default-rtdb.firebaseio.com/" };
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        // DETECTAR PAGO
         window.onload = function() {
             const params = new URLSearchParams(window.location.search);
             if (params.get('status') === 'success') {
                 document.getElementById('pago-requerido').style.display = 'none';
                 document.getElementById('registro-box').style.display = 'block';
             }
+            cargarEquipos();
         };
 
-        // --- 2. CONFIGURACIÓN FIREBASE ---
-        const firebaseConfig = {
-            databaseURL: "https://tcodm-e4147-default-rtdb.firebaseio.com/"
-        };
-        firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
-
+        // GUARDAR EN FIREBASE
         function enviarFirebase() {
             const team = document.getElementById('teamName').value;
             const cap = document.getElementById('capitan').value;
 
-            if(team === "" || cap === "") {
-                alert("Por favor completa los campos obligatorios.");
-                return;
-            }
+            if(!team || !cap) return alert("Llena los campos obligatorios");
 
             database.ref('inscripciones/' + team).set({
                 capitan: cap,
-                equipo: [
-                    document.getElementById('p2').value,
-                    document.getElementById('p3').value,
-                    document.getElementById('p4').value
-                ],
-                pago_status: "VERIFICADO",
+                jugadores: [document.getElementById('p2').value, document.getElementById('p3').value, document.getElementById('p4').value],
+                pago: "CONFIRMADO",
                 fecha: new Date().toLocaleString()
             }).then(() => {
-                alert("¡EQUIPO REGISTRADO EXITOSAMENTE!");
-                window.location.href = "index.html"; // Limpiar la URL
-            }).catch(e => alert("Error: " + e.message));
+                alert("¡Inscripción completada!");
+                window.location.href = "index.html";
+            });
+        }
+
+        // CARGAR LISTA EN TIEMPO REAL
+        function cargarEquipos() {
+            const tableBody = document.getElementById('lista-equipos');
+            database.ref('inscripciones').on('value', (snapshot) => {
+                tableBody.innerHTML = "";
+                snapshot.forEach((childSnapshot) => {
+                    const data = childSnapshot.val();
+                    const row = `<tr>
+                        <td>${childSnapshot.key}</td>
+                        <td>${data.capitan}</td>
+                        <td style="color:#4CAF50;">● Verificado</td>
+                    </tr>`;
+                    tableBody.innerHTML += row;
+                });
+            });
         }
     </script>
 </body>
