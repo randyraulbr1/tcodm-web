@@ -5,94 +5,225 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TCODM | Official League</title>
     <link rel="icon" type="image/png" href="iconoweb.png">
+    
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
     <style>
-        :root { --y: #F4CB33; --bg: #050505; --orange: #ff9800; --green: #4CAF50; }
-        body { background: var(--bg); color: white; font-family: Arial, sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; }
+        :root { --y: #F4CB33; --bg: #050505; --orange: #ff9800; --green: #4CAF50; --card-bg: #0d0d0d; }
         
-        nav { width: 100%; background: rgba(15,15,15,0.95); padding: 15px 0; display: flex; justify-content: space-around; border-bottom: 2px solid var(--y); position: fixed; top: 0; z-index: 1000; }
+        body { 
+            background: var(--bg); 
+            color: white; 
+            font-family: 'Segoe UI', Arial, sans-serif; 
+            margin: 0; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+        }
+
+        /* --- NAVEGACIÓN --- */
+        nav { 
+            width: 100%; 
+            background: rgba(15,15,15,0.98); 
+            padding: 20px 0; 
+            display: flex; 
+            justify-content: space-around; 
+            border-bottom: 2px solid var(--y); 
+            position: fixed; 
+            top: 0; 
+            z-index: 1000; 
+            backdrop-filter: blur(10px);
+        }
+
+        .hero-banner { 
+            margin-top: 80px; 
+            width: 100%; 
+            max-width: 1000px; 
+            height: 45vh; 
+            background: url('gif1.gif') no-repeat center center; 
+            background-size: contain; 
+        }
+
+        .content { 
+            width: 90%; 
+            max-width: 900px; 
+            padding: 50px 0; 
+        }
+
+        h2, h3 { text-transform: uppercase; letter-spacing: 2px; text-align: center; }
+
+        /* --- SECCIÓN DE PREMIOS --- */
+        .prize-card { 
+            background: var(--card-bg); 
+            padding: 30px; 
+            border: 1px solid #222; 
+            border-top: 4px solid var(--y);
+            margin-bottom: 60px; /* Espacio extra */
+        }
+
+        .puntos-table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin-top: 20px; 
+            background: #000;
+        }
+        .puntos-table th { background: var(--y); color: black; padding: 15px; font-size: 14px; }
+        .puntos-table td { padding: 15px; border: 1px solid #222; text-align: center; font-size: 16px; }
+
+        /* --- FORMULARIO Y PAGOS --- */
+        .action-box { 
+            background: #111; 
+            padding: 40px; 
+            border: 1px solid #333; 
+            margin-bottom: 60px; 
+            text-align: center;
+        }
+
+        .btn-main { 
+            background: var(--y); 
+            color: black; 
+            padding: 18px 40px; 
+            border: none; 
+            font-weight: 900; 
+            cursor: pointer; 
+            text-transform: uppercase; 
+            text-decoration: none; 
+            display: inline-block;
+            transition: 0.3s;
+        }
+        .btn-main:hover { transform: scale(1.05); background: #fff; }
+
+        input { 
+            width: 100%; 
+            padding: 15px; 
+            margin-bottom: 15px; 
+            background: #000; 
+            border: 1px solid #444; 
+            color: white; 
+            box-sizing: border-box; 
+        }
+
+        /* --- LISTA DE SQUADS (4 INTEGRANTES) --- */
+        .squads-container { margin-top: 40px; }
+        .squad-card { 
+            background: #111; 
+            margin-bottom: 20px; 
+            padding: 20px; 
+            border-left: 4px solid #333; 
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            align-items: center;
+            gap: 15px;
+        }
+        .squad-card.confirmada { border-left-color: var(--green); }
         
-        .hero-banner { margin-top: 60px; width: 100%; max-width: 1000px; height: 40vh; background: url('gif1.gif') no-repeat center center; background-size: contain; }
+        .squad-info b { color: var(--y); font-size: 18px; }
+        .squad-players { font-size: 13px; color: #aaa; line-height: 1.5; }
+        .status-badge { 
+            padding: 5px 10px; 
+            border-radius: 3px; 
+            font-size: 11px; 
+            font-weight: bold; 
+            text-align: center;
+        }
+        .bg-pend { background: #3d2b00; color: var(--orange); }
+        .bg-conf { background: #002200; color: var(--green); }
 
-        .content { width: 90%; max-width: 800px; padding: 30px 0; text-align: center; }
-        
-        .card { background: #0d0d0d; padding: 20px; border-left: 4px solid var(--y); margin-bottom: 20px; text-align: left; }
-        
-        /* TABLA PREMIOS */
-        .puntos-table { width: 100%; border-collapse: collapse; margin: 15px 0; }
-        .puntos-table th { background: var(--y); color: black; padding: 10px; }
-        .puntos-table td { padding: 10px; border: 1px solid #222; text-align: center; }
-
-        .btn-pay { background: var(--y); color: black; padding: 15px; border: none; font-weight: bold; cursor: pointer; width: 100%; text-transform: uppercase; text-decoration: none; display: block; }
-        
-        .registro-box { background: #111; padding: 25px; border: 1px solid #222; display: none; text-align: left; }
-        input { width: 100%; padding: 12px; margin-bottom: 10px; background: #000; border: 1px solid #444; color: white; box-sizing: border-box; }
-
-        /* LISTA */
-        .lista-container { width: 100%; margin-top: 40px; background: #0a0a0a; padding: 15px; border-radius: 5px; }
-        .tabla-inscritos { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        .tabla-inscritos th { text-align: left; color: var(--y); border-bottom: 1px solid #333; padding: 8px; }
-        .tabla-inscritos td { padding: 10px; border-bottom: 1px solid #111; font-size: 14px; }
-
-        .status-pend { color: var(--orange); font-weight: bold; }
-        .status-conf { color: var(--green); font-weight: bold; }
-
-        .politica-box { font-size: 12px; color: #888; margin: 15px 0; text-align: left; background: #151515; padding: 10px; border: 1px solid #333; }
+        /* --- POLÍTICA LEGAL --- */
+        .legal-footer { 
+            margin-top: 100px; 
+            padding: 40px; 
+            border-top: 1px solid #222; 
+            font-size: 12px; 
+            color: #555; 
+            text-align: justify; 
+            line-height: 1.8;
+        }
     </style>
 </head>
 <body>
 
     <nav>
-        <div style="font-weight:900; letter-spacing:2px;">T<span style="color:var(--y)">CODM</span></div>
-        <div id="count-nav" style="color:var(--y); font-weight:bold;">SQUADS: 0/25</div>
+        <div style="font-weight:900; font-size:20px;">T<span style="color:var(--y)">CODM</span> LEAGUE</div>
+        <div id="count-nav" style="color:var(--y); font-weight:bold;">CUPOS: 0/25</div>
     </nav>
 
     <section class="hero-banner"></section>
 
     <main class="content">
-        <div class="card">
-            <h2 style="color:var(--y); margin-top:0;">RECOMPENSA TOTAL: $100 USD</h2>
-            <p>Se jugarán <strong>3 partidas consecutivas</strong>. Los premios se reparten a los 3 jugadores/squads con mayor número de Kills acumuladas.</p>
+        
+        <div class="prize-card">
+            <h2>🏆 Distribución de Premios</h2>
+            <p style="text-align:center; color:#888;">Premios acumulados tras 3 juegos de Battle Royale (Basado en Kills).</p>
             <table class="puntos-table">
-                <tr><th>PUESTO</th><th>RECOMPENSA</th></tr>
-                <tr><td>🥇 Top 1 Kills</td><td>$60.00 USD</td></tr>
-                <tr><td>🥈 Top 2 Kills</td><td>$25.00 USD</td></tr>
-                <tr><td>🥉 Top 3 Kills</td><td>$15.00 USD</td></tr>
-            </table>
-            <p style="font-size:13px;">* Inscripción por Squad: <strong>$5.46 USD</strong></p>
-        </div>
-
-        <div id="pago-seccion">
-            <div class="politica-box">
-                <strong>POLÍTICA DE NO REEMBOLSO:</strong><br>
-                Al realizar el pago, aceptas que no habrá devoluciones. El pozo se reserva para los premios y la logística. Es responsabilidad de la Squad asistir puntualmente a los 3 juegos. La inasistencia resultará en la pérdida del cupo sin derecho a reclamo.
-                <br><br>
-                <input type="checkbox" id="acepto" style="width:auto;"> He leído y acepto la política de asistencia y no reembolso.
-            </div>
-            <button class="btn-pay" onclick="validarPago()">PAGAR SLOT ($5.46)</button>
-        </div>
-
-        <div id="registro-box" class="registro-box">
-            <h3 style="color:var(--green)">✓ PAGO DETECTADO</h3>
-            <p>Registra a tu equipo. Tu estado aparecerá como <span class="status-pend">PENDIENTE</span> hasta que validemos tu pago manualmente.</p>
-            <input type="text" id="teamName" placeholder="Nombre de la Squad">
-            <input type="text" id="p1" placeholder="Capitán (ID)">
-            <input type="text" id="p2" placeholder="Jugador 2">
-            <input type="text" id="p3" placeholder="Jugador 3">
-            <input type="text" id="p4" placeholder="Jugador 4">
-            <button class="btn-pay" onclick="enviarFirebase()">FINALIZAR REGISTRO</button>
-        </div>
-
-        <div class="lista-container">
-            <h3 id="display-cupos">SQUADS REGISTRADAS: 0/25</h3>
-            <table class="tabla-inscritos">
                 <thead>
-                    <tr><th>SQUAD</th><th>LÍDER</th><th>ESTADO</th></tr>
+                    <tr>
+                        <th>PUESTO SQUAD</th>
+                        <th>TOTAL EQUIPO</th>
+                        <th>CADA JUGADOR (x4)</th>
+                    </tr>
                 </thead>
-                <tbody id="tabla-body"></tbody>
+                <tbody>
+                    <tr style="background: rgba(244,203,51,0.05);">
+                        <td>🥇 1er Lugar</td>
+                        <td>$60.00 USD</td>
+                        <td style="color:var(--y); font-weight:bold;">$15.00 USD</td>
+                    </tr>
+                    <tr>
+                        <td>🥈 2do Lugar</td>
+                        <td>$28.00 USD</td>
+                        <td style="color:var(--green);">$7.00 USD</td>
+                    </tr>
+                    <tr>
+                        <td>🥉 3er Lugar</td>
+                        <td>$12.00 USD</td>
+                        <td style="color:var(--green);">$3.00 USD</td>
+                    </tr>
+                </tbody>
             </table>
+        </div>
+
+        <div id="pago-seccion" class="action-box">
+            <h3>Paso 1: Inscripción</h3>
+            <p style="margin-bottom:25px;">Costo por Squad: <b>$5.46 USD</b>. Al pagar, se habilitará el registro.</p>
+            
+            <div style="text-align:left; font-size:12px; background:#1a1a1a; padding:15px; border:1px solid #333; margin-bottom:20px;">
+                <b>AVISO DE ASISTENCIA:</b> Al inscribirse, la Squad se compromete a asistir a las 3 partidas. No hay reembolsos por inasistencia o errores de conexión ajenos a la organización.
+            </div>
+
+            <label style="display:block; margin-bottom:20px; cursor:pointer;">
+                <input type="checkbox" id="acepto" style="width:auto;"> Acepto las políticas de asistencia y no reembolso.
+            </label>
+            
+            <a href="https://buy.stripe.com/4gM8wHey05kI44CfbN4ow00" class="btn-main" onclick="return validar()">PAGAR SLOT AHORA</a>
+        </div>
+
+        <div id="registro-box" class="action-box" style="display:none; text-align:left;">
+            <h3 style="color:var(--green)">✓ PAGO CONFIRMADO</h3>
+            <p>Ingresa los nombres exactos de los 4 integrantes para tu squad.</p>
+            <input type="text" id="teamName" placeholder="Nombre de la Squad">
+            <input type="text" id="p1" placeholder="Nombre del Capitán (IGL)">
+            <input type="text" id="p2" placeholder="Nombre Jugador 2">
+            <input type="text" id="p3" placeholder="Nombre Jugador 3">
+            <input type="text" id="p4" placeholder="Nombre Jugador 4">
+            <button class="btn-main" style="width:100%" onclick="enviarFirebase()">FINALIZAR REGISTRO OFICIAL</button>
+        </div>
+
+        <div class="squads-container">
+            <h3>Estatus de Squads Inscritas</h3>
+            <div id="lista-squads">
+                </div>
+        </div>
+
+        <div class="legal-footer">
+            <p><strong>AVISO LEGAL Y DERECHOS:</strong><br>
+            Call of Duty® y Call of Duty: Mobile® son marcas comerciales registradas de Activision Publishing, Inc. Esta plataforma, TCODM League, no está afiliada, asociada, autorizada, respaldada ni conectada oficialmente de ninguna manera con Activision Publishing, Inc., Tencent Games o TiMi Studio Group. 
+            <br><br>
+            Este sitio web ha sido creado con fines exclusivos de entretenimiento y para facilitar la organización de torneos competitivos entre clanes de la comunidad. Los fondos recaudados se destinan íntegramente al pozo de premios (Prize Pool) y a cubrir los costes de mantenimiento del servidor y gestión administrativa del evento.
+            <br><br>
+            TCODM League respeta todos los derechos de propiedad intelectual de los desarrolladores originales. El uso de logotipos o nombres de marcas es puramente descriptivo y bajo el concepto de "Uso Legítimo" (Fair Use) para identificar el software sobre el cual se desarrolla la actividad competitiva. Al participar, el usuario reconoce que este es un evento independiente organizado por y para fans.</p>
+            <p style="text-align: center; margin-top:20px;">© <span id="year"></span> TCODM LEAGUE | ORGANIZACIÓN INDEPENDIENTE</p>
         </div>
     </main>
 
@@ -100,13 +231,14 @@
         const firebaseConfig = { databaseURL: "https://tcodm-e4147-default-rtdb.firebaseio.com/" };
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
+        document.getElementById('year').innerText = new Date().getFullYear();
 
-        function validarPago() {
+        function validar() {
             if(!document.getElementById('acepto').checked) {
                 alert("Debes aceptar la política de no reembolso.");
-                return;
+                return false;
             }
-            window.location.href = "https://buy.stripe.com/4gM8wHey05kI44CfbN4ow00";
+            return true;
         }
 
         window.onload = function() {
@@ -121,47 +253,49 @@
         function enviarFirebase() {
             const team = document.getElementById('teamName').value;
             const cap = document.getElementById('p1').value;
-            if(!team || !cap) return alert("Faltan datos");
+            if(!team || !cap) return alert("Nombre de Squad y Capitán son obligatorios");
 
             database.ref('inscripciones/' + team).set({
                 capitan: cap,
-                integrantes: [document.getElementById('p2').value, document.getElementById('p3').value, document.getElementById('p4').value],
-                estado: "PENDIENTE", // Tú cambias esto a "CONFIRMADO" en Firebase
-                fecha: new Date().toLocaleString()
+                p2: document.getElementById('p2').value || "Vacío",
+                p3: document.getElementById('p3').value || "Vacío",
+                p4: document.getElementById('p4').value || "Vacío",
+                estado: "PENDIENTE"
             }).then(() => {
-                alert("Registro enviado. Espera la confirmación del admin.");
+                alert("¡Registro enviado! Aparecerás en la lista como Pendiente.");
                 window.location.href = "index.html";
             });
         }
 
         function escucharBaseDeDatos() {
             database.ref('inscripciones').on('value', (snapshot) => {
-                const body = document.getElementById('tabla-body');
-                const countNav = document.getElementById('count-nav');
-                const displayCupos = document.getElementById('display-cupos');
-                body.innerHTML = "";
-                let confirmados = 0;
-                let total = 0;
+                const container = document.getElementById('lista-squads');
+                container.innerHTML = "";
+                let conf = 0;
 
                 snapshot.forEach((child) => {
-                    total++;
                     const data = child.val();
                     const isConf = data.estado === "CONFIRMADO";
-                    if(isConf) confirmados++;
+                    if(isConf) conf++;
 
-                    body.innerHTML += `<tr>
-                        <td>${child.key}</td>
-                        <td>${data.capitan}</td>
-                        <td class="${isConf ? 'status-conf' : 'status-pend'}">${data.estado}</td>
-                    </tr>`;
+                    container.innerHTML += `
+                        <div class="squad-card ${isConf ? 'confirmada' : ''}">
+                            <div class="squad-info">
+                                <b>${child.key.toUpperCase()}</b><br>
+                                <small>Líder: ${data.capitan}</small>
+                            </div>
+                            <div class="squad-players">
+                                Integrantes: ${data.capitan}, ${data.p2}, ${data.p3}, ${data.p4}
+                            </div>
+                            <div>
+                                <div class="status-badge ${isConf ? 'bg-conf' : 'bg-pend'}">
+                                    ${data.estado}
+                                </div>
+                            </div>
+                        </div>
+                    `;
                 });
-
-                countNav.innerText = `SQUADS: ${confirmados}/25`;
-                displayCupos.innerText = `SQUADS CONFIRMADAS: ${confirmados}/25`;
-                
-                if(confirmados >= 25) {
-                    document.getElementById('pago-seccion').innerHTML = "<h3 style='color:red'>CUPOS AGOTADOS</h3>";
-                }
+                document.getElementById('count-nav').innerText = `SQUADS: ${conf}/25`;
             });
         }
     </script>
