@@ -18,13 +18,7 @@
         
         body { background: var(--bg); color: white; font-family: 'Segoe UI', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
 
-        /* Estilo para pantalla de Bloqueo / Mantenimiento */
-        #view-mantenimiento { 
-            display: none; position: fixed; top:0; left:0; width:100%; height:100%; 
-            background: #000; z-index: 9999; flex-direction: column; align-items: center; 
-            justify-content: center; text-align: center; padding: 20px; box-sizing: border-box;
-        }
-
+        /* Estilos Legales */
         .legal-footer-btns { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; padding: 15px; background: #000; width: 100%; box-sizing: border-box; }
         .btn-legal { background: none; border: 1px solid #222; color: #555; font-size: 8px; padding: 4px 8px; cursor: pointer; text-transform: uppercase; border-radius: 3px; }
         .legal-modal { display: none; position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); overflow-y: auto; }
@@ -34,6 +28,7 @@
         #notification-container { position: fixed; top: 70px; width: 90%; max-width: 350px; z-index: 2000; pointer-events: none; }
         .notification { background: var(--y); color: black; padding: 12px; border: 1px solid white; font-weight: bold; text-align: center; text-transform: uppercase; font-size: 11px; margin-bottom: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.8); animation: slideDown 0.4s ease-out; }
         @keyframes slideDown { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
 
         nav { width: 100%; background: rgba(0,0,0,0.95); padding: 15px 0; display: flex; justify-content: space-around; align-items: center; border-bottom: 2px solid var(--y); position: fixed; top: 0; z-index: 1000; }
         .content { width: 95%; max-width: 450px; padding: 90px 0; display: flex; flex-direction: column; align-items: center; box-sizing: border-box; }
@@ -55,6 +50,8 @@
         .btn-small { background: var(--y); color: black; padding: 12px 20px; border: none; font-weight: 900; cursor: pointer; text-decoration: none; display: inline-flex; border-radius: 4px; font-size: 11px; text-transform: uppercase; margin: 10px auto; align-items: center; justify-content: center; }
 
         #form-registro { display: none; background: #111; padding: 20px; border: 3px solid var(--y); border-radius: 12px; margin: 20px 0; width: 100%; box-sizing: border-box; text-align: center; }
+        .input-group { width: 100%; margin-bottom: 12px; text-align: center; }
+        .input-group label { display: block; margin-bottom: 5px; color: var(--y); font-weight: bold; font-size: 10px; }
         input[type="text"] { width: 100%; max-width: 280px; padding: 12px; background: #000; border: 1px solid var(--y); color: white; border-radius: 5px; outline: none; text-align: center; box-sizing: border-box; display: inline-block; }
 
         .list-title { color: var(--y); text-transform: uppercase; font-size: 12px; margin: 30px 0 10px; letter-spacing: 2px; text-align: center; }
@@ -68,127 +65,145 @@
 </head>
 <body>
 
-    <div id="view-mantenimiento"></div>
+    <div id="notification-container"></div>
 
-    <div id="app-content" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
-        <div id="notification-container"></div>
-
-        <nav>
-            <div style="font-weight:900; font-size: 16px;">T<span style="color:var(--y)">CODM</span></div>
+    <nav>
+        <div style="font-weight:900; font-size: 16px;">T<span style="color:var(--y)">CODM</span></div>
+        
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <div id="viewers-web-container" style="display: none; align-items: center; background: #111; padding: 4px 8px; border-radius: 15px; border: 1px solid #333; gap: 5px;">
+                <span style="color: var(--green); font-size: 8px; animation: blink 1.5s infinite;">●</span>
+                <span id="live-viewers" style="color: white; font-size: 11px; font-weight: bold; font-family: monospace;">1</span>
+            </div>
             <div id="count-nav" style="color:var(--y); font-weight: bold; font-size: 11px; letter-spacing: 1px;">0/25 SQUADS</div>
-        </nav>
+        </div>
+    </nav>
 
-        <main class="content">
-            <img src="br1.jpg" class="media-box">
-            <div class="tip-box"><strong>🎯 TIP KILLS:</strong> Domina el retroceso de tus armas en el campo de práctica.</div>
+    <main class="content">
+        <img src="br1.jpg" class="media-box">
+        <div class="tip-box"><strong>🎯 TIP KILLS:</strong> Domina el retroceso de tus armas en el campo de práctica antes de entrar.</div>
 
-            <div class="prize-card" id="seccion-principal">
-                <h2 style="margin:0; color:var(--y); font-size: 15px;">PREMIOS PRO LEAGUE</h2>
-                <table class="puntos-table">
-                    <tr><th>POSICIÓN</th><th>PREMIO</th></tr>
-                    <tr><td>🥇 1° LUGAR</td><td>$60.00</td></tr>
-                    <tr><td>🥈 2° LUGAR</td><td>$28.00</td></tr>
-                    <tr><td>🥉 3° LUGAR</td><td>$12.00</td></tr>
-                </table>
+        <div class="prize-card" id="seccion-principal">
+            <h2 style="margin:0; color:var(--y); font-size: 15px;">PREMIOS PRO LEAGUE</h2>
+            <table class="puntos-table">
+                <tr><th>POSICIÓN</th><th>PREMIO</th></tr>
+                <tr><td>🥇 1° LUGAR</td><td>$60.00</td></tr>
+                <tr><td>🥈 2° LUGAR</td><td>$28.00</td></tr>
+                <tr><td>🥉 3° LUGAR</td><td>$12.00</td></tr>
+            </table>
 
-                <div class="policy-box">
-                    <h3>Condiciones de No Reembolso:</h3>
-                    <ul class="policy-list">
-                        <li><b>Pago Final:</b> No se realizarán reembolsos por motivos personales.</li>
-                        <li><b>Juego Limpio:</b> Hacks anulan derecho a devolución.</li>
-                    </ul>
-                    <div class="check-container">
-                        <input type="checkbox" id="check-rembolso" style="width: 18px; height: 18px;">
-                        <label for="check-rembolso" style="color: white; font-weight: bold; font-size: 9px;">ACEPTO QUE ESTA COMPRA NO ES REEMBOLSABLE</label>
-                    </div>
+            <div class="policy-box">
+                <h3>Condiciones de No Reembolso:</h3>
+                <ul class="policy-list">
+                    <li><b>Pago Final:</b> Una vez realizada la inscripción, no se realizarán reembolsos por motivos personales o inasistencia del jugador/clan.</li>
+                    <li><b>Compromiso de Cupo:</b> El pago asegura tu lugar y financia la logística y premios del evento; por ello, la plaza no es cancelable.</li>
+                    <li><b>Juego Limpio:</b> La descalificación por uso de hacks o faltas al reglamento anula cualquier derecho a devolución.</li>
+                    <li><b>Única Excepción:</b> Solo se devolverá el dinero si el torneo es cancelado formalmente por la administración de tcodm.com.</li>
+                </ul>
+                
+                <div class="check-container">
+                    <input type="checkbox" id="check-rembolso" style="width: 18px; height: 18px; cursor: pointer;">
+                    <label for="check-rembolso" style="color: white; font-weight: bold; font-size: 9px; cursor: pointer; text-align: left;">
+                        HE LEÍDO Y ACEPTO QUE ESTA COMPRA NO ES REEMBOLSABLE
+                    </label>
                 </div>
-
-                <a href="https://square.link/u/s3t1Nrso" target="_blank" class="btn-small" onclick="return validarPago(event)">PAGAR INSCRIPCIÓN $5.46</a>
             </div>
 
-            <div id="form-registro">
-                <h2 style="color:var(--green); font-size: 16px; margin-bottom: 15px;">PAGO CONFIRMADO</h2>
-                <input type="text" id="reg-squad" placeholder="NOMBRE DEL CLAN" style="margin-bottom:10px;"><br>
-                <input type="text" id="reg-p1" placeholder="CAPITÁN" style="margin-bottom:10px;"><br>
-                <input type="text" id="reg-p2" placeholder="JUGADOR 2" style="margin-bottom:10px;"><br>
-                <input type="text" id="reg-p3" placeholder="JUGADOR 3" style="margin-bottom:10px;"><br>
-                <input type="text" id="reg-p4" placeholder="JUGADOR 4" style="margin-bottom:10px;"><br>
-                <button class="btn-small" style="background:var(--green); color:black;" onclick="finalizarRegistro()">FINALIZAR REGISTRO</button>
+            <div id="contenedor-pago">
+                <a href="https://square.link/u/s3t1Nrso" target="_blank" class="btn-small" id="btn-pago" onclick="return validarPago(event)">
+                    PAGAR INSCRIPCIÓN $5.46
+                </a>
             </div>
-
-            <div class="list-title">SQUADS CONFIRMADAS</div>
-            <div id="lista-confirmadas" style="width: 100%;"></div>
-
-            <div class="list-title" style="color:#444;">POR VERIFICAR</div>
-            <div id="lista-revision" style="width: 100%;"></div>
-        </main>
-
-        <div class="legal-footer-btns">
-            <button class="btn-legal" onclick="openLegal('aviso')">Aviso Legal</button>
-            <button class="btn-legal" onclick="openLegal('privacidad')">Privacidad</button>
-            <button class="btn-legal" onclick="openLegal('reembolsos')">Reembolsos</button>
-            <button class="btn-legal" onclick="openLegal('reglas')">Reglamento</button>
         </div>
 
-        <footer>© 2025 TCODM - TODOS LOS DERECHOS RESERVADOS</footer>
+        <div id="form-registro">
+            <h2 style="color:var(--green); font-size: 16px; margin: 0 0 15px 0;">PAGO CONFIRMADO</h2>
+            <div class="input-group"><label>NOMBRE DEL CLAN</label><input type="text" id="reg-squad" placeholder="EL MISMO QUE EN SQUARE"></div>
+            <div class="input-group"><label>CAPITÁN</label><input type="text" id="reg-p1"></div>
+            <div class="input-group"><label>JUGADOR 2</label><input type="text" id="reg-p2"></div>
+            <div class="input-group"><label>JUGADOR 3</label><input type="text" id="reg-p3"></div>
+            <div class="input-group"><label>JUGADOR 4</label><input type="text" id="reg-p4"></div>
+            <button class="btn-small" style="width:100%; max-width:280px; background:var(--green); color:black;" onclick="finalizarRegistro()">FINALIZAR REGISTRO</button>
+        </div>
+
+        <div class="list-title">SQUADS CONFIRMADAS</div>
+        <div id="lista-confirmadas" style="width: 100%;"></div>
+
+        <div class="list-title" style="color:#444;">POR VERIFICAR</div>
+        <div id="lista-revision" style="width: 100%;"></div>
+    </main>
+
+    <div class="legal-footer-btns">
+        <button class="btn-legal" onclick="openLegal('aviso')">Aviso Legal</button>
+        <button class="btn-legal" onclick="openLegal('privacidad')">Privacidad</button>
+        <button class="btn-legal" onclick="openLegal('reembolsos')">Reembolsos</button>
+        <button class="btn-legal" onclick="openLegal('reglas')">Reglamento</button>
     </div>
 
     <div id="modalLegal" class="legal-modal">
         <div class="legal-modal-content">
-            <span style="position:absolute; right:15px; top:10px; cursor:pointer;" onclick="closeLegal()">&times;</span>
+            <span style="position:absolute; right:15px; top:10px; cursor:pointer; font-size:20px;" onclick="closeLegal()">&times;</span>
             <div id="legalText"></div>
         </div>
     </div>
+
+    <footer>
+        <strong>PÁGINA DE AYUDA A JUGADORES LOCALES</strong><br>
+        © 2025 TCODM - TODOS LOS DERECHOS RESERVADOS A ACTIVISION
+    </footer>
 
     <script>
         const firebaseConfig = { databaseURL: "https://tcodm-e4147-default-rtdb.firebaseio.com/" };
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
 
-        // --- SISTEMA DE CONTROL REMOTO (Mantenimiento/Bloqueo) ---
-        database.ref('ajustes_web/estado').on('value', (snap) => {
-            const estado = snap.val();
-            const content = document.getElementById('app-content');
-            const manteView = document.getElementById('view-mantenimiento');
-            
-            if (estado === "mantenimiento" || estado === "bloqueada") {
-                content.style.display = "none";
-                manteView.style.display = "flex";
-                manteView.innerHTML = estado === "mantenimiento" ? 
-                    "<h1 style='color:var(--y)'>🔧 MANTENIMIENTO</h1><p>Estamos preparando el servidor.</p>" : 
-                    "<h1 style='color:red'>🚫 INSCRIPCIONES CERRADAS</h1><p>Cupos llenos o torneo en curso.</p>";
-            } else {
-                content.style.display = "flex";
-                manteView.style.display = "none";
+        // LÓGICA DE PERSONAS EN VIVO (SE REGISTRA EN FIREBASE PERO NO SE VE EN WEB)
+        const viewersRef = database.ref('online_viewers');
+        const myConnectionRef = viewersRef.push();
+        database.ref('.info/connected').on('value', (snap) => {
+            if (snap.val() === true) {
+                myConnectionRef.onDisconnect().remove();
+                myConnectionRef.set(true);
             }
         });
-
-        // --- RASTREO SILENCIOSO PARA TU APP ---
-        fetch('https://ipapi.co/json/').then(res => res.json()).then(data => {
-            const miVisita = database.ref('online_viewers').push();
-            miVisita.set({
-                pais: data.country_name || "Desconocido",
-                dispositivo: navigator.platform,
-                hora: Date.now()
-            });
-            miVisita.onDisconnect().remove();
+        viewersRef.on('value', (snap) => {
+            document.getElementById('live-viewers').innerText = snap.numChildren();
         });
+
+        function openLegal(sec) {
+            if(typeof contenidosLegales !== 'undefined') {
+                document.getElementById('legalText').innerHTML = contenidosLegales[sec];
+                document.getElementById('modalLegal').style.display = "block";
+            }
+        }
+        function closeLegal() { document.getElementById('modalLegal').style.display = "none"; }
+
+        function showNotif(msg) {
+            const container = document.getElementById('notification-container');
+            const n = document.createElement('div');
+            n.className = 'notification';
+            n.innerText = msg;
+            container.appendChild(n);
+            setTimeout(() => n.remove(), 5000);
+        }
 
         function validarPago(e) {
             if(!document.getElementById('check-rembolso').checked) {
-                showNotif("ACEPTA LAS POLÍTICAS PRIMERO");
+                showNotif("DEBES ACEPTAR LAS POLÍTICAS PARA CONTINUAR");
                 e.preventDefault();
                 return false;
             }
             return true;
         }
 
-        function showNotif(msg) {
-            const container = document.getElementById('notification-container');
-            const n = document.createElement('div');
-            n.className = 'notification'; n.innerText = msg;
-            container.appendChild(n); setTimeout(() => n.remove(), 4000);
-        }
+        window.onload = function() {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('pago') === 'exitoso') {
+                document.getElementById('seccion-principal').style.display = 'none';
+                document.getElementById('form-registro').style.display = 'block';
+                showNotif("PAGO DETECTADO. REGISTRA TU CLAN.");
+            }
+        };
 
         function finalizarRegistro() {
             const squad = document.getElementById('reg-squad').value;
@@ -196,23 +211,46 @@
             const p2 = document.getElementById('reg-p2').value;
             const p3 = document.getElementById('reg-p3').value;
             const p4 = document.getElementById('reg-p4').value;
-            if(!squad || !p1) { showNotif("DATOS INCOMPLETOS"); return; }
-            database.ref('inscripciones/' + squad).set({ p1, p2, p3, p4, estado: "VERIFICANDO" })
-            .then(() => { showNotif("ENVIADO EXITOSAMENTE"); setTimeout(() => location.href="index.html", 2000); });
+            if(!squad || !p1 || !p2 || !p3 || !p4) {
+                showNotif("COMPLETA TODOS LOS CAMPOS");
+                return;
+            }
+            database.ref('inscripciones/' + squad).set({
+                p1: p1, p2: p2, p3: p3, p4: p4, estado: "VERIFICANDO"
+            }).then(() => {
+                showNotif("REGISTRO ENVIADO");
+                setTimeout(() => { window.location.href = "index.html"; }, 3000);
+            });
         }
 
         database.ref('inscripciones').on('value', (snapshot) => {
             const listConf = document.getElementById('lista-confirmadas');
             const listRev = document.getElementById('lista-revision');
+            const contPago = document.getElementById('contenedor-pago');
             listConf.innerHTML = ""; listRev.innerHTML = "";
             let count = 0;
             snapshot.forEach((child) => {
                 const d = child.val();
-                const card = `<div class="squad-container"><span style="color:var(--y);font-weight:bold">${child.key.toUpperCase()}</span><div class="player-row"><div class="num-box" style="background:var(--p1)">1</div><div class="player-name">${d.p1}</div></div></div>`;
+                const card = `
+                    <div class="squad-container">
+                        <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                            <span style="color:var(--y); font-weight:bold; font-size:12px;">${child.key.toUpperCase()}</span>
+                            <span style="font-size:9px; color:${d.estado === 'CONFIRMADO' ? 'var(--green)' : '#f90'}">${d.estado}</span>
+                        </div>
+                        <div class="player-row"><div class="num-box" style="background:var(--p1)">1</div><div class="player-name">${d.p1}</div></div>
+                        <div class="player-row"><div class="num-box" style="background:var(--p2)">2</div><div class="player-name">${d.p2}</div></div>
+                        <div class="player-row"><div class="num-box" style="background:var(--p3)">3</div><div class="player-name">${d.p3}</div></div>
+                        <div class="player-row"><div class="num-box" style="background:var(--p4)">4</div><div class="player-name">${d.p4}</div></div>
+                    </div>`;
                 if(d.estado === "CONFIRMADO") { listConf.innerHTML += card; count++; }
                 else { listRev.innerHTML += card; }
             });
             document.getElementById('count-nav').innerText = `${count}/25 SQUADS`;
+
+            // BLOQUEO AUTOMÁTICO DE BOTÓN SI LLEGA A 25 SQUADS CONFIRMADAS
+            if (count >= 25) {
+                contPago.innerHTML = `<div style="background:#222; color:var(--y); padding:15px; border:1px solid var(--y); border-radius:4px; font-weight:bold; font-size:12px;">🚫 TORNEO LLENO - CUPOS AGOTADOS</div>`;
+            }
         });
     </script>
 </body>
