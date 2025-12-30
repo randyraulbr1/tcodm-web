@@ -12,6 +12,7 @@
         :root { 
             --y: #F4CB33; --bg: #050505; --green: #4CAF50; 
             --p1: #F4CB33; --p2: #00E5FF; --p3: #FF3D00; --p4: #9C27B0;
+            --coinbase: #0052ff;
         }
         
         body { background: var(--bg); color: white; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
@@ -26,7 +27,6 @@
 
         .content { width: 95%; max-width: 800px; padding: 100px 0; }
 
-        /* IMÁGENES CON MOVIMIENTO Y RECORTE */
         .img-container { 
             width: 100%; 
             height: 300px; 
@@ -52,25 +52,29 @@
         .puntos-table td { padding: 15px; border: 1px solid #222; font-size: 18px; font-weight: bold; }
         .val-verde { color: var(--green); }
 
-        /* BOTÓN DE COMPRA PEQUEÑO */
-        .btn-pay-small { 
-            background: var(--y); 
-            color: black; 
-            padding: 10px 25px; 
+        /* BOTONES */
+        .btn-pay-main { 
+            background: var(--coinbase); 
+            color: white; 
+            padding: 18px 30px; 
             border: none; 
             font-weight: 900; 
             cursor: pointer; 
             text-decoration: none; 
-            display: inline-block; 
+            display: block; 
             margin-top: 20px; 
-            border-radius: 4px;
-            font-size: 14px;
+            border-radius: 8px;
+            font-size: 16px;
             transition: 0.3s;
+            text-transform: uppercase;
+            box-shadow: 0 4px 15px rgba(0, 82, 255, 0.4);
         }
-        .btn-pay-small:hover { background: white; transform: translateY(-2px); }
+        .btn-pay-main:hover { background: #0040c7; transform: translateY(-2px); }
+
+        .btn-save { background: var(--green); color: white; padding: 15px; border: none; border-radius: 4px; font-weight: bold; width: 100%; cursor: pointer; margin-top: 20px; font-size: 16px; }
 
         /* FORMULARIO POST-PAGO */
-        #form-registro { background: #111; padding: 30px; border: 2px solid var(--green); border-radius: 8px; margin: 20px 0; display: none; }
+        #form-registro { background: #111; padding: 30px; border: 2px solid var(--coinbase); border-radius: 8px; margin: 20px 0; display: none; }
         .input-group { margin-bottom: 15px; }
         .input-group label { display: block; margin-bottom: 5px; color: var(--y); font-weight: bold; }
         input[type="text"] { width: 100%; padding: 12px; background: #000; border: 1px solid #333; color: white; border-radius: 4px; box-sizing: border-box; }
@@ -82,7 +86,7 @@
         .num-box { width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; font-size: 16px; color: black; font-weight: 900; }
         .player-name { padding-left: 12px; font-size: 13px; text-transform: uppercase; font-weight: bold; letter-spacing: 1px; }
 
-        /* LEGAL AMPLIADO */
+        /* LEGAL */
         .legal-box { padding: 40px 20px; background: #080808; margin-top: 50px; border-top: 1px solid #222; width: 100%; box-sizing: border-box; }
         .legal-text { max-width: 800px; margin: 0 auto; font-size: 12px; color: #666; text-align: justify; line-height: 1.8; }
         
@@ -103,62 +107,72 @@
         <div class="img-container">
             <img src="https://imgs.callofduty.com/content/dam/atvi/callofduty/cod-touchui/blog/body/codm/2025/season-3-cyber-mirage/CODM-S3-CM-ANNOUNCEMENT-006.jpg" alt="Cyber Mirage">
         </div>
+
         <div class="tip-box">
-            <strong>🔥 ESTRATEGIA DE EQUIPO #1:</strong> El control de mapa es vital. Mantengan una formación de diamante para cubrir los 360 grados. La comunicación constante sobre la ubicación de placas y enemigos marca la diferencia entre el top 10 y la victoria.
+            <strong>🔥 ESTRATEGIA DE EQUIPO #1:</strong> El control de mapa es vital. Mantengan una formación de diamante para cubrir los 360 grados. La comunicación constante sobre la ubicación de placas y enemigos marca la diferencia.
         </div>
 
         <div class="prize-card" id="seccion-principal">
             <h2 style="margin:0; color:var(--y);">PRO LEAGUE TOURNAMENT</h2>
+            
             <table class="puntos-table">
-                <tr><th>PUESTO</th><th>SQUAD</th><th>INDIVIDUAL</th></tr>
+                <tr><th>PUESTO</th><th>SQUAD (TOTAL)</th><th>INDIVIDUAL</th></tr>
                 <tr><td>🥇 1° LUGAR</td><td>$60.00</td><td class="val-verde">$15.00</td></tr>
                 <tr><td>🥈 2° LUGAR</td><td>$28.00</td><td class="val-verde">$7.00</td></tr>
                 <tr><td>🥉 3° LUGAR</td><td>$12.00</td><td class="val-verde">$3.00</td></tr>
             </table>
 
-            <div class="checkbox-container">
-                <input type="checkbox" id="check-rembolso">
-                <span>Acepto que no hay reembolsos tras el pago (Política Obligatoria)</span>
+            <div style="margin-top: 20px; background: #111; padding: 15px; border-radius: 8px; border: 1px solid #333; text-align: left;">
+                <div style="display: flex; justify-content: space-between; font-size: 14px;">
+                    <span>Inscripción (1 Squad):</span> <span>$5.00</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 14px; color: #888; margin-top: 5px;">
+                    <span>Comisión Global (Fees):</span> <span>$0.50</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 18px; font-weight: bold; color: var(--y); margin-top: 10px; border-top: 1px solid #222; padding-top: 10px;">
+                    <span>TOTAL A PAGAR:</span> <span>$5.50 USD</span>
+                </div>
             </div>
 
-            <a href="https://buy.stripe.com/4gM8wHey05kI44CfbN4ow00" class="btn-pay-small" onclick="return validarPago()">INSCRIPCIÓN X SQUAD $5.46</a>
+            <div class="checkbox-container">
+                <input type="checkbox" id="check-rembolso">
+                <span>Acepto la Política de No Reembolso y Reglas</span>
+            </div>
+
+            <a href="https://commerce.coinbase.com/checkout/2ad58cff-6535-47f4-a544-6f703bd57b56" class="btn-pay-main" onclick="return validarPago()">
+                Inscribir mi Squad ($5.50)
+            </a>
+            
+            <p style="font-size: 11px; color: #555; margin-top: 15px;">Aceptamos Apple Pay, Google Pay, Tarjetas y Crypto a través de Coinbase.</p>
         </div>
 
         <div id="form-registro">
-            <h2 style="color:var(--green); text-align: center;">¡GRACIAS POR REGISTRARTE A NUESTRO TORNEO!</h2>
-            <p style="text-align: center; font-size: 14px; color: #ccc;">Por favor, ingresa los nombres <b>EXACTOS</b> que tienen en el juego para validar las Kills.</p>
+            <h2 style="color:var(--coinbase); text-align: center;">¡PAGO RECIBIDO EXITOSAMENTE!</h2>
+            <p style="text-align: center; font-size: 14px; color: #ccc;">Completa el registro oficial de tu Roster para finalizar.</p>
             
             <div class="input-group">
-                <label>NOMBRE DE LA SQUAD</label>
-                <input type="text" id="reg-squad" placeholder="Ej: GHOST TEAM">
+                <label>NOMBRE DEL CLAN / SQUAD</label>
+                <input type="text" id="reg-squad" placeholder="EJ: GHOST WARRIORS">
             </div>
-            <div class="input-group"><label>CAPITÁN (TU NOMBRE)</label><input type="text" id="reg-p1"></div>
+            <div class="input-group"><label>CAPITÁN (IGL)</label><input type="text" id="reg-p1"></div>
             <div class="input-group"><label>JUGADOR 2</label><input type="text" id="reg-p2"></div>
             <div class="input-group"><label>JUGADOR 3</label><input type="text" id="reg-p3"></div>
             <div class="input-group"><label>JUGADOR 4</label><input type="text" id="reg-p4"></div>
             
-            <button class="btn-pay-small" style="width:100%" onclick="finalizarRegistro()">GUARDAR REGISTRO OFICIAL</button>
+            <button class="btn-save" onclick="finalizarRegistro()">GUARDAR REGISTRO DE SQUAD</button>
         </div>
 
-        <div class="img-container">
-            <img src="https://imgs.callofduty.com/content/dam/atvi/callofduty/cod-touchui/blog/body/codm/2025/CODM-S2-DIGITAL-DAWN-005.jpg" alt="Digital Dawn">
-        </div>
-        <div class="tip-box">
-            <strong>🎯 ESTRATEGIA DE EQUIPO #2:</strong> Optimización de recursos. No gasten suministros en peleas innecesarias fuera de zona. Prioricen las Kills en el "mid-game" cuando las rotaciones son más predecibles.
-        </div>
-
-        <h3 style="text-align:center; color:var(--y); text-transform: uppercase; letter-spacing: 2px;">SQUADS CONFIRMADAS</h3>
+        <h3 style="text-align:center; color:var(--y); text-transform: uppercase; letter-spacing: 2px; margin-top: 50px;">EQUIPOS CONFIRMADOS</h3>
         <div id="lista-squads"></div>
 
     </main>
 
     <footer class="legal-box">
         <div class="legal-text">
-            <strong>AVISO LEGAL Y POLÍTICA DE PRIVACIDAD:</strong><br>
-            Este torneo es una competencia independiente organizada por TCODM y no cuenta con el patrocinio, respaldo ni administración directa de Activision Publishing, Inc. Call of Duty® y Call of Duty: Mobile® son marcas registradas de Activision. Al inscribirse, los participantes aceptan que TCODM actúa únicamente como gestor del evento.<br><br>
-            <strong>POLÍTICA DE NO REEMBOLSO:</strong> Debido a la naturaleza de los premios acumulados y la logística de cupos limitados (25 Squads), una vez procesado el pago de $5.46 USD, no se realizarán devoluciones bajo ninguna circunstancia, incluyendo inasistencia, problemas de red del usuario o descalificación por infracción de reglas. Los fondos se asignan inmediatamente al pozo de premios de la temporada.<br><br>
-            <strong>DERECHOS DE AUTOR:</strong> Todo el material visual utilizado pertenece a sus respectivos dueños y se utiliza bajo fines ilustrativos para la comunidad de jugadores.
-            <p style="text-align:center; margin-top: 20px; color: var(--y);">© 2025 TCODM LEAGUE - TODOS LOS DERECHOS RESERVADOS</p>
+            <strong>AVISO LEGAL TCODM:</strong><br>
+            Este evento es independiente y no está afiliado a Activision. Los pagos son procesados vía Coinbase Commerce.<br><br>
+            <strong>POLÍTICA DE NO REEMBOLSO:</strong> Al ser un torneo de cupos limitados y premios acumulados, una vez realizado el pago de $5.50 USD, no existe posibilidad de reembolso bajo ninguna circunstancia. El pago garantiza el espacio del equipo en el bracket oficial.
+            <p style="text-align:center; margin-top: 20px; color: var(--y);">© 2025 TCODM LEAGUE - USA & WORLDWIDE</p>
         </div>
     </footer>
 
@@ -178,38 +192,36 @@
 
         function validarPago() {
             if(!document.getElementById('check-rembolso').checked) {
-                alert("Debes marcar la casilla de política de no reembolso para continuar.");
+                alert("Debes aceptar los términos y la política de no reembolso.");
                 return false;
             }
+            // Instrucción para el usuario después de pagar
+            setTimeout(() => {
+                alert("Después de completar tu pago en Coinbase, regresa a esta pestaña para llenar el formulario de tu equipo.");
+                document.getElementById('seccion-principal').style.display = 'none';
+                document.getElementById('form-registro').style.display = 'block';
+            }, 2000);
             return true;
         }
 
         window.onload = function() {
-            const params = new URLSearchParams(window.location.search);
-            if (params.get('status') === 'success') {
-                document.getElementById('seccion-principal').style.display = 'none';
-                document.getElementById('form-registro').style.display = 'block';
-                showNotif("¡Pago Verificado! Completa tu registro.");
-            }
             cargarDatos();
-            // Simular globos de notificación aleatorios
-            setTimeout(() => showNotif("Nueva Squad inscrita: 'Alpha Team'"), 3000);
         };
 
         function finalizarRegistro() {
             const squad = document.getElementById('reg-squad').value;
             const p1 = document.getElementById('reg-p1').value;
-            if(!squad || !p1) return alert("Por favor completa al menos el nombre de Squad y Capitán.");
+            if(!squad || !p1) return alert("Nombre de Squad y Capitán son obligatorios.");
 
             database.ref('inscripciones/' + squad).set({
                 p1: p1,
                 p2: document.getElementById('reg-p2').value || "---",
                 p3: document.getElementById('reg-p3').value || "---",
                 p4: document.getElementById('reg-p4').value || "---",
-                estado: "PENDIENTE"
+                estado: "VERIFICANDO PAGO"
             }).then(() => {
-                alert("Registro Guardado. El administrador verificará tu pago.");
-                window.location.href = "index.html";
+                alert("¡Registro enviado! Revisaremos tu pago en Coinbase y cambiaremos tu estado a CONFIRMADO en breve.");
+                window.location.reload();
             });
         }
 
