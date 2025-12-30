@@ -25,8 +25,9 @@
             animation: slideDown 0.4s ease-out; 
         }
         @keyframes slideDown { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
 
-        nav { width: 100%; background: rgba(0,0,0,0.95); padding: 15px 0; display: flex; justify-content: space-around; border-bottom: 2px solid var(--y); position: fixed; top: 0; z-index: 1000; }
+        nav { width: 100%; background: rgba(0,0,0,0.95); padding: 15px 0; display: flex; justify-content: space-around; align-items: center; border-bottom: 2px solid var(--y); position: fixed; top: 0; z-index: 1000; }
         .content { width: 95%; max-width: 450px; padding: 90px 0; display: flex; flex-direction: column; align-items: center; box-sizing: border-box; }
         
         .media-box { width: 100%; border-radius: 8px; border: 1px solid #222; margin: 10px 0; }
@@ -40,7 +41,7 @@
         .policy-box { background: #0a0a0a; border: 1px solid #333; padding: 15px; margin-bottom: 15px; border-radius: 6px; font-size: 10px; text-align: left; color: #bbb; line-height: 1.4; }
         .policy-box h3 { color: var(--y); font-size: 11px; margin-top: 0; text-transform: uppercase; }
 
-        .btn-small { background: var(--y); color: black; padding: 10px 20px; border: none; font-weight: 900; cursor: pointer; text-decoration: none; display: inline-flex; border-radius: 4px; font-size: 11px; text-transform: uppercase; margin: 10px auto; }
+        .btn-small { background: var(--y); color: black; padding: 10px 20px; border: none; font-weight: 900; cursor: pointer; text-decoration: none; display: inline-flex; border-radius: 4px; font-size: 11px; text-transform: uppercase; margin: 10px auto; align-items: center; justify-content: center; }
 
         #form-registro { display: none; background: #111; padding: 20px; border: 3px solid var(--y); border-radius: 12px; margin: 20px 0; width: 100%; box-sizing: border-box; text-align: center; }
         .input-group { width: 100%; margin-bottom: 12px; text-align: center; }
@@ -62,7 +63,14 @@
 
     <nav>
         <div style="font-weight:900; font-size: 16px;">T<span style="color:var(--y)">CODM</span></div>
-        <div id="count-nav" style="color:var(--y); font-weight: bold; font-size: 11px;">0 SQUADS</div>
+        
+        <div style="display: flex; align-items: center; background: #111; padding: 4px 10px; border-radius: 20px; border: 1px solid #333; gap: 6px;">
+            <span style="color: var(--green); font-size: 10px; animation: blink 1.5s infinite;">●</span>
+            <span id="live-viewers" style="color: white; font-size: 12px; font-weight: bold; font-family: monospace;">1</span>
+            <span style="font-size: 14px;">👁️</span>
+        </div>
+
+        <div id="count-nav" style="color:var(--y); font-weight: bold; font-size: 11px;">0/25 SQUADS</div>
     </nav>
 
     <main class="content">
@@ -123,8 +131,8 @@
     </main>
 
     <footer>
-        <strong>SISTEMA DE AYUDA LOCAL - FLORIDA</strong><br>
-        © 2025 TCODM - ALL RIGHTS RESERVED
+        <strong>PÁGINA DE AYUDA A JUGADORES LOCALES</strong><br>
+        © 2025 TCODM - TODOS LOS DERECHOS RESERVADOS A ACTIVISION
     </footer>
 
     <script>
@@ -141,31 +149,38 @@
             setTimeout(() => n.remove(), 5000);
         }
 
+        // --- LÓGICA DE ESPECTADORES ---
+        const viewersRef = database.ref('online_viewers');
+        const myConnectionRef = viewersRef.push();
+        database.ref('.info/connected').on('value', (snap) => {
+            if (snap.val() === true) {
+                myConnectionRef.onDisconnect().remove();
+                myConnectionRef.set(true);
+            }
+        });
+        viewersRef.on('value', (snap) => {
+            document.getElementById('live-viewers').innerText = snap.numChildren();
+        });
+
         // --- LÓGICA DE INSTALACIÓN ---
         let deferredPrompt;
         const btnInstallManual = document.getElementById('btn-install-manual');
-
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            // Mostramos el botón solo si el navegador está listo
             btnInstallManual.style.display = 'inline-flex';
         });
-
         btnInstallManual.addEventListener('click', () => {
             if (deferredPrompt) {
                 deferredPrompt.prompt();
                 deferredPrompt.userChoice.then((choice) => {
-                    if (choice.outcome === 'accepted') {
-                        showNotif("INSTALACIÓN INICIADA");
-                        btnInstallManual.style.display = 'none';
-                    }
+                    if (choice.outcome === 'accepted') btnInstallManual.style.display = 'none';
                     deferredPrompt = null;
                 });
             }
         });
 
-        // --- REGISTRO Y FIREBASE (Igual que antes) ---
+        // --- REGISTRO Y FIREBASE ---
         function validarPago(e) {
             if(!document.getElementById('check-rembolso').checked) {
                 showNotif("DEBES ACEPTAR LAS POLÍTICAS PARA CONTINUAR");
@@ -225,7 +240,7 @@
                 if(d.estado === "CONFIRMADO") { listConf.innerHTML += card; count++; }
                 else { listRev.innerHTML += card; }
             });
-            document.getElementById('count-nav').innerText = `${count} SQUADS`;
+            document.getElementById('count-nav').innerText = `${count}/25 SQUADS`;
         });
     </script>
 </body>
