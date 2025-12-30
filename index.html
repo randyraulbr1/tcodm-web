@@ -5,8 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TCODM | Pro League</title>
     <link rel="icon" type="image/png" href="iconoweb.png">
+    
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    
+    <script src="https://commerce.coinbase.com/v1/checkout.js?version=201807"></script>
 
     <style>
         :root { 
@@ -28,69 +31,46 @@
         .content { width: 95%; max-width: 800px; padding: 100px 0; }
 
         .img-container { 
-            width: 100%; 
-            height: 300px; 
-            overflow: hidden; 
-            border: 2px solid #222; 
-            margin: 20px 0;
-            border-radius: 12px;
-            position: relative;
+            width: 100%; height: 250px; overflow: hidden; border: 2px solid #222; 
+            margin: 20px 0; border-radius: 12px; position: relative;
         }
-        .img-container img { 
-            width: 100%; 
-            height: 110%; 
-            object-fit: cover;
-            transition: transform 8s linear;
-        }
+        .img-container img { width: 100%; height: 110%; object-fit: cover; transition: transform 8s linear; }
         .img-container:hover img { transform: scale(1.1) translateY(-5%); }
 
         .tip-box { background: #111; border-left: 4px solid var(--y); padding: 15px; margin-bottom: 30px; font-style: italic; font-size: 14px; color: #eee; line-height: 1.6; }
 
         .prize-card { background: #0a0a0a; padding: 25px; border: 1px solid #222; margin-bottom: 40px; text-align: center; border-radius: 8px; }
         .puntos-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        .puntos-table th { background: var(--y); color: black; padding: 12px; font-size: 14px; text-transform: uppercase; }
-        .puntos-table td { padding: 15px; border: 1px solid #222; font-size: 18px; font-weight: bold; }
+        .puntos-table th { background: var(--y); color: black; padding: 10px; font-size: 12px; text-transform: uppercase; }
+        .puntos-table td { padding: 12px; border: 1px solid #222; font-size: 16px; font-weight: bold; }
         .val-verde { color: var(--green); }
 
         /* BOTONES */
         .btn-pay-main { 
-            background: var(--coinbase); 
-            color: white; 
-            padding: 18px 30px; 
-            border: none; 
-            font-weight: 900; 
-            cursor: pointer; 
-            text-decoration: none; 
-            display: block; 
-            margin-top: 20px; 
-            border-radius: 8px;
-            font-size: 16px;
-            transition: 0.3s;
-            text-transform: uppercase;
-            box-shadow: 0 4px 15px rgba(0, 82, 255, 0.4);
+            background: var(--coinbase); color: white; padding: 20px; border: none; 
+            font-weight: 900; cursor: pointer; text-decoration: none; display: block; 
+            margin-top: 20px; border-radius: 10px; font-size: 18px; transition: 0.3s;
+            text-transform: uppercase; box-shadow: 0 4px 20px rgba(0, 82, 255, 0.4); width: 100%;
         }
-        .btn-pay-main:hover { background: #0040c7; transform: translateY(-2px); }
 
-        .btn-save { background: var(--green); color: white; padding: 15px; border: none; border-radius: 4px; font-weight: bold; width: 100%; cursor: pointer; margin-top: 20px; font-size: 16px; }
+        .btn-save { background: var(--green); color: white; padding: 15px; border: none; border-radius: 4px; font-weight: bold; width: 100%; cursor: pointer; margin-top: 20px; font-size: 16px; text-transform: uppercase; }
 
-        /* FORMULARIO POST-PAGO */
-        #form-registro { background: #111; padding: 30px; border: 2px solid var(--coinbase); border-radius: 8px; margin: 20px 0; display: none; }
-        .input-group { margin-bottom: 15px; }
-        .input-group label { display: block; margin-bottom: 5px; color: var(--y); font-weight: bold; }
+        /* FORMULARIO */
+        #form-registro { background: #111; padding: 30px; border: 2px solid var(--coinbase); border-radius: 12px; margin: 20px 0; display: none; }
+        .input-group { margin-bottom: 15px; text-align: left; }
+        .input-group label { display: block; margin-bottom: 5px; color: var(--y); font-weight: bold; font-size: 12px; }
         input[type="text"] { width: 100%; padding: 12px; background: #000; border: 1px solid #333; color: white; border-radius: 4px; box-sizing: border-box; }
 
-        /* LISTA SQUADS */
+        /* SQUADS LIST */
         .squad-container { background: #0d0d0d; border: 1px solid #222; padding: 12px; margin-bottom: 15px; border-radius: 6px; }
         .squad-header { display: flex; justify-content: space-between; margin-bottom: 10px; align-items: center; }
         .player-row { display: flex; align-items: center; background: #000; margin-bottom: 4px; border: 1px solid #1a1a1a; height: 35px; border-radius: 4px; overflow: hidden; }
         .num-box { width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; font-size: 16px; color: black; font-weight: 900; }
-        .player-name { padding-left: 12px; font-size: 13px; text-transform: uppercase; font-weight: bold; letter-spacing: 1px; }
+        .player-name { padding-left: 12px; font-size: 13px; text-transform: uppercase; font-weight: bold; }
 
-        /* LEGAL */
-        .legal-box { padding: 40px 20px; background: #080808; margin-top: 50px; border-top: 1px solid #222; width: 100%; box-sizing: border-box; }
-        .legal-text { max-width: 800px; margin: 0 auto; font-size: 12px; color: #666; text-align: justify; line-height: 1.8; }
+        .legal-box { padding: 40px 20px; background: #080808; margin-top: 50px; border-top: 1px solid #222; width: 100%; box-sizing: border-box; font-size: 11px; color: #555; text-align: center; }
         
-        .checkbox-container { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 15px; font-size: 13px; color: #aaa; }
+        .checkbox-container { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 15px; font-size: 12px; color: #888; }
     </style>
 </head>
 <body>
@@ -105,78 +85,78 @@
     <main class="content">
         
         <div class="img-container">
-            <img src="https://imgs.callofduty.com/content/dam/atvi/callofduty/cod-touchui/blog/body/codm/2025/season-3-cyber-mirage/CODM-S3-CM-ANNOUNCEMENT-006.jpg" alt="Cyber Mirage">
-        </div>
-
-        <div class="tip-box">
-            <strong>🔥 ESTRATEGIA DE EQUIPO #1:</strong> El control de mapa es vital. Mantengan una formación de diamante para cubrir los 360 grados. La comunicación constante sobre la ubicación de placas y enemigos marca la diferencia.
+            <img src="https://imgs.callofduty.com/content/dam/atvi/callofduty/cod-touchui/blog/body/codm/2025/season-3-cyber-mirage/CODM-S3-CM-ANNOUNCEMENT-006.jpg" alt="CODM">
         </div>
 
         <div class="prize-card" id="seccion-principal">
-            <h2 style="margin:0; color:var(--y);">PRO LEAGUE TOURNAMENT</h2>
+            <h2 style="margin:0; color:var(--y); letter-spacing: 1px;">PRO LEAGUE SEASON 1</h2>
             
             <table class="puntos-table">
-                <tr><th>PUESTO</th><th>SQUAD (TOTAL)</th><th>INDIVIDUAL</th></tr>
-                <tr><td>🥇 1° LUGAR</td><td>$60.00</td><td class="val-verde">$15.00</td></tr>
-                <tr><td>🥈 2° LUGAR</td><td>$28.00</td><td class="val-verde">$7.00</td></tr>
-                <tr><td>🥉 3° LUGAR</td><td>$12.00</td><td class="val-verde">$3.00</td></tr>
+                <tr><th>PUESTO</th><th>SQUAD PREMIO</th></tr>
+                <tr><td>🥇 1° LUGAR</td><td>$60.00 USD</td></tr>
+                <tr><td>🥈 2° LUGAR</td><td>$28.00 USD</td></tr>
+                <tr><td>🥉 3° LUGAR</td><td>$12.00 USD</td></tr>
             </table>
 
-            <div style="margin-top: 20px; background: #111; padding: 15px; border-radius: 8px; border: 1px solid #333; text-align: left;">
+            <div style="margin-top: 20px; background: #111; padding: 15px; border-radius: 8px; border: 1px solid #222; text-align: left;">
                 <div style="display: flex; justify-content: space-between; font-size: 14px;">
-                    <span>Inscripción (1 Squad):</span> <span>$5.00</span>
+                    <span>Inscripción (Squad Completa):</span> <span>$5.00</span>
                 </div>
-                <div style="display: flex; justify-content: space-between; font-size: 14px; color: #888; margin-top: 5px;">
-                    <span>Comisión Global (Fees):</span> <span>$0.50</span>
+                <div style="display: flex; justify-content: space-between; font-size: 13px; color: #666; margin-top: 5px;">
+                    <span>Service Fee (Apple/Card/Crypto):</span> <span>$0.50</span>
                 </div>
-                <div style="display: flex; justify-content: space-between; font-size: 18px; font-weight: bold; color: var(--y); margin-top: 10px; border-top: 1px solid #222; padding-top: 10px;">
-                    <span>TOTAL A PAGAR:</span> <span>$5.50 USD</span>
+                <div style="display: flex; justify-content: space-between; font-size: 18px; font-weight: bold; color: var(--y); margin-top: 10px; border-top: 1px solid #333; padding-top: 10px;">
+                    <span>TOTAL:</span> <span>$5.50 USD</span>
                 </div>
             </div>
 
             <div class="checkbox-container">
                 <input type="checkbox" id="check-rembolso">
-                <span>Acepto la Política de No Reembolso y Reglas</span>
+                <label for="check-rembolso">Acepto Política de No Reembolso</label>
             </div>
 
-            <a href="https://commerce.coinbase.com/checkout/2ad58cff-6535-47f4-a544-6f703bd57b56" class="btn-pay-main" onclick="return validarPago()">
-                Inscribir mi Squad ($5.50)
+            <a class="buy-with-crypto" 
+               href="https://commerce.coinbase.com/checkout/2ad58cff-6535-47f4-a544-6f703bd57b56"
+               onclick="return procesarPagoClick();">
+                <button class="btn-pay-main">PAGAR CON TARJETA / MÓVIL</button>
             </a>
             
-            <p style="font-size: 11px; color: #555; margin-top: 15px;">Aceptamos Apple Pay, Google Pay, Tarjetas y Crypto a través de Coinbase.</p>
+            <div style="margin-top: 15px; display: flex; justify-content: center; gap: 10px; opacity: 0.4;">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b0/Apple_Pay_logo.svg" height="15">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/f/f2/Google_Pay_Logo.svg" height="15">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" height="12">
+            </div>
         </div>
 
         <div id="form-registro">
-            <h2 style="color:var(--coinbase); text-align: center;">¡PAGO RECIBIDO EXITOSAMENTE!</h2>
-            <p style="text-align: center; font-size: 14px; color: #ccc;">Completa el registro oficial de tu Roster para finalizar.</p>
+            <h2 style="color:var(--coinbase); text-align: center; margin-top: 0;">REGISTRO DE ROSTER</h2>
+            <p style="text-align: center; font-size: 13px; color: #888;">Si ya realizaste el pago, completa los datos de tu equipo abajo.</p>
             
             <div class="input-group">
-                <label>NOMBRE DEL CLAN / SQUAD</label>
-                <input type="text" id="reg-squad" placeholder="EJ: GHOST WARRIORS">
+                <label>NOMBRE DEL CLAN</label>
+                <input type="text" id="reg-squad" placeholder="Ej: TEAM GHOST">
             </div>
             <div class="input-group"><label>CAPITÁN (IGL)</label><input type="text" id="reg-p1"></div>
             <div class="input-group"><label>JUGADOR 2</label><input type="text" id="reg-p2"></div>
             <div class="input-group"><label>JUGADOR 3</label><input type="text" id="reg-p3"></div>
             <div class="input-group"><label>JUGADOR 4</label><input type="text" id="reg-p4"></div>
             
-            <button class="btn-save" onclick="finalizarRegistro()">GUARDAR REGISTRO DE SQUAD</button>
+            <button class="btn-save" onclick="finalizarRegistro()">ENVIAR REGISTRO OFICIAL</button>
         </div>
 
-        <h3 style="text-align:center; color:var(--y); text-transform: uppercase; letter-spacing: 2px; margin-top: 50px;">EQUIPOS CONFIRMADOS</h3>
+        <h3 style="text-align:center; color:var(--y); text-transform: uppercase; letter-spacing: 2px; margin-top: 40px;">EQUIPOS EN LISTA</h3>
         <div id="lista-squads"></div>
 
     </main>
 
     <footer class="legal-box">
-        <div class="legal-text">
-            <strong>AVISO LEGAL TCODM:</strong><br>
-            Este evento es independiente y no está afiliado a Activision. Los pagos son procesados vía Coinbase Commerce.<br><br>
-            <strong>POLÍTICA DE NO REEMBOLSO:</strong> Al ser un torneo de cupos limitados y premios acumulados, una vez realizado el pago de $5.50 USD, no existe posibilidad de reembolso bajo ninguna circunstancia. El pago garantiza el espacio del equipo en el bracket oficial.
-            <p style="text-align:center; margin-top: 20px; color: var(--y);">© 2025 TCODM LEAGUE - USA & WORLDWIDE</p>
-        </div>
+        © 2025 TCODM LEAGUE. <br>
+        Esta competencia no está afiliada con Activision. Pagos procesados por Coinbase Commerce USA. <br>
+        No reembolsos una vez confirmada la transacción.
     </footer>
 
     <script>
+        // Configuración Firebase
         const firebaseConfig = { databaseURL: "https://tcodm-e4147-default-rtdb.firebaseio.com/" };
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
@@ -190,28 +170,26 @@
             setTimeout(() => n.remove(), 4000);
         }
 
-        function validarPago() {
+        function procesarPagoClick() {
             if(!document.getElementById('check-rembolso').checked) {
-                alert("Debes aceptar los términos y la política de no reembolso.");
+                alert("Debes aceptar la política de no reembolso.");
                 return false;
             }
-            // Instrucción para el usuario después de pagar
+            // Cambiar vista al formulario de registro para que el usuario lo vea al volver
             setTimeout(() => {
-                alert("Después de completar tu pago en Coinbase, regresa a esta pestaña para llenar el formulario de tu equipo.");
                 document.getElementById('seccion-principal').style.display = 'none';
                 document.getElementById('form-registro').style.display = 'block';
-            }, 2000);
+                showNotif("Completa tu registro aquí");
+            }, 1500);
             return true;
         }
 
-        window.onload = function() {
-            cargarDatos();
-        };
+        window.onload = cargarDatos;
 
         function finalizarRegistro() {
             const squad = document.getElementById('reg-squad').value;
             const p1 = document.getElementById('reg-p1').value;
-            if(!squad || !p1) return alert("Nombre de Squad y Capitán son obligatorios.");
+            if(!squad || !p1) return alert("Faltan datos obligatorios.");
 
             database.ref('inscripciones/' + squad).set({
                 p1: p1,
@@ -220,7 +198,7 @@
                 p4: document.getElementById('reg-p4').value || "---",
                 estado: "VERIFICANDO PAGO"
             }).then(() => {
-                alert("¡Registro enviado! Revisaremos tu pago en Coinbase y cambiaremos tu estado a CONFIRMADO en breve.");
+                alert("¡Datos guardados! Una vez confirmado tu pago en el sistema, aparecerás como CONFIRMADO.");
                 window.location.reload();
             });
         }
