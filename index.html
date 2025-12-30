@@ -62,7 +62,7 @@
             border-radius: 2px;
         }
 
-        /* --- HERO BANNER CON VIDEO --- */
+        /* --- HERO BANNER CON GIF --- */
         .hero-banner {
             position: relative;
             width: 100%;
@@ -71,20 +71,9 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #000; /* Fondo negro mientras carga */
-        }
-
-        #bg-video {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            min-width: 100%; 
-            min-height: 100%;
-            width: auto;
-            height: auto;
-            transform: translate(-50%, -50%);
-            z-index: -1;
-            object-fit: cover;
+            /* Aquí cargamos tu GIF */
+            background: url('gif1.gif') no-repeat center center;
+            background-size: cover;
         }
 
         .overlay {
@@ -93,8 +82,9 @@
             left: 0;
             width: 100%;
             height: 100%;
+            /* El degradado ayuda a que el GIF se vea más profesional */
             background: linear-gradient(to bottom, rgba(5,5,5,0.2) 0%, rgba(5,5,5,1) 100%);
-            z-index: 0;
+            z-index: 1;
         }
 
         /* --- CONTENIDO --- */
@@ -184,6 +174,7 @@
             nav { flex-direction: column; gap: 15px; }
             .intro-text h2 { font-size: 2rem; }
             .input-group { grid-template-columns: 1fr; }
+            .hero-banner { height: 50vh; } /* Altura ajustada para móvil */
         }
     </style>
 </head>
@@ -204,10 +195,6 @@
     </nav>
 
     <section class="hero-banner">
-        <video autoplay muted loop playsinline id="bg-video">
-            <source src="video1.mp4" type="video/mp4">
-            Tu navegador no soporta videos.
-        </video>
         <div class="overlay"></div>
     </section>
 
