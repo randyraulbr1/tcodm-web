@@ -64,13 +64,14 @@
     <nav>
         <div style="font-weight:900; font-size: 16px;">T<span style="color:var(--y)">CODM</span></div>
         
-        <div style="display: flex; align-items: center; background: #111; padding: 4px 10px; border-radius: 20px; border: 1px solid #333; gap: 6px;">
-            <span style="color: var(--green); font-size: 10px; animation: blink 1.5s infinite;">●</span>
-            <span id="live-viewers" style="color: white; font-size: 12px; font-weight: bold; font-family: monospace;">1</span>
-            <span style="font-size: 14px;">👁️</span>
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="display: flex; align-items: center; background: #111; padding: 4px 8px; border-radius: 15px; border: 1px solid #333; gap: 5px;">
+                <span style="color: var(--green); font-size: 8px; animation: blink 1.5s infinite;">●</span>
+                <span id="live-viewers" style="color: white; font-size: 11px; font-weight: bold; font-family: monospace;">1</span>
+                <span style="font-size: 12px;">👁️</span>
+            </div>
+            <div id="count-nav" style="color:var(--y); font-weight: bold; font-size: 11px; letter-spacing: 1px;">0/25 SQUADS</div>
         </div>
-
-        <div id="count-nav" style="color:var(--y); font-weight: bold; font-size: 11px;">0/25 SQUADS</div>
     </nav>
 
     <main class="content">
@@ -127,7 +128,6 @@
                 📲 DESCARGAR APP TCODM
             </button>
         </div>
-
     </main>
 
     <footer>
@@ -149,7 +149,6 @@
             setTimeout(() => n.remove(), 5000);
         }
 
-        // --- LÓGICA DE ESPECTADORES ---
         const viewersRef = database.ref('online_viewers');
         const myConnectionRef = viewersRef.push();
         database.ref('.info/connected').on('value', (snap) => {
@@ -162,7 +161,6 @@
             document.getElementById('live-viewers').innerText = snap.numChildren();
         });
 
-        // --- LÓGICA DE INSTALACIÓN ---
         let deferredPrompt;
         const btnInstallManual = document.getElementById('btn-install-manual');
         window.addEventListener('beforeinstallprompt', (e) => {
@@ -180,7 +178,6 @@
             }
         });
 
-        // --- REGISTRO Y FIREBASE ---
         function validarPago(e) {
             if(!document.getElementById('check-rembolso').checked) {
                 showNotif("DEBES ACEPTAR LAS POLÍTICAS PARA CONTINUAR");
@@ -205,12 +202,10 @@
             const p2 = document.getElementById('reg-p2').value;
             const p3 = document.getElementById('reg-p3').value;
             const p4 = document.getElementById('reg-p4').value;
-
             if(!squad || !p1 || !p2 || !p3 || !p4) {
                 showNotif("COMPLETA TODOS LOS CAMPOS");
                 return;
             }
-
             database.ref('inscripciones/' + squad).set({
                 p1: p1, p2: p2, p3: p3, p4: p4, estado: "VERIFICANDO"
             }).then(() => {
