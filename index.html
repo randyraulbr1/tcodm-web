@@ -16,13 +16,13 @@
         
         body { background: var(--bg); color: white; font-family: 'Segoe UI', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
 
-        /* NOTIFICACIÓN CON BORDE BLANCO FINO */
+        /* NOTIFICACIÓN CON BORDE BLANCO */
         #notification-container { position: fixed; top: 70px; width: 90%; max-width: 350px; z-index: 2000; pointer-events: none; }
         .notification { 
             background: var(--y); 
             color: black; 
             padding: 12px; 
-            border: 1px solid white; /* Borde fino blanco */
+            border: 1px solid white; 
             font-weight: bold; 
             text-align: center; 
             text-transform: uppercase; 
@@ -108,7 +108,7 @@
 
         <div id="form-registro">
             <h2 style="color:var(--green); font-size: 16px; margin: 0 0 15px 0;">PAGO CONFIRMADO</h2>
-            <div class="input-group"><label>NOMBRE DEL CLAN</label><input type="text" id="reg-squad"></div>
+            <div class="input-group"><label>NOMBRE DEL CLAN</label><input type="text" id="reg-squad" placeholder="EJ: CLAN ALPHA"></div>
             <div class="input-group"><label>CAPITÁN</label><input type="text" id="reg-p1"></div>
             <div class="input-group"><label>JUGADOR 2</label><input type="text" id="reg-p2"></div>
             <div class="input-group"><label>JUGADOR 3</label><input type="text" id="reg-p3"></div>
@@ -144,7 +144,7 @@
             n.className = 'notification';
             n.innerText = msg;
             container.appendChild(n);
-            setTimeout(() => n.remove(), 6000);
+            setTimeout(() => n.remove(), 5000);
         }
 
         function validarPago(e) {
@@ -168,14 +168,18 @@
         function finalizarRegistro() {
             const squad = document.getElementById('reg-squad').value;
             const p1 = document.getElementById('reg-p1').value;
-            if(!squad || !p1) {
-                showNotif("NOMBRE DE CLAN Y CAPITÁN OBLIGATORIOS");
+            const p2 = document.getElementById('reg-p2').value;
+            const p3 = document.getElementById('reg-p3').value;
+            const p4 = document.getElementById('reg-p4').value;
+
+            // VALIDACIÓN: TODOS LOS CAMPOS DEBEN ESTAR LLENOS
+            if(!squad || !p1 || !p2 || !p3 || !p4) {
+                showNotif("DEBES COMPLETAR TODOS LOS CAMPOS DE LA SQUAD");
                 return;
             }
+
             database.ref('inscripciones/' + squad).set({
-                p1: p1, p2: document.getElementById('reg-p2').value || "---",
-                p3: document.getElementById('reg-p3').value || "---",
-                p4: document.getElementById('reg-p4').value || "---",
+                p1: p1, p2: p2, p3: p3, p4: p4,
                 estado: "VERIFICANDO"
             }).then(() => {
                 showNotif("REGISTRO ENVIADO EXITOSAMENTE");
