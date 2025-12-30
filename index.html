@@ -8,8 +8,6 @@
     
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-    
-    <script src="https://commerce.coinbase.com/v1/checkout.js?version=201807"></script>
 
     <style>
         :root { 
@@ -17,48 +15,48 @@
             --p1: #F4CB33; --p2: #00E5FF; --p3: #FF3D00; --p4: #9C27B0;
         }
         
-        body { background: var(--bg); color: white; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
+        body { background: var(--bg); color: white; font-family: 'Segoe UI', Roboto, sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
 
-        /* NOTIFICACIONES */
-        #notification-container { position: fixed; top: 80px; right: 20px; z-index: 2000; }
-        .notification { background: var(--y); color: black; padding: 12px 25px; border-radius: 50px; margin-bottom: 10px; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.5); animation: slideIn 0.5s ease-out; font-size: 13px; }
-        .notification.error { background: var(--red); color: white; }
-
-        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        /* NOTIFICACIÓN AMARILLA */
+        #notification-container { position: fixed; top: 80px; width: 90%; max-width: 400px; z-index: 2000; }
+        .notification { 
+            background: var(--y); color: black; padding: 15px; border-radius: 2px; 
+            margin-bottom: 10px; font-weight: bold; text-align: center;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.9); border: 2px solid #000; 
+            text-transform: uppercase; font-size: 11px; letter-spacing: 1px;
+            animation: slideDown 0.3s ease-out;
+        }
+        @keyframes slideDown { from { transform: translateY(-100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
         nav { width: 100%; background: rgba(0,0,0,0.95); padding: 15px 0; display: flex; justify-content: space-around; border-bottom: 2px solid var(--y); position: fixed; top: 0; z-index: 1000; backdrop-filter: blur(10px); }
-
         .content { width: 95%; max-width: 800px; padding: 100px 0; }
-
-        /* IMAGEN GIF SUPERIOR */
         .gif-header { width: 100%; border-radius: 12px; border: 2px solid #222; margin-bottom: 25px; display: block; }
-
         .prize-card { background: #0a0a0a; padding: 25px; border: 1px solid #222; margin-bottom: 40px; text-align: center; border-radius: 8px; }
 
-        /* BOTÓN DE PAGO PEQUEÑO AMARILLO */
-        .pago-container { display: flex; justify-content: center; margin-top: 15px; }
-        .buy-with-crypto { text-decoration: none !important; border: none !important; outline: none !important; }
-        .btn-pay-small { 
-            background: var(--y); color: black; padding: 12px 25px; border: none; 
-            font-weight: 900; cursor: pointer; text-decoration: none !important; 
-            border-radius: 6px; font-size: 14px; transition: 0.3s;
-            text-transform: uppercase; display: inline-block;
+        /* BOTÓN SQUARE PERSONALIZADO */
+        .btn-square-custom { 
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            background-color: #FFFFFF; color: #000000; padding: 16px 25px; 
+            text-decoration: none; border-radius: 6px; font-weight: 900;
+            font-size: 14px; text-transform: uppercase; transition: 0.3s;
+            width: 100%; max-width: 300px; margin: 20px auto;
+            border: 1px solid rgba(0,0,0,0.1);
         }
-        .btn-pay-small:hover { background: white; transform: scale(1.05); }
+        .btn-square-custom:hover { background-color: var(--y); transform: scale(1.02); }
 
-        /* FORMULARIO */
+        /* FORMULARIO POST-PAGO */
         #form-registro { background: #111; padding: 30px; border: 2px solid var(--y); border-radius: 12px; margin: 20px 0; display: none; }
         .input-group { margin-bottom: 15px; text-align: left; }
-        .input-group label { display: block; margin-bottom: 5px; color: var(--y); font-weight: bold; font-size: 12px; }
-        input[type="text"] { width: 100%; padding: 12px; background: #000; border: 1px solid #333; color: white; border-radius: 4px; box-sizing: border-box; outline: none; }
+        .input-group label { display: block; margin-bottom: 5px; color: var(--y); font-weight: bold; font-size: 11px; text-transform: uppercase; }
+        input[type="text"] { width: 100%; padding: 14px; background: #000; border: 1px solid #333; color: white; border-radius: 4px; box-sizing: border-box; outline: none; font-size: 14px; }
 
-        /* SQUADS */
+        /* LISTA DE SQUADS */
         .squad-container { background: #0d0d0d; border: 1px solid #222; padding: 12px; margin-bottom: 15px; border-radius: 6px; }
         .player-row { display: flex; align-items: center; background: #000; margin-bottom: 4px; border: 1px solid #1a1a1a; height: 35px; border-radius: 4px; overflow: hidden; }
         .num-box { width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; font-size: 16px; color: black; font-weight: 900; }
-        .player-name { padding-left: 12px; font-size: 13px; text-transform: uppercase; font-weight: bold; }
+        .player-name { padding-left: 12px; font-size: 12px; text-transform: uppercase; font-weight: bold; }
 
-        footer { font-size: 11px; color: #444; text-align: center; padding: 30px 0; }
+        footer { font-size: 10px; color: #444; text-align: center; padding: 40px 0; }
     </style>
 </head>
 <body>
@@ -71,61 +69,58 @@
     </nav>
 
     <main class="content">
-        
-        <img src="gif1.gif" alt="Tournament Header" class="gif-header">
+        <img src="gif1.gif" alt="Header" class="gif-header">
 
         <div class="prize-card" id="seccion-principal">
             <h2 style="margin:0; color:var(--y); font-size: 20px;">PRO LEAGUE SEASON 1</h2>
             
-            <div style="margin-top: 15px; background: #111; padding: 15px; border-radius: 8px; border: 1px solid #222; text-align: left; max-width: 350px; margin-left: auto; margin-right: auto;">
-                <div style="display: flex; justify-content: space-between; font-size: 13px;">
+            <div style="margin: 25px auto; background: #111; padding: 20px; border-radius: 8px; border: 1px solid #222; text-align: left; max-width: 350px;">
+                <div style="display: flex; justify-content: space-between; font-size: 14px;">
                     <span>Inscripción Squad:</span> <span>$5.00</span>
                 </div>
-                <div style="display: flex; justify-content: space-between; font-size: 12px; color: #666;">
+                <div style="display: flex; justify-content: space-between; font-size: 12px; color: #666; margin-top: 5px;">
                     <span>Service Fee:</span> <span>$0.46</span>
                 </div>
-                <div style="display: flex; justify-content: space-between; font-size: 16px; font-weight: bold; color: var(--y); border-top: 1px solid #333; padding-top: 8px; margin-top: 8px;">
+                <div style="display: flex; justify-content: space-between; font-size: 20px; font-weight: bold; color: var(--y); border-top: 1px solid #333; padding-top: 10px; margin-top: 10px;">
                     <span>TOTAL:</span> <span>$5.46 USD</span>
                 </div>
             </div>
 
-            <div style="margin-top: 15px; font-size: 11px; color: #888;">
+            <div style="margin-bottom: 15px; font-size: 11px; color: #aaa;">
                 <input type="checkbox" id="check-rembolso">
-                <label for="check-rembolso">Acepto Política de No Reembolso</label>
+                <label for="check-rembolso">ACEPTO LA POLÍTICA DE NO REEMBOLSO</label>
             </div>
 
-            <div class="pago-container">
-                <a class="buy-with-crypto" 
-                   href="https://commerce.coinbase.com/checkout/2ad58cff-6535-47f4-a544-6f703bd57b56"
-                   onclick="return procesarPagoClick(event);">
-                    <button class="btn-pay-small">PAGAR $5.46</button>
-                </a>
-            </div>
+            <a href="https://square.link/u/s3t1Nrso?src=embed" 
+               target="_blank" 
+               class="btn-square-custom" 
+               onclick="return iniciarPago(event);">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b0/Apple_Pay_logo.svg" height="18">
+                PAGAR CON APPLE PAY
+            </a>
             
-            <div style="margin-top: 15px; display: flex; justify-content: center; gap: 8px; opacity: 0.3; filter: grayscale(1);">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b0/Apple_Pay_logo.svg" height="10">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/f/f2/Google_Pay_Logo.svg" height="10">
-            </div>
+            <p style="font-size: 10px; color: #444; margin-top: 10px;">PAGO SEGURO POR SQUARE UP</p>
         </div>
 
         <div id="form-registro">
-            <h2 style="color:var(--y); text-align: center; font-size: 18px;">REGISTRO DE ROSTER</h2>
-            <div class="input-group"><label>NOMBRE DEL CLAN</label><input type="text" id="reg-squad"></div>
-            <div class="input-group"><label>CAPITÁN</label><input type="text" id="reg-p1"></div>
-            <div class="input-group"><label>JUGADOR 2</label><input type="text" id="reg-p2"></div>
-            <div class="input-group"><label>JUGADOR 3</label><input type="text" id="reg-p3"></div>
-            <div class="input-group"><label>JUGADOR 4</label><input type="text" id="reg-p4"></div>
-            <button onclick="finalizarRegistro()" style="background:var(--green); color:white; padding:15px; width:100%; border:none; border-radius:4px; font-weight:bold; cursor:pointer; text-transform: uppercase;">ENVIAR REGISTRO</button>
+            <h2 style="color:var(--y); text-align: center; font-size: 18px; margin-top:0;">REGISTRO DE ROSTER</h2>
+            <p style="font-size:10px; color:#888; text-align:center; margin-bottom: 20px;">USA EL MISMO CLAN QUE PUSISTE EN SQUARE</p>
+            
+            <div class="input-group"><label>Nombre del Clan</label><input type="text" id="reg-squad" placeholder="TEAM NAME"></div>
+            <div class="input-group"><label>Capitán (IGL)</label><input type="text" id="reg-p1" placeholder="NICKNAME"></div>
+            <div class="input-group"><label>Jugador 2</label><input type="text" id="reg-p2" placeholder="NICKNAME"></div>
+            <div class="input-group"><label>Jugador 3</label><input type="text" id="reg-p3" placeholder="NICKNAME"></div>
+            <div class="input-group"><label>Jugador 4</label><input type="text" id="reg-p4" placeholder="NICKNAME"></div>
+            
+            <button onclick="finalizarRegistro()" style="background:var(--green); color:white; padding:18px; width:100%; border:none; border-radius:4px; font-weight:900; cursor:pointer; text-transform: uppercase;">ENVIAR INSCRIPCIÓN</button>
         </div>
 
-        <h3 style="text-align:center; color:var(--y); text-transform: uppercase; font-size: 14px; letter-spacing: 2px;">SQUADS INSCRITAS</h3>
+        <h3 style="text-align:center; color:var(--y); text-transform: uppercase; font-size: 14px; letter-spacing: 3px; margin-top: 50px;">SQUADS CONFIRMADAS</h3>
         <div id="lista-squads"></div>
-
     </main>
 
     <footer>
-        © 2025 TCODM LEAGUE USA. <br>
-        PAGOS PROCESADOS POR COINBASE COMMERCE.
+        © 2025 TCODM LEAGUE USA. <br> FLORIDA DIVISION.
     </footer>
 
     <script>
@@ -142,27 +137,24 @@
             setTimeout(() => n.remove(), 4000);
         }
 
-        function procesarPagoClick(e) {
+        function iniciarPago(e) {
             if(!document.getElementById('check-rembolso').checked) {
                 e.preventDefault();
-                showNotif("⚠️ Acepta la política de no reembolso.", "error");
+                showNotif("⚠️ DEBES ACEPTAR LA POLÍTICA", "error");
                 return false;
             }
-            
             setTimeout(() => {
                 document.getElementById('seccion-principal').style.display = 'none';
                 document.getElementById('form-registro').style.display = 'block';
-                showNotif("✅ Completa el registro de tu equipo.");
-            }, 1200);
+                showNotif("✅ REGISTRA TU EQUIPO DESPUÉS DE PAGAR");
+            }, 1000);
             return true;
         }
-
-        window.onload = cargarDatos;
 
         function finalizarRegistro() {
             const squad = document.getElementById('reg-squad').value;
             const p1 = document.getElementById('reg-p1').value;
-            if(!squad || !p1) return showNotif("⚠️ Clan y Capitán obligatorios.", "error");
+            if(!squad || !p1) return showNotif("⚠️ CLAN Y CAPITÁN OBLIGATORIOS", "error");
 
             database.ref('inscripciones/' + squad).set({
                 p1: p1,
@@ -171,34 +163,32 @@
                 p4: document.getElementById('reg-p4').value || "---",
                 estado: "VERIFICANDO PAGO"
             }).then(() => {
-                alert("¡Registro enviado! Aparecerás en la lista en breve.");
+                alert("¡DATOS ENVIADOS!");
                 window.location.reload();
             });
         }
 
-        function cargarDatos() {
-            database.ref('inscripciones').on('value', (snapshot) => {
-                const list = document.getElementById('lista-squads');
-                list.innerHTML = "";
-                let conf = 0;
-                snapshot.forEach((child) => {
-                    const d = child.val();
-                    if(d.estado === "CONFIRMADO") conf++;
-                    list.innerHTML += `
-                        <div class="squad-container">
-                            <div class="squad-header" style="display:flex; justify-content:space-between; margin-bottom:10px;">
-                                <span style="color:var(--y); font-weight:bold;">${child.key.toUpperCase()}</span>
-                                <span style="font-size:10px; color:${d.estado === 'CONFIRMADO' ? 'var(--green)' : '#f90'}">[${d.estado}]</span>
-                            </div>
-                            <div class="player-row"><div class="num-box" style="background:var(--p1)">1</div><div class="player-name">${d.p1}</div></div>
-                            <div class="player-row"><div class="num-box" style="background:var(--p2)">2</div><div class="player-name">${d.p2}</div></div>
-                            <div class="player-row"><div class="num-box" style="background:var(--p3)">3</div><div class="player-name">${d.p3}</div></div>
-                            <div class="player-row"><div class="num-box" style="background:var(--p4)">4</div><div class="player-name">${d.p4}</div></div>
-                        </div>`;
-                });
-                document.getElementById('count-nav').innerText = `${conf}/25 SQUADS`;
+        database.ref('inscripciones').on('value', (snapshot) => {
+            const list = document.getElementById('lista-squads');
+            list.innerHTML = "";
+            let conf = 0;
+            snapshot.forEach((child) => {
+                const d = child.val();
+                if(d.estado === "CONFIRMADO") conf++;
+                list.innerHTML += `
+                    <div class="squad-container">
+                        <div style="display:flex; justify-content:space-between; margin-bottom:12px; align-items:center;">
+                            <span style="color:var(--y); font-weight:900; font-size:14px;">${child.key.toUpperCase()}</span>
+                            <span style="font-size:10px; color:${d.estado === 'CONFIRMADO' ? 'var(--green)' : '#f90'}">${d.estado}</span>
+                        </div>
+                        <div class="player-row"><div class="num-box" style="background:var(--p1)">1</div><div class="player-name">${d.p1}</div></div>
+                        <div class="player-row"><div class="num-box" style="background:var(--p2)">2</div><div class="player-name">${d.p2}</div></div>
+                        <div class="player-row"><div class="num-box" style="background:var(--p3)">3</div><div class="player-name">${d.p3}</div></div>
+                        <div class="player-row"><div class="num-box" style="background:var(--p4)">4</div><div class="player-name">${d.p4}</div></div>
+                    </div>`;
             });
-        }
+            document.getElementById('count-nav').innerText = `${conf}/25 SQUADS`;
+        });
     </script>
 </body>
 </html>
