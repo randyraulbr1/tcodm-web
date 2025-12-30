@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>TCODM | Pro League</title>
     <link rel="icon" type="image/png" href="iconoweb.png">
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -10,50 +10,49 @@
 
     <style>
         :root { 
-            --y: #F4CB33; --bg: #050505; --green: #4CAF50; 
+            --y: #F4CB33; --bg: #050505; --green: #2ecc71; 
             --p1: #F4CB33; --p2: #00E5FF; --p3: #FF3D00; --p4: #9C27B0;
         }
         
         body { background: var(--bg); color: white; font-family: 'Segoe UI', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
 
-        /* NOTIFICACIÓN CUADRADA AMARILLA */
-        #notification-container { position: fixed; top: 80px; width: 90%; max-width: 350px; z-index: 2000; pointer-events: none; display: flex; flex-direction: column; align-items: center; }
-        .notification { background: var(--y); color: black; padding: 12px; border: 2px solid #000; font-weight: bold; text-align: center; text-transform: uppercase; font-size: 11px; margin-bottom: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.8); animation: slideDown 0.4s ease-out; width: 100%; }
+        /* NOTIFICACIÓN AMARILLA */
+        #notification-container { position: fixed; top: 70px; width: 90%; max-width: 350px; z-index: 2000; pointer-events: none; }
+        .notification { background: var(--y); color: black; padding: 12px; border: 2px solid #000; font-weight: bold; text-align: center; text-transform: uppercase; font-size: 11px; margin-bottom: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.8); animation: slideDown 0.4s ease-out; }
         @keyframes slideDown { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
-        nav { width: 100%; background: rgba(0,0,0,0.95); padding: 15px 0; display: flex; justify-content: space-around; border-bottom: 2px solid var(--y); position: fixed; top: 0; z-index: 1000; backdrop-filter: blur(10px); }
-        .content { width: 90%; max-width: 450px; padding: 100px 0; display: flex; flex-direction: column; align-items: center; }
+        nav { width: 100%; background: rgba(0,0,0,0.95); padding: 15px 0; display: flex; justify-content: space-around; border-bottom: 2px solid var(--y); position: fixed; top: 0; z-index: 1000; }
+        
+        .content { width: 95%; max-width: 450px; padding: 90px 0; display: flex; flex-direction: column; align-items: center; box-sizing: border-box; }
         
         .media-box { width: 100%; border-radius: 8px; border: 1px solid #222; margin: 10px 0; }
-        .tip-box { background: #111; border-left: 4px solid var(--y); padding: 12px; margin: 5px 0 25px 0; font-style: italic; font-size: 12px; color: #eee; width: 100%; box-sizing: border-box; }
+        .tip-box { background: #111; border-left: 4px solid var(--y); padding: 12px; margin: 5px 0 20px 0; font-style: italic; font-size: 12px; color: #eee; width: 100%; box-sizing: border-box; }
 
         .prize-card { background: #0a0a0a; padding: 15px; border: 1px solid #222; margin: 20px 0; border-radius: 8px; width: 100%; text-align: center; box-sizing: border-box; }
         .puntos-table { width: 100%; border-collapse: collapse; margin: 10px 0; }
         .puntos-table th { background: var(--y); color: black; padding: 6px; font-size: 10px; }
         .puntos-table td { padding: 8px; border: 1px solid #222; font-size: 14px; font-weight: bold; }
 
-        .btn-small { 
-            background: var(--y); color: black; padding: 10px 18px; border: none; 
-            font-weight: 900; cursor: pointer; text-decoration: none; 
-            display: inline-flex; align-items: center; justify-content: center;
-            border-radius: 4px; font-size: 11px; transition: 0.3s; text-transform: uppercase;
-            margin: 10px auto;
-        }
+        /* BLOQUE DE POLÍTICAS */
+        .policy-box { background: #0a0a0a; border: 1px solid #333; padding: 15px; margin-bottom: 15px; border-radius: 6px; font-size: 10px; text-align: left; color: #bbb; line-height: 1.4; }
+        .policy-box h3 { color: var(--y); font-size: 11px; margin-top: 0; text-transform: uppercase; }
 
-        /* FORMULARIO POST-PAGO */
-        #form-registro { display: none; background: #0a0a0a; padding: 20px; border: 2px solid var(--green); border-radius: 12px; margin: 20px 0; width: 100%; box-sizing: border-box; }
-        .input-group { margin-bottom: 10px; text-align: left; }
-        .input-group label { display: block; margin-bottom: 4px; color: var(--y); font-weight: bold; font-size: 10px; }
-        input[type="text"] { width: 100%; padding: 10px; background: #000; border: 1px solid #333; color: white; border-radius: 4px; outline: none; font-size: 13px; }
+        .btn-small { background: var(--y); color: black; padding: 10px 20px; border: none; font-weight: 900; cursor: pointer; text-decoration: none; display: inline-flex; border-radius: 4px; font-size: 11px; text-transform: uppercase; margin: 10px auto; }
 
-        .list-title { color: var(--y); text-transform: uppercase; font-size: 12px; margin: 30px 0 10px; letter-spacing: 2px; }
-        .squad-container { background: #0d0d0d; border: 1px solid #222; padding: 8px; margin-bottom: 8px; border-radius: 6px; width: 100%; box-sizing: border-box; }
-        .player-row { display: flex; align-items: center; background: #000; margin-bottom: 2px; height: 28px; border-radius: 4px; }
-        .num-box { width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: 12px; color: black; font-weight: 900; }
-        .player-name { padding-left: 8px; font-size: 10px; text-transform: uppercase; font-weight: bold; }
+        /* FORMULARIO AMARILLO CENTRADO */
+        #form-registro { display: none; background: #111; padding: 20px; border: 3px solid var(--y); border-radius: 12px; margin: 20px 0; width: 100%; box-sizing: border-box; text-align: center; }
+        .input-group { width: 100%; margin-bottom: 12px; text-align: center; }
+        .input-group label { display: block; margin-bottom: 5px; color: var(--y); font-weight: bold; font-size: 10px; }
+        input[type="text"] { width: 100%; max-width: 280px; padding: 12px; background: #000; border: 1px solid var(--y); color: white; border-radius: 5px; outline: none; text-align: center; box-sizing: border-box; display: inline-block; }
 
-        footer { padding: 30px 10px; background: #080808; width: 100%; text-align: center; font-size: 9px; color: #555; box-sizing: border-box; }
-        .footer-logo { width: 35px; margin-bottom: 10px; }
+        .list-title { color: var(--y); text-transform: uppercase; font-size: 12px; margin: 30px 0 10px; letter-spacing: 2px; text-align: center; }
+        .squad-container { background: #0d0d0d; border: 1px solid #222; padding: 10px; margin-bottom: 10px; border-radius: 6px; width: 100%; box-sizing: border-box; }
+        .player-row { display: flex; align-items: center; background: #000; margin-bottom: 3px; height: 30px; border-radius: 4px; border: 1px solid #111; }
+        .num-box { width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; font-size: 13px; color: black; font-weight: 900; }
+        .player-name { padding-left: 10px; font-size: 11px; text-transform: uppercase; font-weight: bold; }
+
+        footer { padding: 40px 20px; background: #080808; width: 100%; text-align: center; font-size: 10px; color: #555; box-sizing: border-box; border-top: 1px solid #222; }
+        .footer-logo { width: 40px; margin-bottom: 15px; }
     </style>
 </head>
 <body>
@@ -67,21 +66,29 @@
 
     <main class="content">
         
-        <img src="gif1.gif" class="media-box" onerror="this.style.display='none'">
         <img src="br1.jpg" class="media-box">
-        <div class="tip-box"><strong>🎯 TIP KILLS:</strong> El "Drop Shot" es letal en enfrentamientos 1vs1 cercanos.</div>
+        <div class="tip-box"><strong>🎯 TIP KILLS:</strong> Domina el retroceso de tus armas en el campo de práctica antes de entrar.</div>
 
         <div class="prize-card" id="seccion-principal">
-            <h2 style="margin:0; color:var(--y); font-size: 14px;">PRO LEAGUE PRIZE POOL</h2>
+            <h2 style="margin:0; color:var(--y); font-size: 15px;">PREMIOS PRO LEAGUE</h2>
             <table class="puntos-table">
-                <tr><th>PUESTO</th><th>SQUAD</th></tr>
+                <tr><th>POSICIÓN</th><th>PREMIO</th></tr>
                 <tr><td>🥇 1° LUGAR</td><td>$60.00</td></tr>
                 <tr><td>🥈 2° LUGAR</td><td>$28.00</td></tr>
                 <tr><td>🥉 3° LUGAR</td><td>$12.00</td></tr>
             </table>
 
-            <div style="font-size: 10px; text-align: left; color: #888; margin: 10px 0;">
-                <input type="checkbox" id="check-rembolso"> <b>ACEPTO POLÍTICA DE NO REEMBOLSO</b>
+            <div class="policy-box">
+                <h3>⚠️ POLÍTICA DE NO REEMBOLSO</h3>
+                <p>Al realizar el pago, confirmas que has leído y aceptado los siguientes puntos:</p>
+                <ul>
+                    <li><strong>Compromiso:</strong> Los fondos se destinan inmediatamente a la bolsa de premios y gastos de organización.</li>
+                    <li><strong>Inasistencia:</strong> TCODM no se hace responsable si un clan o jugador no se presenta el día del evento. No habrá devoluciones por falta de asistencia.</li>
+                    <li><strong>Descalificación:</strong> El incumplimiento de las reglas del torneo conlleva la expulsión sin derecho a reembolso.</li>
+                </ul>
+                <div style="margin-top: 10px; color: white;">
+                    <input type="checkbox" id="check-rembolso"> <b>ACEPTO LAS POLÍTICAS Y RESPONSABILIDADES</b>
+                </div>
             </div>
 
             <a href="https://square.link/u/s3t1Nrso" target="_blank" class="btn-small" onclick="return validarPago(event)">
@@ -90,30 +97,29 @@
         </div>
 
         <div id="form-registro">
-            <h2 style="color:var(--green); font-size: 14px; margin:0 0 10px 0;">✅ PAGO CONFIRMADO</h2>
+            <h2 style="color:var(--green); font-size: 16px; margin: 0 0 15px 0;">PAGO CONFIRMADO ✅</h2>
             <div class="input-group"><label>NOMBRE DEL CLAN</label><input type="text" id="reg-squad"></div>
             <div class="input-group"><label>CAPITÁN</label><input type="text" id="reg-p1"></div>
             <div class="input-group"><label>JUGADOR 2</label><input type="text" id="reg-p2"></div>
             <div class="input-group"><label>JUGADOR 3</label><input type="text" id="reg-p3"></div>
             <div class="input-group"><label>JUGADOR 4</label><input type="text" id="reg-p4"></div>
-            <button class="btn-small" style="width:100%; background:var(--green); color:white;" onclick="finalizarRegistro()">ENVIAR REGISTRO</button>
+            <button class="btn-small" style="width:100%; max-width:280px; background:var(--green); color:black;" onclick="finalizarRegistro()">FINALIZAR REGISTRO</button>
         </div>
 
         <img src="br2.webp" class="media-box">
-        <div class="tip-box"><strong>🔥 TIP WIN:</strong> Prioriza siempre la altura (High Ground) en los círculos finales.</div>
+        <div class="tip-box"><strong>🔥 TIP WIN:</strong> El posicionamiento temprano en zona te da un 70% más de probabilidad de ganar.</div>
 
         <div class="list-title">SQUADS CONFIRMADAS</div>
         <div id="lista-confirmadas" style="width: 100%;"></div>
 
-        <div class="list-title" style="color:#444;">EN REVISIÓN</div>
+        <div class="list-title" style="color:#444;">POR VERIFICAR</div>
         <div id="lista-revision" style="width: 100%;"></div>
-
     </main>
 
     <footer>
         <img src="iconoweb.png" class="footer-logo"><br>
-        <strong>TCODM FLORIDA - COMUNIDAD LOCAL</strong><br>
-        Esta página es una herramienta de ayuda para organizar torneos locales entre clanes. No estamos afiliados a Activision ni a Call of Duty Mobile. Todos los derechos de imagen pertenecen a sus respectivos dueños.
+        <strong>SISTEMA DE AYUDA LOCAL - FLORIDA</strong><br>
+        Organización independiente de clanes locales. Call of Duty Mobile® y Activision® son marcas de sus respectivos dueños.
         <br><br>© 2025 TCODM - ALL RIGHTS RESERVED
     </footer>
 
@@ -133,35 +139,33 @@
 
         function validarPago(e) {
             if(!document.getElementById('check-rembolso').checked) {
-                alert("Debes aceptar la política de reembolso.");
+                showNotif("⚠️ DEBES ACEPTAR LAS POLÍTICAS PARA CONTINUAR");
                 e.preventDefault();
                 return false;
             }
             return true;
         }
 
-        // DETECTOR DE PAGO MEJORADO
         window.onload = function() {
             const params = new URLSearchParams(window.location.search);
             if (params.get('pago') === 'exitoso') {
                 document.getElementById('seccion-principal').style.display = 'none';
                 document.getElementById('form-registro').style.display = 'block';
-                showNotif("✅ PAGO VERIFICADO - REGISTRA TU EQUIPO");
+                showNotif("✅ PAGO DETECTADO. REGISTRA TU CLAN.");
             }
         };
 
         function finalizarRegistro() {
             const squad = document.getElementById('reg-squad').value;
             const p1 = document.getElementById('reg-p1').value;
-            if(!squad || !p1) return alert("Faltan datos");
-
+            if(!squad || !p1) return alert("Clan y Capitán obligatorios.");
             database.ref('inscripciones/' + squad).set({
                 p1: p1, p2: document.getElementById('reg-p2').value || "---",
                 p3: document.getElementById('reg-p3').value || "---",
                 p4: document.getElementById('reg-p4').value || "---",
                 estado: "VERIFICANDO"
             }).then(() => {
-                alert("REGISTRO RECIBIDO");
+                alert("DATOS ENVIADOS");
                 window.location.href = "index.html";
             });
         }
@@ -175,9 +179,9 @@
                 const d = child.val();
                 const card = `
                     <div class="squad-container">
-                        <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
-                            <span style="color:var(--y); font-weight:bold; font-size:11px;">${child.key.toUpperCase()}</span>
-                            <span style="font-size:8px; color:${d.estado === 'CONFIRMADO' ? 'var(--green)' : '#f90'}">${d.estado}</span>
+                        <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                            <span style="color:var(--y); font-weight:bold; font-size:12px;">${child.key.toUpperCase()}</span>
+                            <span style="font-size:9px; color:${d.estado === 'CONFIRMADO' ? 'var(--green)' : '#f90'}">${d.estado}</span>
                         </div>
                         <div class="player-row"><div class="num-box" style="background:var(--p1)">1</div><div class="player-name">${d.p1}</div></div>
                         <div class="player-row"><div class="num-box" style="background:var(--p2)">2</div><div class="player-name">${d.p2}</div></div>
