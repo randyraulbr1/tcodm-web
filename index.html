@@ -13,16 +13,16 @@
 
     <style>
         :root { 
-            --y: #F4CB33; --bg: #050505; --green: #4CAF50; 
+            --y: #F4CB33; --bg: #050505; --green: #4CAF50; --red: #ff3333;
             --p1: #F4CB33; --p2: #00E5FF; --p3: #FF3D00; --p4: #9C27B0;
-            --coinbase: #0052ff;
         }
         
         body { background: var(--bg); color: white; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
 
         /* NOTIFICACIONES GLOBO */
         #notification-container { position: fixed; top: 80px; right: 20px; z-index: 2000; }
-        .notification { background: var(--y); color: black; padding: 10px 20px; border-radius: 50px; margin-bottom: 10px; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.5); animation: slideIn 0.5s ease-out; }
+        .notification { background: var(--y); color: black; padding: 12px 25px; border-radius: 50px; margin-bottom: 10px; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.5); animation: slideIn 0.5s ease-out; }
+        .notification.error { background: var(--red); color: white; }
 
         @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 
@@ -43,20 +43,20 @@
         .puntos-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
         .puntos-table th { background: var(--y); color: black; padding: 10px; font-size: 12px; text-transform: uppercase; }
         .puntos-table td { padding: 12px; border: 1px solid #222; font-size: 16px; font-weight: bold; }
-        .val-verde { color: var(--green); }
 
         /* BOTONES */
         .btn-pay-main { 
-            background: var(--coinbase); color: white; padding: 20px; border: none; 
+            background: var(--y); color: black; padding: 20px; border: none; 
             font-weight: 900; cursor: pointer; text-decoration: none; display: block; 
             margin-top: 20px; border-radius: 10px; font-size: 18px; transition: 0.3s;
-            text-transform: uppercase; box-shadow: 0 4px 20px rgba(0, 82, 255, 0.4); width: 100%;
+            text-transform: uppercase; box-shadow: 0 4px 20px rgba(244, 203, 51, 0.3); width: 100%;
         }
+        .btn-pay-main:hover { background: white; transform: translateY(-2px); }
 
         .btn-save { background: var(--green); color: white; padding: 15px; border: none; border-radius: 4px; font-weight: bold; width: 100%; cursor: pointer; margin-top: 20px; font-size: 16px; text-transform: uppercase; }
 
         /* FORMULARIO */
-        #form-registro { background: #111; padding: 30px; border: 2px solid var(--coinbase); border-radius: 12px; margin: 20px 0; display: none; }
+        #form-registro { background: #111; padding: 30px; border: 2px solid var(--y); border-radius: 12px; margin: 20px 0; display: none; }
         .input-group { margin-bottom: 15px; text-align: left; }
         .input-group label { display: block; margin-bottom: 5px; color: var(--y); font-weight: bold; font-size: 12px; }
         input[type="text"] { width: 100%; padding: 12px; background: #000; border: 1px solid #333; color: white; border-radius: 4px; box-sizing: border-box; }
@@ -100,13 +100,13 @@
 
             <div style="margin-top: 20px; background: #111; padding: 15px; border-radius: 8px; border: 1px solid #222; text-align: left;">
                 <div style="display: flex; justify-content: space-between; font-size: 14px;">
-                    <span>Inscripción (Squad Completa):</span> <span>$5.00</span>
+                    <span>Inscripción (Squad):</span> <span>$5.00</span>
                 </div>
                 <div style="display: flex; justify-content: space-between; font-size: 13px; color: #666; margin-top: 5px;">
-                    <span>Service Fee (Apple/Card/Crypto):</span> <span>$0.50</span>
+                    <span>Service Fee:</span> <span>$0.46</span>
                 </div>
                 <div style="display: flex; justify-content: space-between; font-size: 18px; font-weight: bold; color: var(--y); margin-top: 10px; border-top: 1px solid #333; padding-top: 10px;">
-                    <span>TOTAL:</span> <span>$5.50 USD</span>
+                    <span>TOTAL:</span> <span>$5.46 USD</span>
                 </div>
             </div>
 
@@ -117,11 +117,11 @@
 
             <a class="buy-with-crypto" 
                href="https://commerce.coinbase.com/checkout/2ad58cff-6535-47f4-a544-6f703bd57b56"
-               onclick="return procesarPagoClick();">
-                <button class="btn-pay-main">PAGAR CON TARJETA / MÓVIL</button>
+               onclick="return procesarPagoClick(event);">
+                <button class="btn-pay-main">PAGAR INSCRIPCIÓN $5.46</button>
             </a>
             
-            <div style="margin-top: 15px; display: flex; justify-content: center; gap: 10px; opacity: 0.4;">
+            <div style="margin-top: 15px; display: flex; justify-content: center; gap: 10px; opacity: 0.4; filter: invert(1);">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/b/b0/Apple_Pay_logo.svg" height="15">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/f/f2/Google_Pay_Logo.svg" height="15">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" height="12">
@@ -129,8 +129,8 @@
         </div>
 
         <div id="form-registro">
-            <h2 style="color:var(--coinbase); text-align: center; margin-top: 0;">REGISTRO DE ROSTER</h2>
-            <p style="text-align: center; font-size: 13px; color: #888;">Si ya realizaste el pago, completa los datos de tu equipo abajo.</p>
+            <h2 style="color:var(--y); text-align: center; margin-top: 0;">REGISTRO DE ROSTER</h2>
+            <p style="text-align: center; font-size: 13px; color: #888;">Completa los datos de tu squad para el bracket oficial.</p>
             
             <div class="input-group">
                 <label>NOMBRE DEL CLAN</label>
@@ -150,36 +150,34 @@
     </main>
 
     <footer class="legal-box">
-        © 2025 TCODM LEAGUE. <br>
-        Esta competencia no está afiliada con Activision. Pagos procesados por Coinbase Commerce USA. <br>
-        No reembolsos una vez confirmada la transacción.
+        © 2025 TCODM LEAGUE USA. <br>
+        Pagos vía Coinbase Commerce. No reembolsos.
     </footer>
 
     <script>
-        // Configuración Firebase
         const firebaseConfig = { databaseURL: "https://tcodm-e4147-default-rtdb.firebaseio.com/" };
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
 
-        function showNotif(msg) {
+        function showNotif(msg, type = 'normal') {
             const container = document.getElementById('notification-container');
             const n = document.createElement('div');
-            n.className = 'notification';
+            n.className = `notification ${type === 'error' ? 'error' : ''}`;
             n.innerText = msg;
             container.appendChild(n);
             setTimeout(() => n.remove(), 4000);
         }
 
-        function procesarPagoClick() {
+        function procesarPagoClick(e) {
             if(!document.getElementById('check-rembolso').checked) {
-                alert("Debes aceptar la política de no reembolso.");
+                e.preventDefault();
+                showNotif("⚠️ Acepta la política de no reembolso para continuar.", "error");
                 return false;
             }
-            // Cambiar vista al formulario de registro para que el usuario lo vea al volver
             setTimeout(() => {
                 document.getElementById('seccion-principal').style.display = 'none';
                 document.getElementById('form-registro').style.display = 'block';
-                showNotif("Completa tu registro aquí");
+                showNotif("✅ Completa tu registro de equipo abajo.");
             }, 1500);
             return true;
         }
@@ -189,7 +187,7 @@
         function finalizarRegistro() {
             const squad = document.getElementById('reg-squad').value;
             const p1 = document.getElementById('reg-p1').value;
-            if(!squad || !p1) return alert("Faltan datos obligatorios.");
+            if(!squad || !p1) return showNotif("⚠️ Escribe el nombre del Clan y Capitán.", "error");
 
             database.ref('inscripciones/' + squad).set({
                 p1: p1,
@@ -198,7 +196,7 @@
                 p4: document.getElementById('reg-p4').value || "---",
                 estado: "VERIFICANDO PAGO"
             }).then(() => {
-                alert("¡Datos guardados! Una vez confirmado tu pago en el sistema, aparecerás como CONFIRMADO.");
+                alert("¡Registro enviado! Verificaremos tu pago en instantes.");
                 window.location.reload();
             });
         }
