@@ -16,7 +16,6 @@
         
         body { background: var(--bg); color: white; font-family: 'Segoe UI', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
 
-        /* NOTIFICACIÓN CON BORDE BLANCO */
         #notification-container { position: fixed; top: 70px; width: 90%; max-width: 350px; z-index: 2000; pointer-events: none; }
         .notification { 
             background: var(--y); 
@@ -34,7 +33,6 @@
         @keyframes slideDown { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
         nav { width: 100%; background: rgba(0,0,0,0.95); padding: 15px 0; display: flex; justify-content: space-around; border-bottom: 2px solid var(--y); position: fixed; top: 0; z-index: 1000; }
-        
         .content { width: 95%; max-width: 450px; padding: 90px 0; display: flex; flex-direction: column; align-items: center; box-sizing: border-box; }
         
         .media-box { width: 100%; border-radius: 8px; border: 1px solid #222; margin: 10px 0; }
@@ -55,14 +53,7 @@
         .input-group label { display: block; margin-bottom: 5px; color: var(--y); font-weight: bold; font-size: 10px; }
         input[type="text"] { width: 100%; max-width: 280px; padding: 12px; background: #000; border: 1px solid var(--y); color: white; border-radius: 5px; outline: none; text-align: center; box-sizing: border-box; display: inline-block; }
 
-        .list-title { color: var(--y); text-transform: uppercase; font-size: 12px; margin: 30px 0 10px; letter-spacing: 2px; text-align: center; }
-        .squad-container { background: #0d0d0d; border: 1px solid #222; padding: 10px; margin-bottom: 10px; border-radius: 6px; width: 100%; box-sizing: border-box; }
-        .player-row { display: flex; align-items: center; background: #000; margin-bottom: 3px; height: 30px; border-radius: 4px; border: 1px solid #111; }
-        .num-box { width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; font-size: 13px; color: black; font-weight: 900; }
-        .player-name { padding-left: 10px; font-size: 11px; text-transform: uppercase; font-weight: bold; }
-
         footer { padding: 40px 20px; background: #080808; width: 100%; text-align: center; font-size: 10px; color: #555; box-sizing: border-box; border-top: 1px solid #222; }
-        .footer-logo { width: 40px; margin-bottom: 15px; }
     </style>
 </head>
 <body>
@@ -95,12 +86,14 @@
                     <li><strong>Compromiso:</strong> Los fondos se destinan inmediatamente a la bolsa de premios y gastos de organización.</li>
                     <li><strong>Inasistencia:</strong> TCODM no se hace responsable si un clan o jugador no se presenta el día del evento. No habrá devoluciones.</li>
                     <li><strong>Descalificación:</strong> El incumplimiento de las reglas conlleva la expulsión sin derecho a reembolso.</li>
+                    <li><strong>Identificación:</strong> Al pagar en Square, <u>debes</u> poner el nombre exacto de tu Squad. Debe ser el mismo que uses en el formulario de registro posterior.</li>
                 </ul>
                 <div style="margin-top: 10px; color: white;">
                     <input type="checkbox" id="check-rembolso"> <b>ACEPTO LAS POLÍTICAS Y RESPONSABILIDADES</b>
                 </div>
             </div>
 
+            <p style="font-size: 9px; color: var(--y); font-weight: bold; margin-bottom: 5px;">RECUERDA USAR EL MISMO NOMBRE DE SQUAD EN EL PAGO Y EL REGISTRO</p>
             <a href="https://square.link/u/s3t1Nrso" target="_blank" class="btn-small" onclick="return validarPago(event)">
                 PAGAR INSCRIPCIÓN $5.46
             </a>
@@ -108,7 +101,8 @@
 
         <div id="form-registro">
             <h2 style="color:var(--green); font-size: 16px; margin: 0 0 15px 0;">PAGO CONFIRMADO</h2>
-            <div class="input-group"><label>NOMBRE DEL CLAN</label><input type="text" id="reg-squad" placeholder="EJ: CLAN ALPHA"></div>
+            <p style="font-size: 10px; color: #888; margin-bottom: 15px;">USA EL MISMO NOMBRE QUE PUSISTE EN SQUARE</p>
+            <div class="input-group"><label>NOMBRE DEL CLAN (SQUAD)</label><input type="text" id="reg-squad" placeholder="EJ: CLAN ALPHA"></div>
             <div class="input-group"><label>CAPITÁN</label><input type="text" id="reg-p1"></div>
             <div class="input-group"><label>JUGADOR 2</label><input type="text" id="reg-p2"></div>
             <div class="input-group"><label>JUGADOR 3</label><input type="text" id="reg-p3"></div>
@@ -116,102 +110,87 @@
             <button class="btn-small" style="width:100%; max-width:280px; background:var(--green); color:black;" onclick="finalizarRegistro()">FINALIZAR REGISTRO</button>
         </div>
 
-        <img src="br2.webp" class="media-box">
-        <div class="tip-box"><strong>🔥 TIP WIN:</strong> El posicionamiento temprano en zona te da un 70% más de probabilidad de ganar.</div>
+        <script>
+            // ... (Toda la lógica de Firebase y notificaciones igual que la versión anterior)
+            const firebaseConfig = { databaseURL: "https://tcodm-e4147-default-rtdb.firebaseio.com/" };
+            firebase.initializeApp(firebaseConfig);
+            const database = firebase.database();
 
-        <div class="list-title">SQUADS CONFIRMADAS</div>
-        <div id="lista-confirmadas" style="width: 100%;"></div>
+            function showNotif(msg) {
+                const container = document.getElementById('notification-container');
+                const n = document.createElement('div');
+                n.className = 'notification';
+                n.innerText = msg;
+                container.appendChild(n);
+                setTimeout(() => n.remove(), 5000);
+            }
 
-        <div class="list-title" style="color:#444;">POR VERIFICAR</div>
-        <div id="lista-revision" style="width: 100%;"></div>
+            function validarPago(e) {
+                if(!document.getElementById('check-rembolso').checked) {
+                    showNotif("DEBES ACEPTAR LAS POLÍTICAS PARA CONTINUAR");
+                    e.preventDefault();
+                    return false;
+                }
+                return true;
+            }
+
+            window.onload = function() {
+                const params = new URLSearchParams(window.location.search);
+                if (params.get('pago') === 'exitoso') {
+                    document.getElementById('seccion-principal').style.display = 'none';
+                    document.getElementById('form-registro').style.display = 'block';
+                    showNotif("PAGO DETECTADO. REGISTRA TU CLAN.");
+                }
+            };
+
+            function finalizarRegistro() {
+                const squad = document.getElementById('reg-squad').value;
+                const p1 = document.getElementById('reg-p1').value;
+                const p2 = document.getElementById('reg-p2').value;
+                const p3 = document.getElementById('reg-p3').value;
+                const p4 = document.getElementById('reg-p4').value;
+
+                if(!squad || !p1 || !p2 || !p3 || !p4) {
+                    showNotif("DEBES COMPLETAR TODOS LOS CAMPOS DE LA SQUAD");
+                    return;
+                }
+
+                database.ref('inscripciones/' + squad).set({
+                    p1: p1, p2: p2, p3: p3, p4: p4,
+                    estado: "VERIFICANDO"
+                }).then(() => {
+                    showNotif("REGISTRO ENVIADO EXITOSAMENTE");
+                    setTimeout(() => {
+                        window.location.href = "index.html";
+                    }, 3000);
+                });
+            }
+
+            database.ref('inscripciones').on('value', (snapshot) => {
+                // ... lógica de actualización de listas (igual que antes)
+                const listConf = document.getElementById('lista-confirmadas');
+                const listRev = document.getElementById('lista-revision');
+                listConf.innerHTML = ""; listRev.innerHTML = "";
+                let count = 0;
+                snapshot.forEach((child) => {
+                    const d = child.val();
+                    const card = `
+                        <div class="squad-container">
+                            <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                                <span style="color:var(--y); font-weight:bold; font-size:12px;">${child.key.toUpperCase()}</span>
+                                <span style="font-size:9px; color:${d.estado === 'CONFIRMADO' ? 'var(--green)' : '#f90'}">${d.estado}</span>
+                            </div>
+                            <div class="player-row"><div class="num-box" style="background:var(--p1)">1</div><div class="player-name">${d.p1}</div></div>
+                            <div class="player-row"><div class="num-box" style="background:var(--p2)">2</div><div class="player-name">${d.p2}</div></div>
+                            <div class="player-row"><div class="num-box" style="background:var(--p3)">3</div><div class="player-name">${d.p3}</div></div>
+                            <div class="player-row"><div class="num-box" style="background:var(--p4)">4</div><div class="player-name">${d.p4}</div></div>
+                        </div>`;
+                    if(d.estado === "CONFIRMADO") { listConf.innerHTML += card; count++; }
+                    else { listRev.innerHTML += card; }
+                });
+                document.getElementById('count-nav').innerText = `${count} SQUADS`;
+            });
+        </script>
     </main>
-
-    <footer>
-        <img src="iconoweb.png" class="footer-logo"><br>
-        <strong>SISTEMA DE AYUDA LOCAL - FLORIDA</strong><br>
-        Organización independiente de clanes locales. Call of Duty Mobile® y Activision® son marcas de sus respectivos dueños.
-        <br><br>© 2025 TCODM - ALL RIGHTS RESERVED
-    </footer>
-
-    <script>
-        const firebaseConfig = { databaseURL: "https://tcodm-e4147-default-rtdb.firebaseio.com/" };
-        firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
-
-        function showNotif(msg) {
-            const container = document.getElementById('notification-container');
-            const n = document.createElement('div');
-            n.className = 'notification';
-            n.innerText = msg;
-            container.appendChild(n);
-            setTimeout(() => n.remove(), 5000);
-        }
-
-        function validarPago(e) {
-            if(!document.getElementById('check-rembolso').checked) {
-                showNotif("DEBES ACEPTAR LAS POLÍTICAS PARA CONTINUAR");
-                e.preventDefault();
-                return false;
-            }
-            return true;
-        }
-
-        window.onload = function() {
-            const params = new URLSearchParams(window.location.search);
-            if (params.get('pago') === 'exitoso') {
-                document.getElementById('seccion-principal').style.display = 'none';
-                document.getElementById('form-registro').style.display = 'block';
-                showNotif("PAGO DETECTADO. REGISTRA TU CLAN.");
-            }
-        };
-
-        function finalizarRegistro() {
-            const squad = document.getElementById('reg-squad').value;
-            const p1 = document.getElementById('reg-p1').value;
-            const p2 = document.getElementById('reg-p2').value;
-            const p3 = document.getElementById('reg-p3').value;
-            const p4 = document.getElementById('reg-p4').value;
-
-            // VALIDACIÓN: TODOS LOS CAMPOS DEBEN ESTAR LLENOS
-            if(!squad || !p1 || !p2 || !p3 || !p4) {
-                showNotif("DEBES COMPLETAR TODOS LOS CAMPOS DE LA SQUAD");
-                return;
-            }
-
-            database.ref('inscripciones/' + squad).set({
-                p1: p1, p2: p2, p3: p3, p4: p4,
-                estado: "VERIFICANDO"
-            }).then(() => {
-                showNotif("REGISTRO ENVIADO EXITOSAMENTE");
-                setTimeout(() => {
-                    window.location.href = "index.html";
-                }, 3000);
-            });
-        }
-
-        database.ref('inscripciones').on('value', (snapshot) => {
-            const listConf = document.getElementById('lista-confirmadas');
-            const listRev = document.getElementById('lista-revision');
-            listConf.innerHTML = ""; listRev.innerHTML = "";
-            let count = 0;
-            snapshot.forEach((child) => {
-                const d = child.val();
-                const card = `
-                    <div class="squad-container">
-                        <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
-                            <span style="color:var(--y); font-weight:bold; font-size:12px;">${child.key.toUpperCase()}</span>
-                            <span style="font-size:9px; color:${d.estado === 'CONFIRMADO' ? 'var(--green)' : '#f90'}">${d.estado}</span>
-                        </div>
-                        <div class="player-row"><div class="num-box" style="background:var(--p1)">1</div><div class="player-name">${d.p1}</div></div>
-                        <div class="player-row"><div class="num-box" style="background:var(--p2)">2</div><div class="player-name">${d.p2}</div></div>
-                        <div class="player-row"><div class="num-box" style="background:var(--p3)">3</div><div class="player-name">${d.p3}</div></div>
-                        <div class="player-row"><div class="num-box" style="background:var(--p4)">4</div><div class="player-name">${d.p4}</div></div>
-                    </div>`;
-                if(d.estado === "CONFIRMADO") { listConf.innerHTML += card; count++; }
-                else { listRev.innerHTML += card; }
-            });
-            document.getElementById('count-nav').innerText = `${count} SQUADS`;
-        });
-    </script>
 </body>
 </html>
