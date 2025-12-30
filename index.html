@@ -14,113 +14,204 @@
             --p1: #F4CB33; --p2: #00E5FF; --p3: #FF3D00; --p4: #9C27B0;
         }
         
-        body { background: var(--bg); color: white; font-family: 'Arial', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; }
+        body { background: var(--bg); color: white; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
 
-        nav { width: 100%; background: rgba(0,0,0,0.9); padding: 15px 0; display: flex; justify-content: space-around; border-bottom: 2px solid var(--y); position: fixed; top: 0; z-index: 1000; }
+        /* NOTIFICACIONES GLOBO */
+        #notification-container { position: fixed; top: 80px; right: 20px; z-index: 2000; }
+        .notification { background: var(--y); color: black; padding: 10px 20px; border-radius: 50px; margin-bottom: 10px; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.5); animation: slideIn 0.5s ease-out; }
 
-        .content { width: 95%; max-width: 800px; padding: 80px 0; }
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 
-        /* IMÁGENES CON RECORTE PARA OCULTAR TEXTO BAJO */
+        nav { width: 100%; background: rgba(0,0,0,0.95); padding: 15px 0; display: flex; justify-content: space-around; border-bottom: 2px solid var(--y); position: fixed; top: 0; z-index: 1000; backdrop-filter: blur(10px); }
+
+        .content { width: 95%; max-width: 800px; padding: 100px 0; }
+
+        /* IMÁGENES CON MOVIMIENTO Y RECORTE */
         .img-container { 
             width: 100%; 
-            height: 250px; 
+            height: 300px; 
             overflow: hidden; 
-            border: 1px solid #333; 
+            border: 2px solid #222; 
             margin: 20px 0;
-            border-radius: 8px;
+            border-radius: 12px;
+            position: relative;
         }
         .img-container img { 
             width: 100%; 
-            height: auto; 
-            margin-top: -20px; /* Sube la imagen para ocultar lo de abajo */
+            height: 110%; 
+            object-fit: cover;
+            transition: transform 8s linear;
         }
+        .img-container:hover img { transform: scale(1.1) translateY(-5%); }
 
-        /* TIP BOX */
-        .tip-box { background: #111; border-left: 4px solid var(--y); padding: 15px; margin-bottom: 30px; font-style: italic; font-size: 14px; color: #ccc; }
+        .tip-box { background: #111; border-left: 4px solid var(--y); padding: 15px; margin-bottom: 30px; font-style: italic; font-size: 14px; color: #eee; line-height: 1.6; }
 
-        /* TABLA PREMIOS */
-        .prize-card { background: #0a0a0a; padding: 20px; border: 1px solid #222; margin-bottom: 40px; text-align: center; }
+        .prize-card { background: #0a0a0a; padding: 25px; border: 1px solid #222; margin-bottom: 40px; text-align: center; border-radius: 8px; }
         .puntos-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        .puntos-table th { background: var(--y); color: black; padding: 10px; font-size: 13px; }
-        .puntos-table td { padding: 12px; border: 1px solid #222; font-size: 16px; }
-        .val-verde { color: var(--green); font-weight: bold; }
+        .puntos-table th { background: var(--y); color: black; padding: 12px; font-size: 14px; text-transform: uppercase; }
+        .puntos-table td { padding: 15px; border: 1px solid #222; font-size: 18px; font-weight: bold; }
+        .val-verde { color: var(--green); }
 
-        /* LISTA SQUADS PEQUEÑA */
-        .squad-container { background: #0d0d0d; border: 1px solid #222; padding: 12px; margin-bottom: 20px; }
-        .squad-header { display: flex; justify-content: space-between; margin-bottom: 10px; }
-        .squad-name { font-size: 16px; font-weight: bold; color: var(--y); }
+        /* BOTÓN DE COMPRA PEQUEÑO */
+        .btn-pay-small { 
+            background: var(--y); 
+            color: black; 
+            padding: 10px 25px; 
+            border: none; 
+            font-weight: 900; 
+            cursor: pointer; 
+            text-decoration: none; 
+            display: inline-block; 
+            margin-top: 20px; 
+            border-radius: 4px;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+        .btn-pay-small:hover { background: white; transform: translateY(-2px); }
 
-        .player-row { display: flex; align-items: center; background: #000; margin-bottom: 4px; border: 1px solid #1a1a1a; height: 35px; }
-        .num-box { width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; font-size: 16px; color: black; font-weight: bold; }
-        .player-name { padding-left: 12px; font-size: 14px; text-transform: uppercase; font-weight: bold; }
+        /* FORMULARIO POST-PAGO */
+        #form-registro { background: #111; padding: 30px; border: 2px solid var(--green); border-radius: 8px; margin: 20px 0; display: none; }
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; margin-bottom: 5px; color: var(--y); font-weight: bold; }
+        input[type="text"] { width: 100%; padding: 12px; background: #000; border: 1px solid #333; color: white; border-radius: 4px; box-sizing: border-box; }
 
-        .nb1 { background: var(--p1); } .nb2 { background: var(--p2); } .nb3 { background: var(--p3); } .nb4 { background: var(--p4); }
+        /* LISTA SQUADS */
+        .squad-container { background: #0d0d0d; border: 1px solid #222; padding: 12px; margin-bottom: 15px; border-radius: 6px; }
+        .squad-header { display: flex; justify-content: space-between; margin-bottom: 10px; align-items: center; }
+        .player-row { display: flex; align-items: center; background: #000; margin-bottom: 4px; border: 1px solid #1a1a1a; height: 35px; border-radius: 4px; overflow: hidden; }
+        .num-box { width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; font-size: 16px; color: black; font-weight: 900; }
+        .player-name { padding-left: 12px; font-size: 13px; text-transform: uppercase; font-weight: bold; letter-spacing: 1px; }
 
-        .st-tag { font-size: 10px; padding: 2px 8px; border-radius: 10px; text-transform: uppercase; }
-        .st-pend { background: #420; color: #f90; }
-        .st-conf { background: #030; color: #4f4; }
-
-        .btn-pay { background: var(--y); color: black; padding: 15px; border: none; font-weight: bold; cursor: pointer; width: 100%; text-decoration: none; display: block; text-align: center; margin-top: 20px; }
+        /* LEGAL AMPLIADO */
+        .legal-box { padding: 40px 20px; background: #080808; margin-top: 50px; border-top: 1px solid #222; width: 100%; box-sizing: border-box; }
+        .legal-text { max-width: 800px; margin: 0 auto; font-size: 12px; color: #666; text-align: justify; line-height: 1.8; }
         
-        .legal { padding: 30px; font-size: 10px; color: #444; text-align: justify; line-height: 1.5; }
+        .checkbox-container { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 15px; font-size: 13px; color: #aaa; }
     </style>
 </head>
 <body>
 
+    <div id="notification-container"></div>
+
     <nav>
-        <div style="font-weight:900;">T<span style="color:var(--y)">CODM</span></div>
-        <div id="count-nav" style="color:var(--y);">0/25 SQUADS</div>
+        <div style="font-weight:900; font-size: 20px;">T<span style="color:var(--y)">CODM</span></div>
+        <div id="count-nav" style="color:var(--y); font-weight: bold;">0/25 SQUADS</div>
     </nav>
 
     <main class="content">
         
         <div class="img-container">
-            <img src="https://imgs.callofduty.com/content/dam/atvi/callofduty/cod-touchui/blog/body/codm/2025/season-3-cyber-mirage/CODM-S3-CM-ANNOUNCEMENT-006.jpg" alt="CODM S3">
+            <img src="https://imgs.callofduty.com/content/dam/atvi/callofduty/cod-touchui/blog/body/codm/2025/season-3-cyber-mirage/CODM-S3-CM-ANNOUNCEMENT-006.jpg" alt="Cyber Mirage">
         </div>
         <div class="tip-box">
-            <strong>🔥 TIP PRO #1:</strong> La comunicación es clave. No se separen más de 50 metros. Una Squad unida siempre vence a jugadores solitarios por más "pro" que sean.
+            <strong>🔥 ESTRATEGIA DE EQUIPO #1:</strong> El control de mapa es vital. Mantengan una formación de diamante para cubrir los 360 grados. La comunicación constante sobre la ubicación de placas y enemigos marca la diferencia entre el top 10 y la victoria.
         </div>
 
-        <div class="prize-card">
-            <h3 style="margin:0;">PREMIOS POR JUGADOR</h3>
+        <div class="prize-card" id="seccion-principal">
+            <h2 style="margin:0; color:var(--y);">PRO LEAGUE TOURNAMENT</h2>
             <table class="puntos-table">
-                <tr><th>PUESTO</th><th>SQUAD</th><th>CADA UNO</th></tr>
-                <tr><td>🥇 1er Lugar</td><td>$60.00</td><td class="val-verde">$15.00</td></tr>
-                <tr><td>🥈 2do Lugar</td><td>$28.00</td><td class="val-verde">$7.00</td></tr>
-                <tr><td>🥉 3er Lugar</td><td>$12.00</td><td class="val-verde">$3.00</td></tr>
+                <tr><th>PUESTO</th><th>SQUAD</th><th>INDIVIDUAL</th></tr>
+                <tr><td>🥇 1° LUGAR</td><td>$60.00</td><td class="val-verde">$15.00</td></tr>
+                <tr><td>🥈 2° LUGAR</td><td>$28.00</td><td class="val-verde">$7.00</td></tr>
+                <tr><td>🥉 3° LUGAR</td><td>$12.00</td><td class="val-verde">$3.00</td></tr>
             </table>
-            <a href="https://buy.stripe.com/4gM8wHey05kI44CfbN4ow00" class="btn-pay" id="btn-pago">PAGAR INSCRIPCIÓN ($5.46)</a>
+
+            <div class="checkbox-container">
+                <input type="checkbox" id="check-rembolso">
+                <span>Acepto que no hay reembolsos tras el pago (Política Obligatoria)</span>
+            </div>
+
+            <a href="https://buy.stripe.com/4gM8wHey05kI44CfbN4ow00" class="btn-pay-small" onclick="return validarPago()">INSCRIPCIÓN X SQUAD $5.46</a>
+        </div>
+
+        <div id="form-registro">
+            <h2 style="color:var(--green); text-align: center;">¡GRACIAS POR REGISTRARTE A NUESTRO TORNEO!</h2>
+            <p style="text-align: center; font-size: 14px; color: #ccc;">Por favor, ingresa los nombres <b>EXACTOS</b> que tienen en el juego para validar las Kills.</p>
+            
+            <div class="input-group">
+                <label>NOMBRE DE LA SQUAD</label>
+                <input type="text" id="reg-squad" placeholder="Ej: GHOST TEAM">
+            </div>
+            <div class="input-group"><label>CAPITÁN (TU NOMBRE)</label><input type="text" id="reg-p1"></div>
+            <div class="input-group"><label>JUGADOR 2</label><input type="text" id="reg-p2"></div>
+            <div class="input-group"><label>JUGADOR 3</label><input type="text" id="reg-p3"></div>
+            <div class="input-group"><label>JUGADOR 4</label><input type="text" id="reg-p4"></div>
+            
+            <button class="btn-pay-small" style="width:100%" onclick="finalizarRegistro()">GUARDAR REGISTRO OFICIAL</button>
         </div>
 
         <div class="img-container">
-            <img src="https://imgs.callofduty.com/content/dam/atvi/callofduty/cod-touchui/blog/body/codm/2025/CODM-S2-DIGITAL-DAWN-005.jpg" alt="CODM S2">
+            <img src="https://imgs.callofduty.com/content/dam/atvi/callofduty/cod-touchui/blog/body/codm/2025/CODM-S2-DIGITAL-DAWN-005.jpg" alt="Digital Dawn">
         </div>
         <div class="tip-box">
-            <strong>🎯 TIP PRO #2:</strong> En este torneo valen las KILLS. No campeen el final; busquen rotaciones agresivas en vehículos para encontrar equipos desprevenidos.
+            <strong>🎯 ESTRATEGIA DE EQUIPO #2:</strong> Optimización de recursos. No gasten suministros en peleas innecesarias fuera de zona. Prioricen las Kills en el "mid-game" cuando las rotaciones son más predecibles.
         </div>
 
-        <h3 style="text-align:center; color:var(--y);">SQUADS REGISTRADAS</h3>
+        <h3 style="text-align:center; color:var(--y); text-transform: uppercase; letter-spacing: 2px;">SQUADS CONFIRMADAS</h3>
         <div id="lista-squads"></div>
 
-        <div class="legal">
-            <strong>AVISO LEGAL:</strong> Call of Duty® y Call of Duty: Mobile® son marcas de Activision Publishing, Inc. TCODM es una organización independiente. Este sitio es para entretenimiento y ayuda a clanes. Sin relación comercial con Activision. 
-            <p style="text-align:center;">© 2025 TCODM LEAGUE</p>
-        </div>
     </main>
+
+    <footer class="legal-box">
+        <div class="legal-text">
+            <strong>AVISO LEGAL Y POLÍTICA DE PRIVACIDAD:</strong><br>
+            Este torneo es una competencia independiente organizada por TCODM y no cuenta con el patrocinio, respaldo ni administración directa de Activision Publishing, Inc. Call of Duty® y Call of Duty: Mobile® son marcas registradas de Activision. Al inscribirse, los participantes aceptan que TCODM actúa únicamente como gestor del evento.<br><br>
+            <strong>POLÍTICA DE NO REEMBOLSO:</strong> Debido a la naturaleza de los premios acumulados y la logística de cupos limitados (25 Squads), una vez procesado el pago de $5.46 USD, no se realizarán devoluciones bajo ninguna circunstancia, incluyendo inasistencia, problemas de red del usuario o descalificación por infracción de reglas. Los fondos se asignan inmediatamente al pozo de premios de la temporada.<br><br>
+            <strong>DERECHOS DE AUTOR:</strong> Todo el material visual utilizado pertenece a sus respectivos dueños y se utiliza bajo fines ilustrativos para la comunidad de jugadores.
+            <p style="text-align:center; margin-top: 20px; color: var(--y);">© 2025 TCODM LEAGUE - TODOS LOS DERECHOS RESERVADOS</p>
+        </div>
+    </footer>
 
     <script>
         const firebaseConfig = { databaseURL: "https://tcodm-e4147-default-rtdb.firebaseio.com/" };
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
 
+        function showNotif(msg) {
+            const container = document.getElementById('notification-container');
+            const n = document.createElement('div');
+            n.className = 'notification';
+            n.innerText = msg;
+            container.appendChild(n);
+            setTimeout(() => n.remove(), 4000);
+        }
+
+        function validarPago() {
+            if(!document.getElementById('check-rembolso').checked) {
+                alert("Debes marcar la casilla de política de no reembolso para continuar.");
+                return false;
+            }
+            return true;
+        }
+
         window.onload = function() {
             const params = new URLSearchParams(window.location.search);
             if (params.get('status') === 'success') {
-                document.body.innerHTML = "<h1>PAGO EXITOSO. REGISTRANDO...</h1>"; // Simplificado para el ejemplo
-                // Aquí podrías redirigir a un formulario pequeño
+                document.getElementById('seccion-principal').style.display = 'none';
+                document.getElementById('form-registro').style.display = 'block';
+                showNotif("¡Pago Verificado! Completa tu registro.");
             }
             cargarDatos();
+            // Simular globos de notificación aleatorios
+            setTimeout(() => showNotif("Nueva Squad inscrita: 'Alpha Team'"), 3000);
         };
+
+        function finalizarRegistro() {
+            const squad = document.getElementById('reg-squad').value;
+            const p1 = document.getElementById('reg-p1').value;
+            if(!squad || !p1) return alert("Por favor completa al menos el nombre de Squad y Capitán.");
+
+            database.ref('inscripciones/' + squad).set({
+                p1: p1,
+                p2: document.getElementById('reg-p2').value || "---",
+                p3: document.getElementById('reg-p3').value || "---",
+                p4: document.getElementById('reg-p4').value || "---",
+                estado: "PENDIENTE"
+            }).then(() => {
+                alert("Registro Guardado. El administrador verificará tu pago.");
+                window.location.href = "index.html";
+            });
+        }
 
         function cargarDatos() {
             database.ref('inscripciones').on('value', (snapshot) => {
@@ -133,13 +224,13 @@
                     list.innerHTML += `
                         <div class="squad-container">
                             <div class="squad-header">
-                                <span class="squad-name">${child.key}</span>
-                                <span class="st-tag ${d.estado === 'CONFIRMADO' ? 'st-conf' : 'st-pend'}">${d.estado}</span>
+                                <span style="color:var(--y); font-weight:bold;">${child.key.toUpperCase()}</span>
+                                <span style="font-size:10px; color:${d.estado === 'CONFIRMADO' ? 'var(--green)' : '#f90'}">[${d.estado}]</span>
                             </div>
-                            <div class="player-row"><div class="num-box nb1">1</div><div class="player-name">${d.p1}</div></div>
-                            <div class="player-row"><div class="num-box nb2">2</div><div class="player-name">${d.p2}</div></div>
-                            <div class="player-row"><div class="num-box nb3">3</div><div class="player-name">${d.p3}</div></div>
-                            <div class="player-row"><div class="num-box nb4">4</div><div class="player-name">${d.p4}</div></div>
+                            <div class="player-row"><div class="num-box" style="background:var(--p1)">1</div><div class="player-name">${d.p1}</div></div>
+                            <div class="player-row"><div class="num-box" style="background:var(--p2)">2</div><div class="player-name">${d.p2}</div></div>
+                            <div class="player-row"><div class="num-box" style="background:var(--p3)">3</div><div class="player-name">${d.p3}</div></div>
+                            <div class="player-row"><div class="num-box" style="background:var(--p4)">4</div><div class="player-name">${d.p4}</div></div>
                         </div>`;
                 });
                 document.getElementById('count-nav').innerText = `${conf}/25 SQUADS`;
