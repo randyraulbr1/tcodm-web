@@ -3,255 +3,165 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TCODM | Official Tournament League</title>
-    
+    <title>TCODM | Official League</title>
     <link rel="icon" type="image/png" href="iconoweb.png">
-    
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
     <style>
-        :root {
-            --y: #F4CB33; 
-            --bg: #050505;
-            --nav-bg: rgba(15, 15, 15, 0.98);
-            --gray: #888;
-        }
+        :root { --y: #F4CB33; --bg: #050505; --orange: #ff9800; --green: #4CAF50; }
+        body { background: var(--bg); color: white; font-family: Arial, sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; }
+        
+        nav { width: 100%; background: rgba(15,15,15,0.95); padding: 15px 0; display: flex; justify-content: space-around; border-bottom: 2px solid var(--y); position: fixed; top: 0; z-index: 1000; }
+        
+        .hero-banner { margin-top: 60px; width: 100%; max-width: 1000px; height: 40vh; background: url('gif1.gif') no-repeat center center; background-size: contain; }
 
-        body {
-            background-color: var(--bg);
-            color: white;
-            margin: 0;
-            font-family: "Arial", sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        nav {
-            width: 100%;
-            background-color: var(--nav-bg);
-            padding: 12px 0;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            border-bottom: 2px solid var(--y);
-            position: fixed;
-            top: 0;
-            z-index: 1000;
-            backdrop-filter: blur(10px);
-        }
-
-        .logo { font-size: 22px; font-weight: 900; letter-spacing: 2px; }
-        .logo .t-gray { color: var(--gray); }
-        .logo .codm-yellow { color: var(--y); }
-
-        .hero-banner {
-            margin-top: 55px;
-            width: 100%;
-            max-width: 1200px;
-            height: 45vh; 
-            background: url('gif1.gif') no-repeat center center;
-            background-size: contain;
-            background-color: #000;
-        }
-
-        .content {
-            width: 90%;
-            max-width: 850px;
-            padding: 40px 0;
-        }
-
-        .description-box {
-            text-align: left;
-            background: #0d0d0d;
-            padding: 25px;
-            border-left: 4px solid var(--y);
-            margin-bottom: 30px;
-            line-height: 1.7;
-        }
-
-        /* --- TABLA DE PUNTOS --- */
-        .puntos-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            background: #111;
-            font-size: 14px;
-        }
+        .content { width: 90%; max-width: 800px; padding: 30px 0; text-align: center; }
+        
+        .card { background: #0d0d0d; padding: 20px; border-left: 4px solid var(--y); margin-bottom: 20px; text-align: left; }
+        
+        /* TABLA PREMIOS */
+        .puntos-table { width: 100%; border-collapse: collapse; margin: 15px 0; }
         .puntos-table th { background: var(--y); color: black; padding: 10px; }
         .puntos-table td { padding: 10px; border: 1px solid #222; text-align: center; }
 
-        #pago-requerido {
-            background: #1a0f00;
-            border: 1px solid #3d2b00;
-            padding: 30px;
-            border-radius: 4px;
-            margin: 20px 0;
-            text-align: center;
-        }
+        .btn-pay { background: var(--y); color: black; padding: 15px; border: none; font-weight: bold; cursor: pointer; width: 100%; text-transform: uppercase; text-decoration: none; display: block; }
+        
+        .registro-box { background: #111; padding: 25px; border: 1px solid #222; display: none; text-align: left; }
+        input { width: 100%; padding: 12px; margin-bottom: 10px; background: #000; border: 1px solid #444; color: white; box-sizing: border-box; }
 
-        .registro-box {
-            background: #111;
-            padding: 35px;
-            border: 1px solid #222;
-            display: none;
-        }
+        /* LISTA */
+        .lista-container { width: 100%; margin-top: 40px; background: #0a0a0a; padding: 15px; border-radius: 5px; }
+        .tabla-inscritos { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        .tabla-inscritos th { text-align: left; color: var(--y); border-bottom: 1px solid #333; padding: 8px; }
+        .tabla-inscritos td { padding: 10px; border-bottom: 1px solid #111; font-size: 14px; }
 
-        input {
-            width: 100%;
-            padding: 14px;
-            margin-bottom: 12px;
-            background: #000;
-            border: 1px solid #444;
-            color: white;
-            box-sizing: border-box;
-        }
+        .status-pend { color: var(--orange); font-weight: bold; }
+        .status-conf { color: var(--green); font-weight: bold; }
 
-        .btn-final {
-            width: 100%;
-            padding: 18px;
-            background: var(--y);
-            color: black;
-            font-weight: 900;
-            border: none;
-            cursor: pointer;
-            text-transform: uppercase;
-        }
-
-        /* --- LISTA DE INSCRITOS --- */
-        .inscritos-section {
-            margin-top: 50px;
-            width: 100%;
-            background: #0a0a0a;
-            padding: 20px;
-            border-radius: 8px;
-        }
-        .inscritos-table { width: 100%; border-collapse: collapse; }
-        .inscritos-table th { color: var(--y); text-align: left; padding: 10px; border-bottom: 2px solid #222; }
-        .inscritos-table td { padding: 10px; border-bottom: 1px solid #111; font-size: 14px; color: #ccc; }
-
-        footer { padding: 40px; text-align: center; color: #333; font-size: 11px; }
+        .politica-box { font-size: 12px; color: #888; margin: 15px 0; text-align: left; background: #151515; padding: 10px; border: 1px solid #333; }
     </style>
 </head>
 <body>
 
     <nav>
-        <div class="logo"><span class="t-gray">T</span><span class="codm-yellow">CODM</span></div>
-        <a href="https://buy.stripe.com/4gM8wHey05kI44CfbN4ow00" style="text-decoration:none; background:var(--y); color:black; padding:8px 15px; font-weight:bold; font-size:12px;">PAGAR SLOT</a>
+        <div style="font-weight:900; letter-spacing:2px;">T<span style="color:var(--y)">CODM</span></div>
+        <div id="count-nav" style="color:var(--y); font-weight:bold;">SQUADS: 0/25</div>
     </nav>
 
     <section class="hero-banner"></section>
 
     <main class="content">
-        <h2 style="text-align:center; letter-spacing:2px;">SISTEMA DE COMPETENCIA</h2>
-        
-        <div class="description-box">
-            <h3 style="color:var(--y); margin-top:0;">RECOMPENSAS Y REGLAS</h3>
-            <p>Torneo exclusivo para <strong>25 Squads (100 jugadores)</strong>. El pozo acumulado es de <strong>$125 USD</strong>, distribuido tras descontar el 20% de gestión administrativa.</p>
-            
+        <div class="card">
+            <h2 style="color:var(--y); margin-top:0;">RECOMPENSA TOTAL: $100 USD</h2>
+            <p>Se jugarán <strong>3 partidas consecutivas</strong>. Los premios se reparten a los 3 jugadores/squads con mayor número de Kills acumuladas.</p>
             <table class="puntos-table">
-                <thead>
-                    <tr><th>POSICIÓN</th><th>PREMIO</th><th>PUNTOS</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td>🥇 1er Lugar</td><td>$60.00 USD</td><td>25 pts</td></tr>
-                    <tr><td>🥈 2do Lugar</td><td>$25.00 USD</td><td>18 pts</td></tr>
-                    <tr><td>🥉 3er Lugar</td><td>$15.00 USD</td><td>12 pts</td></tr>
-                </tbody>
+                <tr><th>PUESTO</th><th>RECOMPENSA</th></tr>
+                <tr><td>🥇 Top 1 Kills</td><td>$60.00 USD</td></tr>
+                <tr><td>🥈 Top 2 Kills</td><td>$25.00 USD</td></tr>
+                <tr><td>🥉 Top 3 Kills</td><td>$15.00 USD</td></tr>
             </table>
-            <p style="text-align: center; background: #222; padding: 10px; border-radius: 4px;">
-                🔥 <strong>BONO POR KILL:</strong> Cada baja confirmada suma <strong>+1 Punto</strong> a la tabla general.
-            </p>
+            <p style="font-size:13px;">* Inscripción por Squad: <strong>$5.46 USD</strong></p>
         </div>
 
-        <div id="pago-requerido">
-            <h3 style="color: var(--y); margin-top:0;">1. PAGA TU INSCRIPCIÓN ($5.00)</h3>
-            <p>Una vez completado el pago en Stripe, serás redirigido para anotar los nombres de tus jugadores.</p>
-            <a href="https://buy.stripe.com/4gM8wHey05kI44CfbN4ow00" class="btn-final" style="text-decoration:none; display:inline-block; width:auto; padding: 15px 40px;">IR A PAGAR</a>
+        <div id="pago-seccion">
+            <div class="politica-box">
+                <strong>POLÍTICA DE NO REEMBOLSO:</strong><br>
+                Al realizar el pago, aceptas que no habrá devoluciones. El pozo se reserva para los premios y la logística. Es responsabilidad de la Squad asistir puntualmente a los 3 juegos. La inasistencia resultará en la pérdida del cupo sin derecho a reclamo.
+                <br><br>
+                <input type="checkbox" id="acepto" style="width:auto;"> He leído y acepto la política de asistencia y no reembolso.
+            </div>
+            <button class="btn-pay" onclick="validarPago()">PAGAR SLOT ($5.46)</button>
         </div>
 
         <div id="registro-box" class="registro-box">
-            <h3 style="color: #4CAF50; text-align:center; margin-top:0;">✓ PAGO VERIFICADO</h3>
+            <h3 style="color:var(--green)">✓ PAGO DETECTADO</h3>
+            <p>Registra a tu equipo. Tu estado aparecerá como <span class="status-pend">PENDIENTE</span> hasta que validemos tu pago manualmente.</p>
             <input type="text" id="teamName" placeholder="Nombre de la Squad">
-            <input type="text" id="capitan" placeholder="ID Capitán (IGL)">
-            <input type="text" id="p2" placeholder="ID Jugador 2">
-            <input type="text" id="p3" placeholder="ID Jugador 3">
-            <input type="text" id="p4" placeholder="ID Jugador 4">
-            <button class="btn-final" onclick="enviarFirebase()">REGISTRAR EQUIPO</button>
+            <input type="text" id="p1" placeholder="Capitán (ID)">
+            <input type="text" id="p2" placeholder="Jugador 2">
+            <input type="text" id="p3" placeholder="Jugador 3">
+            <input type="text" id="p4" placeholder="Jugador 4">
+            <button class="btn-pay" onclick="enviarFirebase()">FINALIZAR REGISTRO</button>
         </div>
 
-        <div class="inscritos-section">
-            <h3 style="color: var(--y); margin-top:0;">EQUIPOS CONFIRMADOS (CUPOS: 25)</h3>
-            <table class="inscritos-table">
+        <div class="lista-container">
+            <h3 id="display-cupos">SQUADS REGISTRADAS: 0/25</h3>
+            <table class="tabla-inscritos">
                 <thead>
-                    <tr>
-                        <th>SQUAD</th>
-                        <th>CAPITÁN</th>
-                        <th>ESTADO</th>
-                    </tr>
+                    <tr><th>SQUAD</th><th>LÍDER</th><th>ESTADO</th></tr>
                 </thead>
-                <tbody id="lista-equipos">
-                    </tbody>
+                <tbody id="tabla-body"></tbody>
             </table>
         </div>
-
     </main>
 
-    <footer>
-        © <span id="year"></span> TCODM LEAGUE | POWERED BY STRIPE & FIREBASE
-    </footer>
-
     <script>
-        document.getElementById('year').innerText = new Date().getFullYear();
-
-        // CONFIGURACIÓN FIREBASE
         const firebaseConfig = { databaseURL: "https://tcodm-e4147-default-rtdb.firebaseio.com/" };
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
 
-        // DETECTAR PAGO
+        function validarPago() {
+            if(!document.getElementById('acepto').checked) {
+                alert("Debes aceptar la política de no reembolso.");
+                return;
+            }
+            window.location.href = "https://buy.stripe.com/4gM8wHey05kI44CfbN4ow00";
+        }
+
         window.onload = function() {
             const params = new URLSearchParams(window.location.search);
             if (params.get('status') === 'success') {
-                document.getElementById('pago-requerido').style.display = 'none';
+                document.getElementById('pago-seccion').style.display = 'none';
                 document.getElementById('registro-box').style.display = 'block';
             }
-            cargarEquipos();
+            escucharBaseDeDatos();
         };
 
-        // GUARDAR EN FIREBASE
         function enviarFirebase() {
             const team = document.getElementById('teamName').value;
-            const cap = document.getElementById('capitan').value;
-
-            if(!team || !cap) return alert("Llena los campos obligatorios");
+            const cap = document.getElementById('p1').value;
+            if(!team || !cap) return alert("Faltan datos");
 
             database.ref('inscripciones/' + team).set({
                 capitan: cap,
-                jugadores: [document.getElementById('p2').value, document.getElementById('p3').value, document.getElementById('p4').value],
-                pago: "CONFIRMADO",
+                integrantes: [document.getElementById('p2').value, document.getElementById('p3').value, document.getElementById('p4').value],
+                estado: "PENDIENTE", // Tú cambias esto a "CONFIRMADO" en Firebase
                 fecha: new Date().toLocaleString()
             }).then(() => {
-                alert("¡Inscripción completada!");
+                alert("Registro enviado. Espera la confirmación del admin.");
                 window.location.href = "index.html";
             });
         }
 
-        // CARGAR LISTA EN TIEMPO REAL
-        function cargarEquipos() {
-            const tableBody = document.getElementById('lista-equipos');
+        function escucharBaseDeDatos() {
             database.ref('inscripciones').on('value', (snapshot) => {
-                tableBody.innerHTML = "";
-                snapshot.forEach((childSnapshot) => {
-                    const data = childSnapshot.val();
-                    const row = `<tr>
-                        <td>${childSnapshot.key}</td>
+                const body = document.getElementById('tabla-body');
+                const countNav = document.getElementById('count-nav');
+                const displayCupos = document.getElementById('display-cupos');
+                body.innerHTML = "";
+                let confirmados = 0;
+                let total = 0;
+
+                snapshot.forEach((child) => {
+                    total++;
+                    const data = child.val();
+                    const isConf = data.estado === "CONFIRMADO";
+                    if(isConf) confirmados++;
+
+                    body.innerHTML += `<tr>
+                        <td>${child.key}</td>
                         <td>${data.capitan}</td>
-                        <td style="color:#4CAF50;">● Verificado</td>
+                        <td class="${isConf ? 'status-conf' : 'status-pend'}">${data.estado}</td>
                     </tr>`;
-                    tableBody.innerHTML += row;
                 });
+
+                countNav.innerText = `SQUADS: ${confirmados}/25`;
+                displayCupos.innerText = `SQUADS CONFIRMADAS: ${confirmados}/25`;
+                
+                if(confirmados >= 25) {
+                    document.getElementById('pago-seccion').innerHTML = "<h3 style='color:red'>CUPOS AGOTADOS</h3>";
+                }
             });
         }
     </script>
