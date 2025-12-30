@@ -1,0 +1,113 @@
+<style>
+    .legal-footer-btns {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+        padding: 10px;
+        background: #000;
+        width: 100%;
+    }
+    .btn-legal {
+        background: none;
+        border: 1px solid #333;
+        color: #777;
+        font-size: 9px;
+        padding: 5px 10px;
+        cursor: pointer;
+        text-transform: uppercase;
+        border-radius: 3px;
+        transition: 0.3s;
+    }
+    .btn-legal:hover {
+        border-color: var(--y);
+        color: var(--y);
+    }
+
+    /* Estilos del Modal (Ventana emergente) */
+    .legal-modal {
+        display: none; 
+        position: fixed;
+        z-index: 3000;
+        left: 0; top: 0;
+        width: 100%; height: 100%;
+        background-color: rgba(0,0,0,0.9);
+        overflow-y: auto;
+    }
+    .legal-modal-content {
+        background-color: #111;
+        margin: 10% auto;
+        padding: 25px;
+        border: 1px solid var(--y);
+        width: 85%;
+        max-width: 500px;
+        border-radius: 10px;
+        color: #ccc;
+        font-size: 13px;
+        line-height: 1.6;
+    }
+    .legal-modal-content h2 {
+        color: var(--y);
+        font-size: 16px;
+        text-transform: uppercase;
+        margin-top: 0;
+    }
+    .close-legal {
+        color: white;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+</style>
+
+<div class="legal-footer-btns">
+    <button class="btn-legal" onclick="openLegal('aviso')">Aviso Legal</button>
+    <button class="btn-legal" onclick="openLegal('privacidad')">Privacidad</button>
+    <button class="btn-legal" onclick="openLegal('reembolsos')">Reembolsos</button>
+    <button class="btn-legal" onclick="openLegal('reglas')">Reglamento</button>
+</div>
+
+<div id="modalLegal" class="legal-modal">
+    <div class="legal-modal-content">
+        <span class="close-legal" onclick="closeLegal()">&times;</span>
+        <div id="legalText"></div>
+    </div>
+</div>
+
+<script>
+    const contenidosLegales = {
+        aviso: `<h2>Aviso de No Afiliación</h2>
+                <p>tcodm.com es un sitio web independiente y no cuenta con el respaldo, la afiliación ni la asociación oficial de Activision Publishing, Inc., TiMi Studio Group, Garena ni ninguna de sus empresas filiales.</p>
+                <p>Los nombres 'Call of Duty', 'Call of Duty: Mobile' y sus logotipos asociados son marcas comerciales registradas de sus respectivos propietarios. El contenido se utiliza únicamente con fines informativos y de organización comunitaria.</p>`,
+        
+        privacidad: `<h2>Política de Privacidad</h2>
+                    <p>En tcodm.com protegemos tu información. Al registrarte, recolectamos datos básicos como tu nombre de usuario, ID de jugador y correo electrónico con el único fin de gestionar tu participación en los torneos.</p>
+                    <p>No compartimos ni vendemos tu información personal a terceros. Los pagos se procesan a través de plataformas externas seguras; no almacenamos datos de tarjetas.</p>`,
+        
+        reembolsos: `<h2>Términos de Compra y Premios</h2>
+                    <p>La compra de una entrada garantiza el derecho a participar. tcodm.com se reserva el derecho de cancelar un evento por falta de participantes, devolviendo el 100% del importe.</p>
+                    <p><b>No se realizarán reembolsos por inasistencia</b>, ni por descalificaciones debidas al uso de trampas (hacks) o comportamiento tóxico. Los premios se entregarán en un plazo máximo de 3 días hábiles tras verificar resultados.</p>`,
+        
+        reglas: `<h2>Reglamento y Juego Limpio</h2>
+                <p>Todo participante acepta someterse a las decisiones del equipo de arbitraje de tcodm.com. Está estrictamente prohibido el uso de software de terceros.</p>
+                <p>En caso de disputa, los capitanes deben presentar pruebas gráficas (capturas o grabaciones). Ante la falta de pruebas claras, tcodm.com tomará la decisión final para asegurar la continuidad del torneo.</p>`
+    };
+
+    function openLegal(seccion) {
+        document.getElementById('legalText').innerHTML = contenidosLegales[seccion];
+        document.getElementById('modalLegal').style.display = "block";
+    }
+
+    function closeLegal() {
+        document.getElementById('modalLegal').style.display = "none";
+    }
+
+    // Cerrar si hacen clic fuera del cuadro
+    window.onclick = function(event) {
+        let modal = document.getElementById('modalLegal');
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
