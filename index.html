@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>TCODM | Pro League</title>
     <link rel="icon" type="image/png" href="iconoweb.png">
+    <link rel="manifest" href="manifest.json">
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
@@ -16,25 +17,16 @@
         
         body { background: var(--bg); color: white; font-family: 'Segoe UI', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
 
-        /* NOTIFICACIÓN AMARILLA CON BORDE BLANCO */
         #notification-container { position: fixed; top: 70px; width: 90%; max-width: 350px; z-index: 2000; pointer-events: none; }
         .notification { 
-            background: var(--y); 
-            color: black; 
-            padding: 12px; 
-            border: 1px solid white; /* Borde fino blanco solicitado */
-            font-weight: bold; 
-            text-align: center; 
-            text-transform: uppercase; 
-            font-size: 11px; 
-            margin-bottom: 8px; 
-            box-shadow: 0 5px 15px rgba(0,0,0,0.8); 
+            background: var(--y); color: black; padding: 12px; border: 1px solid white; 
+            font-weight: bold; text-align: center; text-transform: uppercase; 
+            font-size: 11px; margin-bottom: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.8); 
             animation: slideDown 0.4s ease-out; 
         }
         @keyframes slideDown { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
         nav { width: 100%; background: rgba(0,0,0,0.95); padding: 15px 0; display: flex; justify-content: space-around; border-bottom: 2px solid var(--y); position: fixed; top: 0; z-index: 1000; }
-        
         .content { width: 95%; max-width: 450px; padding: 90px 0; display: flex; flex-direction: column; align-items: center; box-sizing: border-box; }
         
         .media-box { width: 100%; border-radius: 8px; border: 1px solid #222; margin: 10px 0; }
@@ -45,13 +37,11 @@
         .puntos-table th { background: var(--y); color: black; padding: 6px; font-size: 10px; }
         .puntos-table td { padding: 8px; border: 1px solid #222; font-size: 14px; font-weight: bold; }
 
-        /* BLOQUE DE POLÍTICAS */
         .policy-box { background: #0a0a0a; border: 1px solid #333; padding: 15px; margin-bottom: 15px; border-radius: 6px; font-size: 10px; text-align: left; color: #bbb; line-height: 1.4; }
         .policy-box h3 { color: var(--y); font-size: 11px; margin-top: 0; text-transform: uppercase; }
 
         .btn-small { background: var(--y); color: black; padding: 10px 20px; border: none; font-weight: 900; cursor: pointer; text-decoration: none; display: inline-flex; border-radius: 4px; font-size: 11px; text-transform: uppercase; margin: 10px auto; }
 
-        /* FORMULARIO AMARILLO CENTRADO */
         #form-registro { display: none; background: #111; padding: 20px; border: 3px solid var(--y); border-radius: 12px; margin: 20px 0; width: 100%; box-sizing: border-box; text-align: center; }
         .input-group { width: 100%; margin-bottom: 12px; text-align: center; }
         .input-group label { display: block; margin-bottom: 5px; color: var(--y); font-weight: bold; font-size: 10px; }
@@ -64,7 +54,6 @@
         .player-name { padding-left: 10px; font-size: 11px; text-transform: uppercase; font-weight: bold; }
 
         footer { padding: 40px 20px; background: #080808; width: 100%; text-align: center; font-size: 10px; color: #555; box-sizing: border-box; border-top: 1px solid #222; }
-        .footer-logo { width: 40px; margin-bottom: 15px; }
     </style>
 </head>
 <body>
@@ -79,6 +68,7 @@
     <main class="content">
         
         <img src="br1.jpg" class="media-box">
+
         <div class="tip-box"><strong>🎯 TIP KILLS:</strong> Domina el retroceso de tus armas en el campo de práctica antes de entrar.</div>
 
         <div class="prize-card" id="seccion-principal">
@@ -92,15 +82,14 @@
 
             <div class="policy-box">
                 <h3>POLÍTICA DE NO REEMBOLSO</h3>
-                <p>Al realizar el pago, confirmas que has leído y aceptado los siguientes puntos:</p>
+                <p>Al realizar el pago, aceptás los términos:</p>
                 <ul>
-                    <li><strong>Compromiso:</strong> Los fondos se destinan inmediatamente a la bolsa de premios y gastos de organización.</li>
-                    <li><strong>Inasistencia:</strong> TCODM no se hace responsable si un clan o jugador no se presenta el día del evento. No habrá devoluciones.</li>
-                    <li><strong>Descalificación:</strong> El incumplimiento de las reglas del torneo conlleva la expulsión sin derecho a reembolso.</li>
-                    <li><strong>Identificación:</strong> Al pagar en Square debes poner el nombre de tu Squad y usar el mismo nombre exacto al registrar los nombres aquí.</li>
+                    <li><strong>Fondos:</strong> Destinados a premios y organización.</li>
+                    <li><strong>Inasistencia:</strong> Sin derecho a devolución.</li>
+                    <li><strong>Identificación:</strong> Usar el mismo nombre de Squad en Square y aquí.</li>
                 </ul>
                 <div style="margin-top: 10px; color: white;">
-                    <input type="checkbox" id="check-rembolso"> <b>ACEPTO LAS POLÍTICAS Y RESPONSABILIDADES</b>
+                    <input type="checkbox" id="check-rembolso"> <b>ACEPTO LAS POLÍTICAS</b>
                 </div>
             </div>
 
@@ -119,21 +108,23 @@
             <button class="btn-small" style="width:100%; max-width:280px; background:var(--green); color:black;" onclick="finalizarRegistro()">FINALIZAR REGISTRO</button>
         </div>
 
-        <img src="br2.webp" class="media-box">
-        <div class="tip-box"><strong>🔥 TIP WIN:</strong> El posicionamiento temprano en zona te da un 70% más de probabilidad de ganar.</div>
-
         <div class="list-title">SQUADS CONFIRMADAS</div>
         <div id="lista-confirmadas" style="width: 100%;"></div>
 
         <div class="list-title" style="color:#444;">POR VERIFICAR</div>
         <div id="lista-revision" style="width: 100%;"></div>
+
+        <div style="width: 100%; text-align: center; padding: 40px 0 20px;">
+            <button class="btn-small" id="btn-install-manual" style="background: white; color: black; border: 2px solid var(--y); display: none;">
+                📲 DESCARGAR APP TCODM
+            </button>
+        </div>
+
     </main>
 
     <footer>
-        <img src="iconoweb.png" class="footer-logo"><br>
         <strong>SISTEMA DE AYUDA LOCAL - FLORIDA</strong><br>
-        Organización independiente de clanes locales. Call of Duty Mobile® y Activision® son marcas de sus respectivos dueños.
-        <br><br>© 2025 TCODM - ALL RIGHTS RESERVED
+        © 2025 TCODM - ALL RIGHTS RESERVED
     </footer>
 
     <script>
@@ -147,9 +138,34 @@
             n.className = 'notification';
             n.innerText = msg;
             container.appendChild(n);
-            setTimeout(() => n.remove(), 6000);
+            setTimeout(() => n.remove(), 5000);
         }
 
+        // --- LÓGICA DE INSTALACIÓN ---
+        let deferredPrompt;
+        const btnInstallManual = document.getElementById('btn-install-manual');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            // Mostramos el botón solo si el navegador está listo
+            btnInstallManual.style.display = 'inline-flex';
+        });
+
+        btnInstallManual.addEventListener('click', () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choice) => {
+                    if (choice.outcome === 'accepted') {
+                        showNotif("INSTALACIÓN INICIADA");
+                        btnInstallManual.style.display = 'none';
+                    }
+                    deferredPrompt = null;
+                });
+            }
+        });
+
+        // --- REGISTRO Y FIREBASE (Igual que antes) ---
         function validarPago(e) {
             if(!document.getElementById('check-rembolso').checked) {
                 showNotif("DEBES ACEPTAR LAS POLÍTICAS PARA CONTINUAR");
@@ -175,20 +191,16 @@
             const p3 = document.getElementById('reg-p3').value;
             const p4 = document.getElementById('reg-p4').value;
 
-            // VALIDACIÓN: TODOS LOS CAMPOS OBLIGATORIOS
             if(!squad || !p1 || !p2 || !p3 || !p4) {
-                showNotif("DEBES COMPLETAR TODOS LOS CAMPOS DE LA SQUAD");
+                showNotif("COMPLETA TODOS LOS CAMPOS");
                 return;
             }
 
             database.ref('inscripciones/' + squad).set({
-                p1: p1, p2: p2, p3: p3, p4: p4,
-                estado: "VERIFICANDO"
+                p1: p1, p2: p2, p3: p3, p4: p4, estado: "VERIFICANDO"
             }).then(() => {
-                showNotif("REGISTRO ENVIADO EXITOSAMENTE");
-                setTimeout(() => {
-                    window.location.href = "index.html";
-                }, 3000);
+                showNotif("REGISTRO ENVIADO");
+                setTimeout(() => { window.location.href = "index.html"; }, 3000);
             });
         }
 
