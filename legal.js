@@ -11,6 +11,17 @@ const contenidosLegales = {
         <p>En tcodm.com protegemos tu información. Al registrarte, recolectamos datos básicos como tu nombre de usuario e ID de jugador con el único fin de gestionar tu participación en los torneos.</p>
         <p>No compartimos ni vendemos tu información personal a terceros. Los pagos de entradas se procesan a través de plataformas externas seguras; tcodm.com no almacena ni tiene acceso a los datos de tu tarjeta bancaria.</p>
     `,
+
+    cookies: `
+        <h2>Política de Cookies y Rastreo</h2>
+        <p>Este sitio web utiliza tecnologías de identificación básica y servicios de terceros (como Firebase y APIs de geolocalización) para las siguientes finalidades:</p>
+        <ul>
+            <li><b>Seguridad:</b> Identificar accesos sospechosos para proteger la integridad del torneo.</li>
+            <li><b>Estadísticas:</b> Conocer el país de origen y el tipo de dispositivo de nuestros visitantes para optimizar la experiencia web.</li>
+            <li><b>Funcionamiento:</b> Mantener la conexión en tiempo real con nuestros servidores de administración.</li>
+        </ul>
+        <p>Al navegar en tcodm.com, aceptas el uso de estos identificadores técnicos. No recolectamos información privada sensible sin tu consentimiento explícito en el formulario de registro.</p>
+    `,
     
     reembolsos: `
         <h2>Términos de Compra y Premios</h2>
