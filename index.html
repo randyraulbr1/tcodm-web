@@ -19,8 +19,9 @@
         
         body { background: var(--bg); color: white; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
 
+        /* NOTIFICACIONES */
         #notification-container { position: fixed; top: 80px; right: 20px; z-index: 2000; }
-        .notification { background: var(--y); color: black; padding: 12px 25px; border-radius: 50px; margin-bottom: 10px; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.5); animation: slideIn 0.5s ease-out; }
+        .notification { background: var(--y); color: black; padding: 12px 25px; border-radius: 50px; margin-bottom: 10px; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.5); animation: slideIn 0.5s ease-out; font-size: 13px; }
         .notification.error { background: var(--red); color: white; }
 
         @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
@@ -29,31 +30,35 @@
 
         .content { width: 95%; max-width: 800px; padding: 100px 0; }
 
+        /* IMAGEN GIF SUPERIOR */
+        .gif-header { width: 100%; border-radius: 12px; border: 2px solid #222; margin-bottom: 25px; display: block; }
+
         .prize-card { background: #0a0a0a; padding: 25px; border: 1px solid #222; margin-bottom: 40px; text-align: center; border-radius: 8px; }
-        
-        /* BOTÓN PEQUEÑO Y SIN RAYA */
-        .pago-wrapper { display: flex; justify-content: center; margin-top: 20px; }
-        
-        .btn-pay-main { 
-            background: var(--y); color: black; padding: 12px 30px; border: none; 
+
+        /* BOTÓN DE PAGO PEQUEÑO AMARILLO */
+        .pago-container { display: flex; justify-content: center; margin-top: 15px; }
+        .buy-with-crypto { text-decoration: none !important; border: none !important; outline: none !important; }
+        .btn-pay-small { 
+            background: var(--y); color: black; padding: 12px 25px; border: none; 
             font-weight: 900; cursor: pointer; text-decoration: none !important; 
-            display: inline-block; border-radius: 6px; font-size: 14px; transition: 0.3s;
-            text-transform: uppercase; border: none; outline: none;
+            border-radius: 6px; font-size: 14px; transition: 0.3s;
+            text-transform: uppercase; display: inline-block;
         }
-        .btn-pay-main:hover { background: white; transform: scale(1.05); }
+        .btn-pay-small:hover { background: white; transform: scale(1.05); }
 
-        /* Estilo para que el link no herede subrayados */
-        a.buy-with-crypto { text-decoration: none !important; border: none !important; outline: none !important; }
-
+        /* FORMULARIO */
         #form-registro { background: #111; padding: 30px; border: 2px solid var(--y); border-radius: 12px; margin: 20px 0; display: none; }
         .input-group { margin-bottom: 15px; text-align: left; }
         .input-group label { display: block; margin-bottom: 5px; color: var(--y); font-weight: bold; font-size: 12px; }
-        input[type="text"] { width: 100%; padding: 12px; background: #000; border: 1px solid #333; color: white; border-radius: 4px; box-sizing: border-box; }
+        input[type="text"] { width: 100%; padding: 12px; background: #000; border: 1px solid #333; color: white; border-radius: 4px; box-sizing: border-box; outline: none; }
 
+        /* SQUADS */
         .squad-container { background: #0d0d0d; border: 1px solid #222; padding: 12px; margin-bottom: 15px; border-radius: 6px; }
         .player-row { display: flex; align-items: center; background: #000; margin-bottom: 4px; border: 1px solid #1a1a1a; height: 35px; border-radius: 4px; overflow: hidden; }
         .num-box { width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; font-size: 16px; color: black; font-weight: 900; }
         .player-name { padding-left: 12px; font-size: 13px; text-transform: uppercase; font-weight: bold; }
+
+        footer { font-size: 11px; color: #444; text-align: center; padding: 30px 0; }
     </style>
 </head>
 <body>
@@ -67,54 +72,61 @@
 
     <main class="content">
         
+        <img src="gif1.gif" alt="Tournament Header" class="gif-header">
+
         <div class="prize-card" id="seccion-principal">
-            <h2 style="margin:0; color:var(--y); letter-spacing: 1px;">PRO LEAGUE SEASON 1</h2>
+            <h2 style="margin:0; color:var(--y); font-size: 20px;">PRO LEAGUE SEASON 1</h2>
             
-            <div style="margin-top: 20px; background: #111; padding: 15px; border-radius: 8px; border: 1px solid #222; text-align: left; max-width: 400px; margin-left: auto; margin-right: auto;">
-                <div style="display: flex; justify-content: space-between; font-size: 14px;">
+            <div style="margin-top: 15px; background: #111; padding: 15px; border-radius: 8px; border: 1px solid #222; text-align: left; max-width: 350px; margin-left: auto; margin-right: auto;">
+                <div style="display: flex; justify-content: space-between; font-size: 13px;">
                     <span>Inscripción Squad:</span> <span>$5.00</span>
                 </div>
-                <div style="display: flex; justify-content: space-between; font-size: 13px; color: #666;">
-                    <span>Fee:</span> <span>$0.46</span>
+                <div style="display: flex; justify-content: space-between; font-size: 12px; color: #666;">
+                    <span>Service Fee:</span> <span>$0.46</span>
                 </div>
-                <div style="display: flex; justify-content: space-between; font-size: 18px; font-weight: bold; color: var(--y); border-top: 1px solid #333; padding-top: 10px; margin-top: 10px;">
+                <div style="display: flex; justify-content: space-between; font-size: 16px; font-weight: bold; color: var(--y); border-top: 1px solid #333; padding-top: 8px; margin-top: 8px;">
                     <span>TOTAL:</span> <span>$5.46 USD</span>
                 </div>
             </div>
 
-            <div class="checkbox-container" style="margin-top: 20px; font-size: 12px; color: #888;">
+            <div style="margin-top: 15px; font-size: 11px; color: #888;">
                 <input type="checkbox" id="check-rembolso">
                 <label for="check-rembolso">Acepto Política de No Reembolso</label>
             </div>
 
-            <div class="pago-wrapper">
+            <div class="pago-container">
                 <a class="buy-with-crypto" 
                    href="https://commerce.coinbase.com/checkout/2ad58cff-6535-47f4-a544-6f703bd57b56"
                    onclick="return procesarPagoClick(event);">
-                    <button class="btn-pay-main">PAGAR $5.46</button>
+                    <button class="btn-pay-small">PAGAR $5.46</button>
                 </a>
             </div>
             
-            <div style="margin-top: 15px; display: flex; justify-content: center; gap: 10px; opacity: 0.3; filter: invert(1);">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b0/Apple_Pay_logo.svg" height="12">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/f/f2/Google_Pay_Logo.svg" height="12">
+            <div style="margin-top: 15px; display: flex; justify-content: center; gap: 8px; opacity: 0.3; filter: grayscale(1);">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b0/Apple_Pay_logo.svg" height="10">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/f/f2/Google_Pay_Logo.svg" height="10">
             </div>
         </div>
 
         <div id="form-registro">
-            <h2 style="color:var(--y); text-align: center; margin-top: 0;">REGISTRO DE ROSTER</h2>
+            <h2 style="color:var(--y); text-align: center; font-size: 18px;">REGISTRO DE ROSTER</h2>
             <div class="input-group"><label>NOMBRE DEL CLAN</label><input type="text" id="reg-squad"></div>
             <div class="input-group"><label>CAPITÁN</label><input type="text" id="reg-p1"></div>
             <div class="input-group"><label>JUGADOR 2</label><input type="text" id="reg-p2"></div>
             <div class="input-group"><label>JUGADOR 3</label><input type="text" id="reg-p3"></div>
             <div class="input-group"><label>JUGADOR 4</label><input type="text" id="reg-p4"></div>
-            <button onclick="finalizarRegistro()" style="background:var(--green); color:white; padding:15px; width:100%; border:none; border-radius:4px; font-weight:bold; cursor:pointer;">ENVIAR REGISTRO</button>
+            <button onclick="finalizarRegistro()" style="background:var(--green); color:white; padding:15px; width:100%; border:none; border-radius:4px; font-weight:bold; cursor:pointer; text-transform: uppercase;">ENVIAR REGISTRO</button>
         </div>
 
-        <h3 style="text-align:center; color:var(--y); margin-top: 40px;">SQUADS INSCRITAS</h3>
+        <h3 style="text-align:center; color:var(--y); text-transform: uppercase; font-size: 14px; letter-spacing: 2px;">SQUADS INSCRITAS</h3>
         <div id="lista-squads"></div>
 
     </main>
+
+    <footer>
+        © 2025 TCODM LEAGUE USA. <br>
+        PAGOS PROCESADOS POR COINBASE COMMERCE.
+    </footer>
 
     <script>
         const firebaseConfig = { databaseURL: "https://tcodm-e4147-default-rtdb.firebaseio.com/" };
@@ -137,17 +149,11 @@
                 return false;
             }
             
-            // Esto intenta abrir Coinbase en un modal encima de tu web (mejor para Apple Pay)
-            // Si el script de Coinbase cargó bien, esto funcionará.
-            if(window.CoinbaseCommerce) {
-                // Opcional: podrías usar CoinbaseCommerce.init() aquí
-            }
-
             setTimeout(() => {
                 document.getElementById('seccion-principal').style.display = 'none';
                 document.getElementById('form-registro').style.display = 'block';
-                showNotif("✅ Completa tu registro abajo.");
-            }, 1500);
+                showNotif("✅ Completa el registro de tu equipo.");
+            }, 1200);
             return true;
         }
 
@@ -165,7 +171,7 @@
                 p4: document.getElementById('reg-p4').value || "---",
                 estado: "VERIFICANDO PAGO"
             }).then(() => {
-                alert("¡Registro enviado!");
+                alert("¡Registro enviado! Aparecerás en la lista en breve.");
                 window.location.reload();
             });
         }
