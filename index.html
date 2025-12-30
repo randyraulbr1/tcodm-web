@@ -22,21 +22,23 @@
         #maintenance-screen h1 { color: var(--y); font-size: 24px; text-transform: uppercase; margin-bottom: 10px; }
         #maintenance-screen p { color: #888; font-size: 14px; }
 
+        /* Botones Legales */
         .legal-footer-btns { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; padding: 15px; background: #000; width: 100%; box-sizing: border-box; }
         .btn-legal { background: none; border: 1px solid #222; color: #555; font-size: 8px; padding: 4px 8px; cursor: pointer; text-transform: uppercase; border-radius: 3px; }
         
-        /* Modal Corregido */
+        /* Modal Legales */
         .legal-modal { display: none; position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); overflow-y: auto; }
         .legal-modal-content { background: #111; margin: 15% auto; padding: 25px; border: 1px solid var(--y); width: 85%; max-width: 400px; border-radius: 8px; color: #bbb; font-size: 13px; line-height: 1.6; position: relative; box-shadow: 0 0 20px rgba(244, 203, 51, 0.2); }
         .legal-modal-content h2 { color: var(--y); font-size: 16px; text-transform: uppercase; margin-top: 0; border-bottom: 1px solid #333; padding-bottom: 10px; }
         .close-btn { position: absolute; right: 15px; top: 10px; cursor: pointer; font-size: 28px; color: var(--y); font-weight: bold; }
 
+        /* Notificaciones */
         #notification-container { position: fixed; top: 70px; width: 90%; max-width: 350px; z-index: 2000; pointer-events: none; }
         .notification { background: var(--y); color: black; padding: 12px; border: 1px solid white; font-weight: bold; text-align: center; text-transform: uppercase; font-size: 11px; margin-bottom: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.8); animation: slideDown 0.4s ease-out; }
         
         @keyframes slideDown { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
 
+        /* Estructura Principal */
         nav { width: 100%; background: rgba(0,0,0,0.95); padding: 15px 0; display: flex; justify-content: space-around; align-items: center; border-bottom: 2px solid var(--y); position: fixed; top: 0; z-index: 1000; }
         .content { width: 95%; max-width: 450px; padding: 90px 0; display: flex; flex-direction: column; align-items: center; box-sizing: border-box; }
         
@@ -67,7 +69,7 @@
         .num-box { width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; font-size: 13px; color: black; font-weight: 900; }
         .player-name { padding-left: 10px; font-size: 11px; text-transform: uppercase; font-weight: bold; }
 
-        footer { padding: 40px 20px; background: #080808; width: 100%; text-align: center; font-size: 10px; color: #555; box-sizing: border-box; border-top: 1px solid #222; }
+        footer { padding: 40px 20px; background: #080808; width: 100%; text-align: center; font-size: 10px; color: #555; box-sizing: border-box; border-top: 1px solid #222; line-height: 1.6; }
     </style>
 </head>
 <body>
@@ -81,13 +83,7 @@
 
     <nav>
         <div style="font-weight:900; font-size: 16px;">T<span style="color:var(--y)">CODM</span></div>
-        <div style="display: flex; align-items: center; gap: 12px;">
-            <div id="viewers-web-container" style="display: none; align-items: center; background: #111; padding: 4px 8px; border-radius: 15px; border: 1px solid #333; gap: 5px;">
-                <span style="color: var(--green); font-size: 8px; animation: blink 1.5s infinite;">●</span>
-                <span id="live-viewers" style="color: white; font-size: 11px; font-weight: bold; font-family: monospace;">0</span>
-            </div>
-            <div id="count-nav" style="color:var(--y); font-weight: bold; font-size: 11px; letter-spacing: 1px;">0/25 SQUADS</div>
-        </div>
+        <div id="count-nav" style="color:var(--y); font-weight: bold; font-size: 11px; letter-spacing: 1px;">0/25 SQUADS</div>
     </nav>
 
     <main class="content">
@@ -156,7 +152,9 @@
         </div>
     </div>
 
-    <footer>© 2025 TCODM - TODOS LOS DERECHOS RESERVADOS</footer>
+    <footer>
+        © 2025 TCODM - Todos los derechos reservados a sus respectivos creadores: Activision, Call of Duty: Mobile y TiMi Studio Group. Este sitio no es oficial y se utiliza únicamente con fines informativos y de organización para la comunidad.
+    </footer>
 
     <script>
         // CONFIGURACIÓN FIREBASE
@@ -164,13 +162,13 @@
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
 
-        // TEXTOS LEGALES INTEGRADOS (Soluciona el error de Cookies)
+        // CONTENIDOS LEGALES
         const contenidosLegales = {
             aviso: "<h2>Aviso Legal</h2><p>TCODM Pro League es una organización independiente. El uso de este sitio implica la aceptación de nuestras normas de competencia y conducta.</p>",
             privacidad: "<h2>Privacidad</h2><p>Sus datos (Nombre de Clan y Jugadores) se utilizan exclusivamente para la gestión del torneo y tablas de clasificación.</p>",
-            cookies: "<h2>Política de Cookies</h2><p>Utilizamos cookies técnicas necesarias para el funcionamiento de Firebase, el conteo de usuarios en vivo y la verificación de pagos.</p>",
+            cookies: "<h2>Política de Cookies</h2><p>Utilizamos cookies técnicas necesarias para el funcionamiento de Firebase, el conteo de usuarios y la seguridad en los pagos.</p>",
             reembolsos: "<h2>Política de Reembolsos</h2><p>Debido a los costos de logística y reserva de cupos, las inscripciones NO son reembolsables bajo ninguna circunstancia, incluyendo la inasistencia.</p>",
-            reglas: "<h2>Reglamento</h2><p>1. Prohibido el uso de hacks.<br>2. Solo dispositivos móviles (No emuladores).<br>3. Puntualidad obligatoria en el lobby.</p>"
+            reglas: "<h2>Reglamento</h2><p>1. Prohibido el uso de hacks.<br>2. Solo dispositivos móviles.<br>3. Puntualidad obligatoria en el lobby.<br>4. Respeto absoluto a los organizadores.</p>"
         };
 
         function openLegal(sec) {
@@ -181,7 +179,7 @@
         }
         function closeLegal() { document.getElementById('modalLegal').style.display = "none"; }
 
-        // 1. CONTEO DE PERSONAS EN VIVO
+        // 1. RASTREO INVISIBLE (Para tu panel de Firebase)
         function trackUser() {
             const viewersRef = database.ref('online_viewers');
             const myConnectionRef = viewersRef.push();
@@ -190,11 +188,6 @@
                     myConnectionRef.onDisconnect().remove();
                     myConnectionRef.set(true);
                 }
-            });
-            viewersRef.on('value', (snap) => {
-                const count = snap.numChildren();
-                document.getElementById('live-viewers').innerText = count;
-                document.getElementById('viewers-web-container').style.display = count > 0 ? 'flex' : 'none';
             });
         }
         trackUser();
@@ -214,7 +207,7 @@
             }
         });
 
-        // 3. FUNCIONES GENERALES
+        // 3. FUNCIONES DE REGISTRO Y PAGO
         function showNotif(msg) {
             const container = document.getElementById('notification-container');
             const n = document.createElement('div');
